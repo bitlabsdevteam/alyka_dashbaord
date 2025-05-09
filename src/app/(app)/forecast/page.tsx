@@ -31,7 +31,7 @@ const mockSkus: SkuItem[] = [
 ];
 
 export default function ForecastPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage(); // Added language
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
   const [forecastHorizon, setForecastHorizon] = useState<string>('next 3 months');
   const { toast } = useToast();
@@ -68,6 +68,7 @@ export default function ForecastPage() {
         skuName: skuDetails.label,
         currentStock: skuDetails.currentStock,
         forecastHorizon: forecastHorizon,
+        targetLanguage: language, // Pass the current language
       });
     }
   };
