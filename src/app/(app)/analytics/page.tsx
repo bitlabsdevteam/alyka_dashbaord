@@ -80,7 +80,7 @@ export default function AnalyticsPage() {
             width={800}
             height={450}
             className="w-full h-auto rounded-lg object-cover"
-            data-ai-hint="met gala fashion"
+            data-ai-hint="man suit"
           />
           <h3 className="text-xl font-semibold">{t('analyticsPage.galaArticle.title')}</h3>
           <p className="text-base text-muted-foreground">
@@ -191,3 +191,4 @@ export default function AnalyticsPage() {
     </div>
   );
 }
+
