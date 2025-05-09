@@ -46,7 +46,7 @@ const mockTaskData: MockTaskData[] = [
     id: '4',
     nameKey: 'tasksPage.tasks.competitorAnalysis.name',
     descriptionKey: 'tasksPage.tasks.competitorAnalysis.description',
-    status: 'Completed', // Changed from 'Failed' to 'Completed'
+    status: 'Completed', 
     createdAt: new Date(2023, 10, 20, 14, 0),
     completedAt: new Date(2023, 10, 20, 16, 30),
   },
@@ -59,7 +59,7 @@ const StatusBadge = ({ status, t }: { status: TaskStatus; t: (key: TranslationKe
 
   switch (status) {
     case 'Completed':
-      variant = 'default'; // Will use primary color
+      variant = 'default'; 
       Icon = CheckCircle2;
       statusText = t('tasksPage.status.completed');
       break;
@@ -74,7 +74,7 @@ const StatusBadge = ({ status, t }: { status: TaskStatus; t: (key: TranslationKe
       statusText = t('tasksPage.status.pending');
       break;
     case 'Failed':
-      variant = 'destructive'; // This case will be styled as destructive (red) if data still has 'Failed'
+      variant = 'destructive'; 
       Icon = XCircle;
       statusText = t('tasksPage.status.failed');
       break;
@@ -92,15 +92,16 @@ const StatusBadge = ({ status, t }: { status: TaskStatus; t: (key: TranslationKe
 export default function TasksPage() {
   const { t } = useLanguage();
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [descriptionText, setDescriptionText] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simulate API call
     const localizedTasks: Task[] = mockTaskData.map(taskData => ({
       ...taskData,
       name: t(taskData.nameKey),
       description: t(taskData.descriptionKey),
     }));
     setTasks(localizedTasks);
+    setDescriptionText(t('tasksPage.description'));
   }, [t]);
 
   return (
@@ -112,7 +113,7 @@ export default function TasksPage() {
             {t('tasksPage.title')}
           </CardTitle>
           <CardDescription>
-            {t('tasksPage.description')}
+            {descriptionText === null ? <>&nbsp;</> : descriptionText}
           </CardDescription>
         </CardHeader>
         <CardContent>
