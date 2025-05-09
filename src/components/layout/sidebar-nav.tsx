@@ -19,10 +19,23 @@ export function SidebarNav() {
   const { t } = useLanguage(); // Use language hook
 
   // Map originalNavItems to include translated titles
-  const navItems: NavItem[] = originalNavItems.map(item => ({
-    ...item,
-    title: t(`nav.${item.title.toLowerCase().replace(/\s+/g, '')}` as any) || item.title, // Use translation, fallback to original
-  }));
+  const navItems: NavItem[] = originalNavItems.map(item => {
+    let translationKey: string;
+    switch (item.title) {
+      case 'POS Sales':
+        translationKey = 'nav.posSales';
+        break;
+      case 'Task Manager':
+        translationKey = 'nav.taskManager';
+        break;
+      default:
+        translationKey = `nav.${item.title.toLowerCase().replace(/\s+/g, '')}`;
+    }
+    return {
+      ...item,
+      title: t(translationKey as any) || item.title, // Use translation, fallback to original
+    };
+  });
 
 
   return (

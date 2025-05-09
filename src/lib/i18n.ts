@@ -42,9 +42,9 @@ interface HeaderTranslations {
 interface NavTranslations {
   analytics: string;
   forecast: string;
-  posSales: string;
-  taskManager: string;
-  settings: string;
+  posSales: string; // Changed from possales
+  taskManager: string; // Changed from taskmanager
+  // settings: string; // Removed settings
 }
 
 
@@ -93,7 +93,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       posSales: 'POS Sales',
       taskManager: 'Task Manager',
-      settings: 'Settings',
+      // settings: 'Settings', // Removed
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Fashion Buzz',
@@ -137,7 +137,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       posSales: 'POS販売',
       taskManager: 'タスク管理',
-      settings: '設定',
+      // settings: '設定', // Removed
     },
     analyticsPage: {
       latestTrendTitle: '最新ファッショントレンド',
@@ -162,3 +162,4 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
+

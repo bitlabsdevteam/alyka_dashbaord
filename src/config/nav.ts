@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { LineChart, TrendingUp, ShoppingCart, ListChecks, Settings } from 'lucide-react';
+import { LineChart, TrendingUp, ShoppingCart, ListChecks } from 'lucide-react'; // Removed Settings icon
 
 export interface NavItem {
   title: string;
@@ -20,18 +20,18 @@ export const navItems: NavItem[] = [
     icon: TrendingUp,
   },
   {
-    title: 'POS Sales',
+    title: 'POS Sales', // Key for translation will be 'nav.posSales'
     href: '/pos-sales',
     icon: ShoppingCart,
   },
   {
-    title: 'Task Manager',
+    title: 'Task Manager', // Key for translation will be 'nav.taskManager'
     href: '/tasks',
     icon: ListChecks,
   },
-  {
-    title: 'Settings',
-    href: '/settings',
-    icon: Settings,
-  },
+  // { // Removed Settings
+  //   title: 'Settings',
+  //   href: '/settings',
+  //   icon: Settings,
+  // },
 ];
