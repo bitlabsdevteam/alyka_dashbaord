@@ -68,7 +68,7 @@ interface NavTranslations {
   forecast: string;
   posSales: string; 
   taskManager: string; 
-  settings: string; // Added for settings
+  // settings: string; // Removed as per request
 }
 
 interface ForecastPageTranslations {
@@ -288,7 +288,7 @@ export interface Translations {
   chatbot: ChatbotTranslations; 
   loginPage: LoginPageTranslations;
   registerPage: RegisterPageTranslations;
-  settingsPage: SettingsPageTranslations; // Added for settings page
+  settingsPage: SettingsPageTranslations; 
 }
 
 // Helper type for deep key access
@@ -333,7 +333,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       posSales: 'POS Sales',
       taskManager: 'Task Manager',
-      settings: 'Settings',
+      // settings: 'Settings', // Removed
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Fashion Buzz',
@@ -598,7 +598,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       posSales: 'POS販売',
       taskManager: 'タスク管理',
-      settings: '設定',
+      // settings: '設定', // Removed
     },
     analyticsPage: {
       latestTrendTitle: '最新ファッショントレンド',
@@ -836,3 +836,4 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
+
