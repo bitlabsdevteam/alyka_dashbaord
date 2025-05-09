@@ -68,7 +68,7 @@ interface NavTranslations {
   forecast: string;
   posSales: string; 
   taskManager: string; 
-  // settings: string; // Removed as per request
+  settings: string;
 }
 
 interface ForecastPageTranslations {
@@ -78,6 +78,7 @@ interface ForecastPageTranslations {
   selectSkuPlaceholder: string;
   currentStockLabel: string;
   forecastHorizonLabel: string;
+  forecastHorizonValueDisplay: string; // New key for slider value display
   generateButton: string;
   generatingButton: string;
   forecastTitle: string; 
@@ -333,7 +334,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       posSales: 'POS Sales',
       taskManager: 'Task Manager',
-      // settings: 'Settings', // Removed
+      settings: 'Settings',
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Fashion Buzz',
@@ -379,6 +380,7 @@ export const translations: Record<Locale, Translations> = {
       selectSkuPlaceholder: 'Select an SKU',
       currentStockLabel: 'Current Stock',
       forecastHorizonLabel: 'Forecast Horizon',
+      forecastHorizonValueDisplay: 'Next {{count}} months',
       generateButton: 'Generate Forecast',
       generatingButton: 'Generating Forecast...',
       forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
@@ -598,7 +600,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       posSales: 'POS販売',
       taskManager: 'タスク管理',
-      // settings: '設定', // Removed
+      settings: '設定',
     },
     analyticsPage: {
       latestTrendTitle: '最新ファッショントレンド',
@@ -644,6 +646,7 @@ export const translations: Record<Locale, Translations> = {
       selectSkuPlaceholder: 'SKUを選択してください',
       currentStockLabel: '現在の在庫',
       forecastHorizonLabel: '予測期間',
+      forecastHorizonValueDisplay: '今後 {{count}} か月',
       generateButton: '予測を生成',
       generatingButton: '予測を生成中...',
       forecastTitle: '{{skuName}}の販売と在庫予測',
@@ -836,5 +839,3 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
-
-

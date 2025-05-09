@@ -4,10 +4,10 @@
 import { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
 import { forecastSales, type ForecastSalesOutput, type ForecastSalesInput } from '@/ai/flows/forecast-sales';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -19,7 +19,7 @@ import type { TranslationKey } from '@/lib/i18n';
 
 interface SkuItem {
   value: string;
-  labelKey: TranslationKey; // Use TranslationKey for localization
+  labelKey: TranslationKey; 
   currentStock: number;
 }
 
@@ -34,7 +34,7 @@ const mockSkus: SkuItem[] = [
 export default function ForecastPage() {
   const { t, language } = useLanguage();
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
-  const [forecastHorizon, setForecastHorizon] = useState<string>('next 3 months');
+  const [forecastMonths, setForecastMonths] = useState<number>(3); // Default to 3 months
   const { toast } = useToast();
 
   const { mutate, data: salesForecast, isPending, error } = useMutation<ForecastSalesOutput, Error, ForecastSalesInput>({
@@ -66,9 +66,9 @@ export default function ForecastPage() {
     const skuDetails = mockSkus.find(s => s.value === selectedSkuValue);
     if (skuDetails) {
       mutate({
-        skuName: t(skuDetails.labelKey), // Get localized SKU name for the AI prompt
+        skuName: t(skuDetails.labelKey), 
         currentStock: skuDetails.currentStock,
-        forecastHorizon: forecastHorizon,
+        forecastHorizon: `next ${forecastMonths} months`,
         targetLanguage: language,
       });
     }
@@ -80,10 +80,9 @@ export default function ForecastPage() {
     const dataForChart = [];
     let previousStock = salesForecast.currentStock;
 
-    // Add an initial point representing current stock before any forecasted sales
     dataForChart.push({
       period: t('forecastPage.chart.initialPeriodLabel'),
-      sales: 0, // No sales at the initial point
+      sales: 0, 
       stock: salesForecast.currentStock,
     });
 
@@ -92,7 +91,7 @@ export default function ForecastPage() {
       dataForChart.push({
         period: dataPoint.period,
         sales: salesForPeriod,
-        stock: dataPoint.forecastedStock, // This is remaining stock at the end of the period
+        stock: dataPoint.forecastedStock, 
       });
       previousStock = dataPoint.forecastedStock;
     }
@@ -140,14 +139,22 @@ export default function ForecastPage() {
             </Select>
           </div>
           <div>
-            <Label htmlFor="forecastHorizon">{t('forecastPage.forecastHorizonLabel')}</Label>
-            <Input
-              id="forecastHorizon"
-              placeholder="e.g., next 6 weeks, next 2 quarters"
-              value={forecastHorizon}
-              onChange={(e) => setForecastHorizon(e.target.value)}
-              className="text-base"
-            />
+            <Label htmlFor="forecastHorizonSlider">{t('forecastPage.forecastHorizonLabel')}</Label>
+            <div className="flex items-center space-x-4 pt-2">
+              <Slider
+                id="forecastHorizonSlider"
+                defaultValue={[forecastMonths]}
+                min={3}
+                max={12}
+                step={1}
+                onValueChange={(value) => setForecastMonths(value[0])}
+                className="flex-grow"
+                aria-label={t('forecastPage.forecastHorizonLabel')}
+              />
+              <span className="text-base w-32 text-right tabular-nums">
+                {t('forecastPage.forecastHorizonValueDisplay', { count: forecastMonths })}
+              </span>
+            </div>
           </div>
         </CardContent>
         <CardFooter>
@@ -184,7 +191,6 @@ export default function ForecastPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              {/* Removed H3 title from here */}
               <ChartContainer config={chartConfig} className="h-[350px] w-full">
                 <LineChart data={chartData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                   <CartesianGrid vertical={false} strokeDasharray="3 3" />
