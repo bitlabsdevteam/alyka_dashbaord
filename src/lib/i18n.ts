@@ -74,10 +74,11 @@ interface ForecastPageTranslations {
   forecastTitle: string; 
   currentStockValueLabel: string;
   chart: {
-    title: string;
+    demandTitle: string; 
     currentLabel: string; 
-    forecastedStockLabel: string;
-    currentStockLabel: string; 
+    salesLabel: string; 
+    currentStockLabel: string;
+    yAxisDemandLabel: string; 
   };
   reasoningTitle: string;
   recommendationsTitle: string;
@@ -127,13 +128,13 @@ interface PosSalesPageTranslations {
     accessories: string;
     footwear: string;
   };
-  products: { // For mock data, keys should be stable for mapping
-    woolCoat: string; // "Men's Wool Overcoat"
-    silkBlouse: string; // "Women's Silk Blouse"
-    denimJeans: string; // "Unisex Denim Jeans"
-    summerDress: string; // "Floral Summer Dress"
-    leatherBag: string; // "Leather Shoulder Bag"
-    sneakers: string; // "Limited Edition Sneakers"
+  products: { 
+    woolCoat: string; 
+    silkBlouse: string; 
+    denimJeans: string; 
+    summerDress: string; 
+    leatherBag: string; 
+    sneakers: string; 
   };
   noData: string;
 }
@@ -251,13 +252,14 @@ export const translations: Record<Locale, Translations> = {
       forecastHorizonLabel: 'Forecast Horizon',
       generateButton: 'Generate Forecast',
       generatingButton: 'Generating Forecast...',
-      forecastTitle: 'Stock Forecast for {{skuName}}',
+      forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
       currentStockValueLabel: 'Current Stock Level',
       chart: {
-        title: 'Stock Level Over Time',
+        demandTitle: 'Forecasted Sales Demand Over Time',
         currentLabel: 'Current',
-        forecastedStockLabel: 'Forecasted Stock',
+        salesLabel: 'Forecasted Sales (Units)',
         currentStockLabel: 'Initial Stock Level',
+        yAxisDemandLabel: 'Demand (Units)',
       },
       reasoningTitle: 'Forecast Reasoning',
       recommendationsTitle: 'Recommendations',
@@ -403,13 +405,14 @@ export const translations: Record<Locale, Translations> = {
       forecastHorizonLabel: '予測期間',
       generateButton: '予測を生成',
       generatingButton: '予測を生成中...',
-      forecastTitle: '{{skuName}}の在庫予測',
+      forecastTitle: '{{skuName}}の販売と在庫予測',
       currentStockValueLabel: '現在の在庫レベル',
       chart: {
-        title: '在庫レベルの推移',
+        demandTitle: '予測販売需要の推移',
         currentLabel: '現在',
-        forecastedStockLabel: '予測在庫',
+        salesLabel: '予測販売数（ユニット）',
         currentStockLabel: '初期在庫レベル',
+        yAxisDemandLabel: '需要（ユニット）',
       },
       reasoningTitle: '予測の根拠',
       recommendationsTitle: '推奨事項',

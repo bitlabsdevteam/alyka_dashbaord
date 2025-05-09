@@ -1,7 +1,7 @@
 // src/app/(app)/forecast/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,11 +23,11 @@ interface SkuItem {
 }
 
 const mockSkus: SkuItem[] = [
-  { value: 'SKU001', label: "Men's Classic White T-Shirt", currentStock: 120 },
-  { value: 'SKU002', label: "Women's Skinny Blue Jeans", currentStock: 80 },
-  { value: 'SKU003', label: "Unisex Oversized Hoodie - Black", currentStock: 150 },
-  { value: 'SKU004', label: "Children's Striped Cotton PJs", currentStock: 200 },
-  { value: 'SKU005', label: "Luxury Silk Scarf - Floral Print", currentStock: 50 },
+  { value: 'SKU001', label: "Men's Classic White T-Shirt", currentStock: 1200 },
+  { value: 'SKU002', label: "Women's Skinny Blue Jeans", currentStock: 800 },
+  { value: 'SKU003', label: "Unisex Oversized Hoodie - Black", currentStock: 1500 },
+  { value: 'SKU004', label: "Children's Striped Cotton PJs", currentStock: 2000 },
+  { value: 'SKU005', label: "Luxury Silk Scarf - Floral Print", currentStock: 500 },
 ];
 
 export default function ForecastPage() {
@@ -72,26 +72,31 @@ export default function ForecastPage() {
     }
   };
 
-  const chartData = salesForecast
-    ? [
-        { period: t('forecastPage.chart.currentLabel'), forecastedStock: salesForecast.currentStock, currentStockLine: salesForecast.currentStock },
-        ...salesForecast.forecastData.map(fd => ({ 
-            period: fd.period, 
-            forecastedStock: fd.forecastedStock,
-            currentStockLine: salesForecast.currentStock // For a constant comparison line
-        }))
-      ]
-    : [];
+  const chartData = useMemo(() => {
+    if (!salesForecast || !salesForecast.forecastData) return [];
+    
+    const calculatedSales = [];
+    let lastStock = salesForecast.currentStock;
+
+    for (const dataPoint of salesForecast.forecastData) {
+      // Sales for the period is the reduction in stock
+      const salesForPeriod = lastStock - dataPoint.forecastedStock;
+      calculatedSales.push({ 
+        period: dataPoint.period, 
+        // Ensure sales are not negative (if stock weirdly increases)
+        // This reflects the number of units sold/demanded in this period
+        sales: Math.max(0, salesForPeriod) 
+      });
+      lastStock = dataPoint.forecastedStock;
+    }
+    return calculatedSales;
+  }, [salesForecast]);
   
   const chartConfig: ChartConfig = {
-    forecastedStock: {
-      label: t('forecastPage.chart.forecastedStockLabel'),
+    sales: {
+      label: t('forecastPage.chart.salesLabel'), // Updated label
       color: "hsl(var(--chart-1))",
     },
-    currentStockLine: {
-        label: t('forecastPage.chart.currentStockLabel'),
-        color: "hsl(var(--chart-2))",
-    }
   };
 
 
@@ -159,7 +164,7 @@ export default function ForecastPage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center text-2xl">
-              <BarChartBig className="mr-2 h-6 w-6 text-primary" />
+              <TrendingUpIcon className="mr-2 h-6 w-6 text-primary" /> {/* Changed icon */}
               {t('forecastPage.forecastTitle', { skuName: salesForecast.skuName })}
             </CardTitle>
             <CardDescription>
@@ -168,16 +173,28 @@ export default function ForecastPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <h3 className="font-semibold text-lg mb-2">{t('forecastPage.chart.title')}</h3>
+              <h3 className="font-semibold text-lg mb-2">{t('forecastPage.chart.demandTitle')}</h3>
               <ChartContainer config={chartConfig} className="h-[350px] w-full">
                 <LineChart data={chartData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                   <CartesianGrid vertical={false} strokeDasharray="3 3" />
                   <XAxis dataKey="period" tickLine={false} axisLine={false} tickMargin={8} />
-                  <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                  <YAxis 
+                    tickLine={false} 
+                    axisLine={false} 
+                    tickMargin={8}
+                    label={{ value: t('forecastPage.chart.yAxisDemandLabel'), angle: -90, position: 'insideLeft', offset: 0, style: { textAnchor: 'middle', fill: 'hsl(var(--muted-foreground))' } }}
+                  />
                   <RechartsTooltip content={<ChartTooltipContent indicator="dot" />} />
                   <Legend />
-                  <Line type="monotone" dataKey="forecastedStock" stroke="var(--color-forecastedStock)" strokeWidth={2} dot={{ r: 3, fill: "var(--color-forecastedStock)"}} activeDot={{ r: 5 }} name={t('forecastPage.chart.forecastedStockLabel')} />
-                  <Line type="monotone" dataKey="currentStockLine" stroke="var(--color-currentStockLine)" strokeWidth={2} strokeDasharray="5 5" dot={false} activeDot={false} name={t('forecastPage.chart.currentStockLabel')} />
+                  <Line 
+                    type="monotone" 
+                    dataKey="sales" // Changed from forecastedStock to sales
+                    stroke="var(--color-sales)" 
+                    strokeWidth={2} 
+                    dot={{ r: 4, fill: "var(--color-sales)"}}  // Slightly larger dot
+                    activeDot={{ r: 6 }} // Slightly larger active dot
+                    name={t('forecastPage.chart.salesLabel')} // Updated name for legend
+                  />
                 </LineChart>
               </ChartContainer>
             </div>
