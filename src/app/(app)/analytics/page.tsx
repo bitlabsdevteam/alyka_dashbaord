@@ -1,24 +1,31 @@
+// analytics/page.tsx
 'use client';
 
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import { generateTrendReport, type GenerateTrendReportOutput } from '@/ai/flows/generate-trend-report';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Lightbulb, BarChart2, Palette, Sparkles } from 'lucide-react';
-import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Bar, PieChart, Pie, Cell } from 'recharts';
+import { LineChart as LucideLineChart, Palette, Newspaper, TrendingUp } from 'lucide-react'; // Renamed to avoid conflict
+import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import Image from 'next/image';
+import { useLanguage } from '@/context/language-context'; // Import useLanguage
 
-const mockSilhouetteData = [
-  { name: 'Oversized Blazers', value: 75 },
-  { name: 'Wide-Leg Trousers', value: 80 },
-  { name: 'Bodycon Dresses', value: 40 },
-  { name: 'Utility Jumpsuits', value: 60 },
-  { name: 'Cropped Tops', value: 55 },
+const mockTrendData = [
+  { monthYear: 'Jan 2023', popularity: 30 },
+  { monthYear: 'Feb 2023', popularity: 35 },
+  { monthYear: 'Mar 2023', popularity: 45 },
+  { monthYear: 'Apr 2023', popularity: 40 },
+  { monthYear: 'May 2023', popularity: 50 },
+  { monthYear: 'Jun 2023', popularity: 55 },
+  { monthYear: 'Jul 2023', popularity: 60 },
+  { monthYear: 'Aug 2023', popularity: 58 },
+  { monthYear: 'Sep 2023', popularity: 62 },
+  { monthYear: 'Oct 2023', popularity: 70 },
+  { monthYear: 'Nov 2023', popularity: 75 },
+  { monthYear: 'Dec 2023', popularity: 80 },
+  { monthYear: 'Jan 2024', popularity: 85 },
+  { monthYear: 'Feb 2024', popularity: 82 },
+  { monthYear: 'Mar 2024', popularity: 88 },
+  { monthYear: 'Apr 2024', popularity: 90 },
 ];
 
 const mockColorData = [
@@ -30,57 +37,34 @@ const mockColorData = [
 ];
 const COLORS = ['#2E9AFE', '#FF8042', '#00C49F', '#FFBB28', '#A42EFF'];
 
-
-const chartConfigSilhouette = {
-  value: {
-    label: "Popularity",
+const chartConfigTrend = {
+  popularity: {
+    label: "Popularity", // Will be translated
     color: "hsl(var(--primary))",
   },
 };
 
-const chartConfigColor = {
+const chartConfigColor = (t: (key: string) => string) => ({
   value: {
-    label: "Popularity",
+    label: t('analyticsPage.colorPopularity'),
   },
   ...mockColorData.reduce((acc, item, index) => {
+    // For simplicity, color names are not translated here, but could be if needed
     acc[item.name] = { label: item.name, color: COLORS[index % COLORS.length] };
     return acc;
   }, {} as any)
-};
+});
 
 
 export default function AnalyticsPage() {
-  const [prompt, setPrompt] = useState<string>('Analyze current B2B womenswear trends for Fall/Winter 2024, focusing on sustainable fabrics and minimalist aesthetics.');
-  const { toast } = useToast();
+  const { t } = useLanguage(); // Use the language hook
 
-  const { mutate, data: trendReport, isPending, error } = useMutation<GenerateTrendReportOutput, Error, string>({
-    mutationFn: async (currentPrompt: string) => generateTrendReport({ prompt: currentPrompt }),
-    onSuccess: () => {
-      toast({
-        title: 'Trend Report Generated',
-        description: 'The AI has successfully analyzed the trends.',
-      });
+  // Simplified chart config for trend, label will be translated
+  const trendChartConfig = {
+    popularity: {
+      label: t('analyticsPage.popularity'),
+      color: "hsl(var(--primary))",
     },
-    onError: (err) => {
-      toast({
-        title: 'Error Generating Report',
-        description: err.message || 'An unexpected error occurred.',
-        variant: 'destructive',
-      });
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim()) {
-      toast({
-        title: 'Prompt is empty',
-        description: 'Please enter a prompt for trend analysis.',
-        variant: 'destructive',
-      });
-      return;
-    }
-    mutate(prompt);
   };
 
   return (
@@ -88,85 +72,66 @@ export default function AnalyticsPage() {
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center text-2xl">
-            <Lightbulb className="mr-2 h-6 w-6 text-primary" />
-            Trend Analysis Input
+            <Newspaper className="mr-2 h-6 w-6 text-primary" />
+            {t('analyticsPage.latestTrendTitle')}
           </CardTitle>
           <CardDescription>
-            Enter your prompt below to generate an AI-powered B2B apparel market trend report.
+            {t('analyticsPage.latestTrendDescription')}
           </CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent>
-            <div className="grid w-full gap-1.5">
-              <Label htmlFor="prompt">Analysis Prompt</Label>
-              <Textarea
-                id="prompt"
-                placeholder="e.g., Analyze Spring/Summer 2025 menswear focusing on streetwear influences and recycled materials."
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                rows={4}
-                className="text-base"
-              />
-              <p className="text-sm text-muted-foreground">
-                Provide detailed context for the best results. Include target market, season, specific interests (e.g., sustainability, color palettes).
-              </p>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" disabled={isPending} className="bg-accent hover:bg-accent/90 text-accent-foreground">
-              {isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                'Generate Trend Report'
-              )}
-            </Button>
-          </CardFooter>
-        </form>
+        <CardContent className="space-y-4">
+          <Image
+            src="https://picsum.photos/800/300"
+            alt="Fashion Trend GALA 2024"
+            width={800}
+            height={300}
+            className="w-full h-auto rounded-lg object-cover"
+            data-ai-hint="fashion event"
+          />
+          <h3 className="text-xl font-semibold">{t('analyticsPage.galaArticle.title')}</h3>
+          <p className="text-base text-muted-foreground">
+            {t('analyticsPage.galaArticle.paragraph1')}
+          </p>
+          <p className="text-base text-muted-foreground">
+            {t('analyticsPage.galaArticle.paragraph2')}
+          </p>
+        </CardContent>
       </Card>
-
-      {error && (
-        <Alert variant="destructive">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error.message}</AlertDescription>
-        </Alert>
-      )}
-
-      {trendReport && (
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center text-2xl">
-              <Sparkles className="mr-2 h-6 w-6 text-primary" />
-              AI Generated Trend Report
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="prose dark:prose-invert max-w-none text-base whitespace-pre-wrap">
-              {trendReport.report}
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       <div className="grid gap-6 md:grid-cols-2">
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <BarChart2 className="mr-2 h-5 w-5 text-primary" />
-              Silhouette Popularity
+              <TrendingUp className="mr-2 h-5 w-5 text-primary" />
+              {t('analyticsPage.trendPopularityTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfigSilhouette} className="h-[300px] w-full">
-              <BarChart data={mockSilhouetteData} accessibilityLayer>
-                <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={8} />
-                <YAxis />
-                <RechartsTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartContainer config={trendChartConfig} className="h-[300px] w-full">
+              <LineChart data={mockTrendData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="monthYear" 
+                  tickLine={false} 
+                  axisLine={false} 
+                  tickMargin={8} 
+                  interval="preserveStartEnd"
+                  minTickGap={20}
+                  tickFormatter={(value) => value.substring(0,3)} // Show only month initials
+                />
+                <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
                 <Legend />
-                <Bar dataKey="value" fill="var(--color-value)" radius={4} />
-              </BarChart>
+                <Line 
+                  type="monotone" 
+                  dataKey="popularity" 
+                  stroke="var(--color-popularity)" 
+                  strokeWidth={2} 
+                  dot={{ r: 4, fill: "var(--color-popularity)" }} 
+                  activeDot={{ r: 6 }}
+                  name={t('analyticsPage.popularity')}
+                />
+              </LineChart>
             </ChartContainer>
           </CardContent>
         </Card>
@@ -175,11 +140,11 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Palette className="mr-2 h-5 w-5 text-primary" />
-              Color Trends
+              {t('analyticsPage.colorTrendsTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfigColor} className="h-[300px] w-full">
+            <ChartContainer config={chartConfigColor(t)} className="h-[300px] w-full">
               <PieChart accessibilityLayer>
                 <RechartsTooltip cursor={false} content={<ChartTooltipContent />} />
                 <Legend />

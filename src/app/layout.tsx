@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { ReactQueryProvider } from '@/components/providers/react-query-provider';
+import { LanguageProvider } from '@/context/language-context'; // Import LanguageProvider
 import { Geist } from 'next/font/google';
 import { Geist_Mono } from 'next/font/google';
 
@@ -31,8 +32,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReactQueryProvider>
-          {children}
-          <Toaster />
+          <LanguageProvider> {/* Wrap children with LanguageProvider */}
+            {children}
+            <Toaster />
+          </LanguageProvider>
         </ReactQueryProvider>
       </body>
     </html>

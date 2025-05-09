@@ -1,8 +1,9 @@
+// src/components/layout/sidebar-nav.tsx
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { navItems, type NavItem } from '@/config/nav';
+import { navItems as originalNavItems, type NavItem } from '@/config/nav';
 import { cn } from '@/lib/utils';
 import {
   SidebarMenu,
@@ -11,9 +12,18 @@ import {
   SidebarGroupLabel,
 } from '@/components/ui/sidebar';
 import { Icons } from '@/components/icons';
+import { useLanguage } from '@/context/language-context'; // Import useLanguage
 
 export function SidebarNav() {
   const pathname = usePathname();
+  const { t } = useLanguage(); // Use language hook
+
+  // Map originalNavItems to include translated titles
+  const navItems: NavItem[] = originalNavItems.map(item => ({
+    ...item,
+    title: t(`nav.${item.title.toLowerCase().replace(/\s+/g, '')}` as any) || item.title, // Use translation, fallback to original
+  }));
+
 
   return (
     <div className="flex flex-col h-full">
