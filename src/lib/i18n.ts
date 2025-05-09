@@ -9,8 +9,8 @@ interface CommonTranslations {
   profile: string;
   logout: string;
   chat: string; 
-  settings: string; // Added for settings
-  saving: string; // Added for saving state
+  settings: string; 
+  saving: string; 
 }
 interface AnalyticsPageTranslations {
   latestTrendTitle: string;
@@ -502,7 +502,7 @@ export const translations: Record<Locale, Translations> = {
       simulatedResponse: "Thanks for your message! I'm processing your request. For now, here's a general tip: Keep an eye on sustainable fabrics, as they are a growing trend!",
     },
     loginPage: {
-      title: 'Login to Alyka',
+      title: 'Login',
       description: 'Access your AI-powered fashion analytics dashboard.',
       usernameLabel: 'Username (Legacy)', 
       usernamePlaceholder: 'Enter your username (Legacy)',
@@ -767,7 +767,7 @@ export const translations: Record<Locale, Translations> = {
       simulatedResponse: 'メッセージありがとうございます！リクエストを処理中です。今のところ、一般的なヒントです：サステナブルな生地に注目してください、成長しているトレンドです！',
     },
     loginPage: {
-      title: 'Alykaにログイン',
+      title: 'ログイン',
       description: 'AI搭載のファッション分析ダッシュボードにアクセスします。',
       usernameLabel: 'ユーザー名（旧）', 
       usernamePlaceholder: 'ユーザー名を入力してください（旧）',
@@ -836,4 +836,5 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
+
 
