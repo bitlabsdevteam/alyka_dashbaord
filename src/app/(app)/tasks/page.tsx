@@ -46,7 +46,7 @@ const mockTaskData: MockTaskData[] = [
     id: '4',
     nameKey: 'tasksPage.tasks.competitorAnalysis.name',
     descriptionKey: 'tasksPage.tasks.competitorAnalysis.description',
-    status: 'Failed',
+    status: 'Completed', // Changed from 'Failed' to 'Completed'
     createdAt: new Date(2023, 10, 20, 14, 0),
     completedAt: new Date(2023, 10, 20, 16, 30),
   },
@@ -74,7 +74,7 @@ const StatusBadge = ({ status, t }: { status: TaskStatus; t: (key: TranslationKe
       statusText = t('tasksPage.status.pending');
       break;
     case 'Failed':
-      variant = 'destructive';
+      variant = 'destructive'; // This case will be styled as destructive (red) if data still has 'Failed'
       Icon = XCircle;
       statusText = t('tasksPage.status.failed');
       break;
@@ -156,4 +156,3 @@ export default function TasksPage() {
     </div>
   );
 }
-
