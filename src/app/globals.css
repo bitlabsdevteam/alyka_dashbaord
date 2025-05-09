@@ -28,11 +28,18 @@ body {
     --input: 210 20% 85%;
     --ring: 217 91% 60%; /* Primary blue for focus rings */
     
-    --chart-1: 217 91% 60%; /* Primary blue */
-    --chart-2: 190 70% 50%; /* Teal/cyan */
-    --chart-3: 210 40% 70%; /* Muted blue */
-    --chart-4: 220 60% 65%; /* Another shade of blue */
-    --chart-5: 200 50% 55%; /* Slate blue */
+    --chart-1: 217 91% 60%; /* Primary blue - Used for Silhouette */
+    --chart-2: 190 70% 50%; /* Teal/cyan - Used for Silhouette */
+    --chart-3: 210 40% 70%; /* Muted blue - Used for Silhouette */
+    --chart-4: 220 60% 65%; /* Another shade of blue - Used for Silhouette */
+    --chart-5: 200 50% 55%; /* Slate blue - Used for Silhouette */
+
+    /* New colors for Pattern Trends chart */
+    --chart-6: 300 70% 60%; /* Purple */
+    --chart-7: 30 80% 65%;  /* Orange */
+    --chart-8: 150 60% 50%; /* Seafoam Green */
+    --chart-9: 0 70% 65%;   /* Coral Red */
+    --chart-10: 60 70% 55%; /* Gold/Yellow */
     
     --radius: 0.5rem;
 
@@ -73,6 +80,14 @@ body {
     --chart-3: 210 35% 75%;
     --chart-4: 220 50% 70%;
     --chart-5: 200 40% 60%;
+
+    /* New colors for Pattern Trends chart - Dark Mode */
+    --chart-6: 300 60% 65%;
+    --chart-7: 30 70% 70%;
+    --chart-8: 150 50% 55%;
+    --chart-9: 0 60% 70%;
+    --chart-10: 60 60% 60%;
+
 
     /* Dark Sidebar specific theme */
     --sidebar-background: 220 10% 8%; /* Even darker for sidebar */

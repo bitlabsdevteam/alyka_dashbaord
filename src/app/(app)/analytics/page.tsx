@@ -70,13 +70,14 @@ const mockSilhouetteData = [
 
 
 const mockColorData = [
-  { name: 'Cerulean Blue', value: 400, translationKey: 'analyticsPage.color.ceruleanBlue' },
-  { name: 'Dusty Rose', value: 300, translationKey: 'analyticsPage.color.dustyRose' },
-  { name: 'Olive Green', value: 200, translationKey: 'analyticsPage.color.oliveGreen' },
-  { name: 'Mustard Yellow', value: 150, translationKey: 'analyticsPage.color.mustardYellow' },
-  { name: 'Lavender', value: 250, translationKey: 'analyticsPage.color.lavender' },
+  { name: 'Deep Sapphire', value: 400, translationKey: 'analyticsPage.color.deepSapphire' },
+  { name: 'Desert Khaki', value: 300, translationKey: 'analyticsPage.color.desertKhaki' },
+  { name: 'Rich Burgundy', value: 280, translationKey: 'analyticsPage.color.richBurgundy' },
+  { name: 'Forest Green', value: 220, translationKey: 'analyticsPage.color.forestGreen' },
+  { name: 'Warm Terracotta', value: 180, translationKey: 'analyticsPage.color.warmTerracotta' },
 ];
-const COLORS = ['#2E9AFE', '#FF8042', '#00C49F', '#FFBB28', '#A42EFF']; 
+
+const COLORS = ['#1E3A8A', '#BEB7A4', '#831843', '#166534', '#E2725B']; 
 
 const mockPatternLineData = [
   { monthYear: 'Jan 2023', floral: 40, geometric: 35, stripes: 25, animalPrints: 15, abstract: 20 },
@@ -129,11 +130,11 @@ export default function AnalyticsPage() {
   ];
 
   const patternChartConfig = {
-    floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-1))" },
-    geometric: { label: t('analyticsPage.pattern.geometric'), color: "hsl(var(--chart-2))" },
-    stripes: { label: t('analyticsPage.pattern.stripes'), color: "hsl(var(--chart-3))" },
-    animalPrints: { label: t('analyticsPage.pattern.animalPrints'), color: "hsl(var(--chart-4))" },
-    abstract: { label: t('analyticsPage.pattern.abstract'), color: "hsl(var(--chart-5))" },
+    floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-6))" },
+    geometric: { label: t('analyticsPage.pattern.geometric'), color: "hsl(var(--chart-7))" },
+    stripes: { label: t('analyticsPage.pattern.stripes'), color: "hsl(var(--chart-8))" },
+    animalPrints: { label: t('analyticsPage.pattern.animalPrints'), color: "hsl(var(--chart-9))" },
+    abstract: { label: t('analyticsPage.pattern.abstract'), color: "hsl(var(--chart-10))" },
   };
 
 

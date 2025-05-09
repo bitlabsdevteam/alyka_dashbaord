@@ -34,11 +34,17 @@ interface AnalyticsPageTranslations {
   };
   patternTrendsTitle: string; 
   color: { 
-    ceruleanBlue: string;
-    dustyRose: string;
-    oliveGreen: string;
-    mustardYellow: string;
-    lavender: string;
+    // Old colors commented out for reference if needed
+    // ceruleanBlue: string;
+    // dustyRose: string;
+    // oliveGreen: string;
+    // mustardYellow: string;
+    // lavender: string;
+    deepSapphire: string;
+    desertKhaki: string;
+    richBurgundy: string;
+    forestGreen: string;
+    warmTerracotta: string;
   };
   pattern: { 
     floral: string;
@@ -358,11 +364,11 @@ export const translations: Record<Locale, Translations> = {
       },
       patternTrendsTitle: 'Pattern Popularity Trends',
       color: {
-        ceruleanBlue: 'Cerulean Blue',
-        dustyRose: 'Dusty Rose',
-        oliveGreen: 'Olive Green',
-        mustardYellow: 'Mustard Yellow',
-        lavender: 'Lavender',
+        deepSapphire: 'Deep Sapphire',
+        desertKhaki: 'Desert Khaki',
+        richBurgundy: 'Rich Burgundy',
+        forestGreen: 'Forest Green',
+        warmTerracotta: 'Warm Terracotta',
       },
       pattern: {
         floral: 'Floral',
@@ -624,11 +630,11 @@ export const translations: Record<Locale, Translations> = {
       },
       patternTrendsTitle: 'パターン人気トレンド',
       color: {
-        ceruleanBlue: 'セルリアンブルー',
-        dustyRose: 'ダスティーローズ',
-        oliveGreen: 'オリーブグリーン',
-        mustardYellow: 'マスタードイエロー',
-        lavender: 'ラベンダー',
+        deepSapphire: 'ディープサファイア',
+        desertKhaki: 'デザートカーキ',
+        richBurgundy: 'リッチバーガンディ',
+        forestGreen: 'フォレストグリーン',
+        warmTerracotta: 'ウォームテラコッタ',
       },
       pattern: {
         floral: '花柄',
