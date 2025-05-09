@@ -38,12 +38,12 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ src, alt, aiHint,
         setIsLoading(false);
         // Create a unique seed for picsum based on alt text to get different images
         const seed = alt.replace(/\s+/g, '-').toLowerCase().slice(0, 20);
-        setCurrentSrc(`https://picsum.photos/seed/${seed}/800/450`);
+        setCurrentSrc(`https://picsum.photos/seed/${seed}/200/300`); // Updated picsum dimensions
       }}
       onLoadingComplete={() => setIsLoading(false)}
       data-ai-hint={aiHint || alt.split(' ').slice(0, 2).join(' ').toLowerCase()}
       priority={priority}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+      sizes="200px" // Updated sizes attribute
     />
   );
 };
@@ -152,7 +152,7 @@ export default function AnalyticsPage() {
         <CardContent className="space-y-6">
           <Carousel
             plugins={[autoplayPlugin.current]}
-            className="w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg"
+            className="w-full max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg" // Reduced max-width
             onMouseEnter={autoplayPlugin.current.stop}
             onMouseLeave={autoplayPlugin.current.reset}
             opts={{
@@ -162,19 +162,21 @@ export default function AnalyticsPage() {
             <CarouselContent>
               {carouselImages.map((image, index) => (
                 <CarouselItem key={index}>
-                  <div className="aspect-video relative w-full">
-                    <ImageWithFallback
-                      src={image.src}
-                      alt={image.alt}
-                      aiHint={image['data-ai-hint']}
-                      priority={index === 0} // Prioritize the first image
-                    />
+                  <div className="flex justify-center items-center py-4"> {/* Centering wrapper */}
+                    <div className="relative w-[200px] h-[300px] rounded-lg overflow-hidden shadow-md"> {/* Fixed size container */}
+                      <ImageWithFallback
+                        src={image.src}
+                        alt={image.alt}
+                        aiHint={image['data-ai-hint']}
+                        priority={index === 0}
+                      />
+                    </div>
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10" />
-            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10" />
+            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10" />
+            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10" />
           </Carousel>
 
           <h3 className="text-xl font-semibold pt-4">{t('analyticsPage.galaArticle.title')}</h3>
