@@ -8,7 +8,7 @@ interface CommonTranslations {
   japanese: string;
   profile: string;
   logout: string;
-  chat: string; // Added for chat button
+  chat: string; 
 }
 interface AnalyticsPageTranslations {
   latestTrendTitle: string;
@@ -187,13 +187,48 @@ interface TasksPageTranslations {
   notApplicable: string;
 }
 
-interface ChatbotTranslations { // Added for chatbot
+interface ChatbotTranslations { 
   title: string;
   description: string;
   greeting: string;
   inputPlaceholder: string;
   sendButton: string;
   simulatedResponse: string;
+}
+
+interface LoginPageTranslations {
+  title: string;
+  description: string;
+  usernameLabel: string;
+  usernamePlaceholder: string;
+  passwordLabel: string;
+  passwordPlaceholder: string;
+  loginButton: string;
+  registerLinkText: string;
+  registerLinkAction: string;
+  loginSuccessTitle: string;
+  loginSuccessDescription: string;
+  loginErrorTitle: string;
+  loginErrorDescription: string;
+}
+
+interface RegisterPageTranslations {
+  title: string;
+  description: string;
+  usernameLabel: string;
+  usernamePlaceholder: string;
+  passwordLabel: string;
+  passwordPlaceholder: string;
+  confirmPasswordLabel: string;
+  confirmPasswordPlaceholder: string;
+  registerButton: string;
+  loginLinkText: string;
+  loginLinkAction: string;
+  passwordMismatch: string;
+  registrationSuccessTitle: string;
+  registrationSuccessDescription: string;
+  registrationErrorTitle: string;
+  registrationErrorDescription: string;
 }
 
 
@@ -206,7 +241,9 @@ export interface Translations {
   forecastPage: ForecastPageTranslations;
   posSalesPage: PosSalesPageTranslations;
   tasksPage: TasksPageTranslations;
-  chatbot: ChatbotTranslations; // Added chatbot translations
+  chatbot: ChatbotTranslations; 
+  loginPage: LoginPageTranslations;
+  registerPage: RegisterPageTranslations;
 }
 
 // Helper type for deep key access
@@ -411,6 +448,39 @@ export const translations: Record<Locale, Translations> = {
       sendButton: 'Send',
       simulatedResponse: "Thanks for your message! I'm processing your request. For now, here's a general tip: Keep an eye on sustainable fabrics, as they are a growing trend!",
     },
+    loginPage: {
+      title: 'Login to Alyka',
+      description: 'Access your AI-powered fashion analytics dashboard.',
+      usernameLabel: 'Username',
+      usernamePlaceholder: 'Enter your username',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Enter your password',
+      loginButton: 'Login',
+      registerLinkText: "Don't have an account?",
+      registerLinkAction: 'Register here',
+      loginSuccessTitle: 'Login Successful',
+      loginSuccessDescription: 'Welcome back to Alyka!',
+      loginErrorTitle: 'Login Failed',
+      loginErrorDescription: 'Invalid username or password. Please try again.',
+    },
+    registerPage: {
+      title: 'Create your Alyka Account',
+      description: 'Join Alyka to unlock powerful fashion insights.',
+      usernameLabel: 'Username',
+      usernamePlaceholder: 'Choose a username',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Create a strong password',
+      confirmPasswordLabel: 'Confirm Password',
+      confirmPasswordPlaceholder: 'Re-enter your password',
+      registerButton: 'Register',
+      loginLinkText: 'Already have an account?',
+      loginLinkAction: 'Login here',
+      passwordMismatch: 'Passwords do not match.',
+      registrationSuccessTitle: 'Registration Successful',
+      registrationSuccessDescription: 'Your Alyka account has been created. Please login.',
+      registrationErrorTitle: 'Registration Failed',
+      registrationErrorDescription: 'Could not create your account. Please try again.',
+    },
   },
   ja: {
     common: {
@@ -599,6 +669,39 @@ export const translations: Record<Locale, Translations> = {
       inputPlaceholder: 'メッセージを入力してください...',
       sendButton: '送信',
       simulatedResponse: 'メッセージありがとうございます！リクエストを処理中です。今のところ、一般的なヒントです：サステナブルな生地に注目してください、成長しているトレンドです！',
+    },
+    loginPage: {
+      title: 'Alykaにログイン',
+      description: 'AI搭載のファッション分析ダッシュボードにアクセスします。',
+      usernameLabel: 'ユーザー名',
+      usernamePlaceholder: 'ユーザー名を入力してください',
+      passwordLabel: 'パスワード',
+      passwordPlaceholder: 'パスワードを入力してください',
+      loginButton: 'ログイン',
+      registerLinkText: 'アカウントをお持ちではありませんか？',
+      registerLinkAction: 'こちらで登録',
+      loginSuccessTitle: 'ログイン成功',
+      loginSuccessDescription: 'Alykaへようこそ！',
+      loginErrorTitle: 'ログイン失敗',
+      loginErrorDescription: 'ユーザー名またはパスワードが無効です。もう一度お試しください。',
+    },
+    registerPage: {
+      title: 'Alykaアカウントを作成',
+      description: 'Alykaに参加して、強力なファッションインサイトを手に入れましょう。',
+      usernameLabel: 'ユーザー名',
+      usernamePlaceholder: 'ユーザー名を選択してください',
+      passwordLabel: 'パスワード',
+      passwordPlaceholder: '強力なパスワードを作成してください',
+      confirmPasswordLabel: 'パスワードを確認',
+      confirmPasswordPlaceholder: 'パスワードを再入力してください',
+      registerButton: '登録',
+      loginLinkText: 'すでにアカウントをお持ちですか？',
+      loginLinkAction: 'こちらでログイン',
+      passwordMismatch: 'パスワードが一致しません。',
+      registrationSuccessTitle: '登録成功',
+      registrationSuccessDescription: 'Alykaアカウントが作成されました。ログインしてください。',
+      registrationErrorTitle: '登録失敗',
+      registrationErrorDescription: 'アカウントを作成できませんでした。もう一度お試しください。',
     },
   },
 };
