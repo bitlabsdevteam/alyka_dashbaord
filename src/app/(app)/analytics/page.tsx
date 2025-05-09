@@ -3,20 +3,11 @@
 
 import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Palette, Newspaper, TrendingUp, Layers } from 'lucide-react'; 
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
-import Image from 'next/image';
 import { useLanguage } from '@/context/language-context';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
-import Autoplay from "embla-carousel-autoplay"
+
 
 const mockSilhouetteData = [
   { monthYear: 'Jan 2023', aLine: 30, sheath: 40, oversized: 20, bodycon: 35, asymmetrical: 15 },
@@ -66,14 +57,6 @@ const mockPatternLineData = [
   { monthYear: 'Apr 2024', floral: 42, geometric: 38, stripes: 62, animalPrints: 52, abstract: 22 },
 ];
 
-// NOTE: To use local images, create a `public/images` folder in your project root.
-// Place your images (e.g., runway1.jpg, runway2.jpg, runway3.jpg) in this folder.
-// Then update the `src` paths below accordingly. Example: `/images/runway1.jpg`
-const carouselImages = [
-  { src: "/images/runway1.jpg", alt: "Fashion Runway Model 1", "data-ai-hint": "runway fashion" },
-  { src: "/images/runway2.jpg", alt: "Fashion Runway Model 2", "data-ai-hint": "haute couture" },
-  { src: "/images/runway3.jpg", alt: "Fashion Runway Model 3", "data-ai-hint": "avant garde" },
-];
 
 const chartConfigColor = (t: (key: string) => string) => ({
   value: {
@@ -88,9 +71,6 @@ const chartConfigColor = (t: (key: string) => string) => ({
 
 export default function AnalyticsPage() {
   const { t } = useLanguage();
-  const autoplayPlugin = React.useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: true, stopOnMouseEnter: true })
-  );
 
   const silhouetteChartConfig = {
     aLine: { label: t('analyticsPage.silhouette.aLine'), color: "hsl(var(--chart-1))" },
@@ -122,39 +102,7 @@ export default function AnalyticsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Carousel
-            plugins={[autoplayPlugin.current]}
-            className="w-full rounded-lg overflow-hidden"
-            onMouseEnter={autoplayPlugin.current.stop}
-            onMouseLeave={autoplayPlugin.current.reset}
-            opts={{
-              loop: true,
-            }}
-          >
-            <CarouselContent>
-              {carouselImages.map((image, index) => (
-                <CarouselItem key={index}>
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={800}
-                    height={450}
-                    className="w-full h-auto object-cover aspect-[16/9]" // aspect-ratio to maintain consistency
-                    data-ai-hint={image['data-ai-hint']}
-                    // Add onError to handle missing local images gracefully during development
-                    onError={(e) => {
-                      // Fallback to a picsum image if local one is not found
-                      // This is helpful for development if images aren't set up yet
-                      e.currentTarget.srcset = `https://picsum.photos/800/450?random=${index + 1}`;
-                      e.currentTarget.src = `https://picsum.photos/800/450?random=${index + 1}`;
-                    }}
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+          {/* Carousel has been removed */}
           <h3 className="text-xl font-semibold">{t('analyticsPage.galaArticle.title')}</h3>
           <p className="text-base text-muted-foreground">
             {t('analyticsPage.galaArticle.paragraph1')}
