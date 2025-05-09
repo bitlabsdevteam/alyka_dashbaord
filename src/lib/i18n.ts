@@ -17,10 +17,18 @@ interface AnalyticsPageTranslations {
     paragraph1: string;
     paragraph2: string;
   };
-  trendPopularityTitle: string;
+  trendPopularityTitle: string; // Kept for potential future use, or remove if certain it's unused
   colorTrendsTitle: string;
-  popularity: string;
+  popularity: string; // Generic popularity label, might be used by pie chart tooltip or other contexts
   colorPopularity: string;
+  silhouettePopularityTitle: string; // New title for the silhouette chart
+  silhouette: { // New object for silhouette names
+    aLine: string;
+    sheath: string;
+    oversized: string;
+    bodycon: string;
+    asymmetrical: string;
+  };
 }
 
 interface HeaderTranslations {
@@ -95,10 +103,18 @@ export const translations: Record<Locale, Translations> = {
         paragraph1: 'The GALA 2024 red carpet was a breathtaking display of creativity and glamour. Designers pushed boundaries with innovative silhouettes, sustainable materials, and bold color choices. Themes of nature and technology intertwined, offering a glimpse into future fashion narratives.',
         paragraph2: 'Key takeaways include the resurgence of avant-garde tailoring, an emphasis on handcrafted details, and a notable shift towards gender-fluid designs. Metallic fabrics and ethereal sheers dominated, creating memorable moments that will undoubtedly influence upcoming B2B apparel collections.',
       },
-      trendPopularityTitle: 'Key Trend Popularity Over Time',
+      trendPopularityTitle: 'Key Trend Popularity Over Time', // Original title, can be removed if not used elsewhere
       colorTrendsTitle: 'Color Trends',
       popularity: 'Popularity',
-      colorPopularity: 'Popularity'
+      colorPopularity: 'Popularity',
+      silhouettePopularityTitle: 'Silhouette Popularity Trends',
+      silhouette: {
+        aLine: 'A-Line',
+        sheath: 'Sheath',
+        oversized: 'Oversized/Boxy',
+        bodycon: 'Bodycon',
+        asymmetrical: 'Asymmetrical',
+      },
     },
   },
   ja: {
@@ -134,7 +150,15 @@ export const translations: Record<Locale, Translations> = {
       trendPopularityTitle: '主要トレンドの人気推移',
       colorTrendsTitle: 'カラートレンド',
       popularity: '人気度',
-      colorPopularity: '人気度'
+      colorPopularity: '人気度',
+      silhouettePopularityTitle: 'シルエット人気トレンド',
+      silhouette: {
+        aLine: 'Aライン',
+        sheath: 'シース',
+        oversized: 'オーバーサイズ/ボクシー',
+        bodycon: 'ボディコン',
+        asymmetrical: 'アシンメトリー',
+      },
     },
   },
 };

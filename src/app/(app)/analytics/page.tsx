@@ -3,30 +3,31 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { LineChart as LucideLineChart, Palette, Newspaper, TrendingUp } from 'lucide-react'; // Renamed to avoid conflict
-import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts'; // Added Line import
+import { Palette, Newspaper, TrendingUp } from 'lucide-react';
+import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import Image from 'next/image';
-import { useLanguage } from '@/context/language-context'; // Import useLanguage
+import { useLanguage } from '@/context/language-context';
 
-const mockTrendData = [
-  { monthYear: 'Jan 2023', popularity: 30 },
-  { monthYear: 'Feb 2023', popularity: 35 },
-  { monthYear: 'Mar 2023', popularity: 45 },
-  { monthYear: 'Apr 2023', popularity: 40 },
-  { monthYear: 'May 2023', popularity: 50 },
-  { monthYear: 'Jun 2023', popularity: 55 },
-  { monthYear: 'Jul 2023', popularity: 60 },
-  { monthYear: 'Aug 2023', popularity: 58 },
-  { monthYear: 'Sep 2023', popularity: 62 },
-  { monthYear: 'Oct 2023', popularity: 70 },
-  { monthYear: 'Nov 2023', popularity: 75 },
-  { monthYear: 'Dec 2023', popularity: 80 },
-  { monthYear: 'Jan 2024', popularity: 85 },
-  { monthYear: 'Feb 2024', popularity: 82 },
-  { monthYear: 'Mar 2024', popularity: 88 },
-  { monthYear: 'Apr 2024', popularity: 90 },
+const mockSilhouetteData = [
+  { monthYear: 'Jan 2023', aLine: 30, sheath: 40, oversized: 20, bodycon: 35, asymmetrical: 15 },
+  { monthYear: 'Feb 2023', aLine: 32, sheath: 42, oversized: 25, bodycon: 30, asymmetrical: 18 },
+  { monthYear: 'Mar 2023', aLine: 35, sheath: 38, oversized: 30, bodycon: 28, asymmetrical: 22 },
+  { monthYear: 'Apr 2023', aLine: 38, sheath: 35, oversized: 35, bodycon: 30, asymmetrical: 25 },
+  { monthYear: 'May 2023', aLine: 42, sheath: 32, oversized: 40, bodycon: 32, asymmetrical: 28 },
+  { monthYear: 'Jun 2023', aLine: 45, sheath: 30, oversized: 45, bodycon: 35, asymmetrical: 30 },
+  { monthYear: 'Jul 2023', aLine: 48, sheath: 28, oversized: 50, bodycon: 38, asymmetrical: 33 },
+  { monthYear: 'Aug 2023', aLine: 50, sheath: 25, oversized: 55, bodycon: 40, asymmetrical: 35 },
+  { monthYear: 'Sep 2023', aLine: 52, sheath: 22, oversized: 60, bodycon: 42, asymmetrical: 40 },
+  { monthYear: 'Oct 2023', aLine: 55, sheath: 20, oversized: 65, bodycon: 45, asymmetrical: 45 },
+  { monthYear: 'Nov 2023', aLine: 58, sheath: 18, oversized: 68, bodycon: 42, asymmetrical: 48 },
+  { monthYear: 'Dec 2023', aLine: 60, sheath: 15, oversized: 70, bodycon: 40, asymmetrical: 50 },
+  { monthYear: 'Jan 2024', aLine: 62, sheath: 18, oversized: 72, bodycon: 38, asymmetrical: 52 },
+  { monthYear: 'Feb 2024', aLine: 65, sheath: 20, oversized: 75, bodycon: 35, asymmetrical: 55 },
+  { monthYear: 'Mar 2024', aLine: 62, sheath: 22, oversized: 78, bodycon: 38, asymmetrical: 58 },
+  { monthYear: 'Apr 2024', aLine: 60, sheath: 25, oversized: 80, bodycon: 40, asymmetrical: 60 },
 ];
+
 
 const mockColorData = [
   { name: 'Cerulean Blue', value: 400 },
@@ -37,19 +38,12 @@ const mockColorData = [
 ];
 const COLORS = ['#2E9AFE', '#FF8042', '#00C49F', '#FFBB28', '#A42EFF'];
 
-const chartConfigTrend = {
-  popularity: {
-    label: "Popularity", // Will be translated
-    color: "hsl(var(--primary))",
-  },
-};
 
 const chartConfigColor = (t: (key: string) => string) => ({
   value: {
     label: t('analyticsPage.colorPopularity'),
   },
   ...mockColorData.reduce((acc, item, index) => {
-    // For simplicity, color names are not translated here, but could be if needed
     acc[item.name] = { label: item.name, color: COLORS[index % COLORS.length] };
     return acc;
   }, {} as any)
@@ -57,14 +51,14 @@ const chartConfigColor = (t: (key: string) => string) => ({
 
 
 export default function AnalyticsPage() {
-  const { t } = useLanguage(); // Use the language hook
+  const { t } = useLanguage();
 
-  // Simplified chart config for trend, label will be translated
-  const trendChartConfig = {
-    popularity: {
-      label: t('analyticsPage.popularity'),
-      color: "hsl(var(--primary))",
-    },
+  const silhouetteChartConfig = {
+    aLine: { label: t('analyticsPage.silhouette.aLine'), color: "hsl(var(--chart-1))" },
+    sheath: { label: t('analyticsPage.silhouette.sheath'), color: "hsl(var(--chart-2))" },
+    oversized: { label: t('analyticsPage.silhouette.oversized'), color: "hsl(var(--chart-3))" },
+    bodycon: { label: t('analyticsPage.silhouette.bodycon'), color: "hsl(var(--chart-4))" },
+    asymmetrical: { label: t('analyticsPage.silhouette.asymmetrical'), color: "hsl(var(--chart-5))" },
   };
 
   return (
@@ -81,12 +75,12 @@ export default function AnalyticsPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <Image
-            src="https://picsum.photos/800/300"
-            alt="Fashion Trend GALA 2024"
+            src="https://picsum.photos/800/450"
+            alt="Fashion Trend GALA 2025"
             width={800}
-            height={300}
+            height={450}
             className="w-full h-auto rounded-lg object-cover"
-            data-ai-hint="fashion event"
+            data-ai-hint="met gala fashion"
           />
           <h3 className="text-xl font-semibold">{t('analyticsPage.galaArticle.title')}</h3>
           <p className="text-base text-muted-foreground">
@@ -103,12 +97,12 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <TrendingUp className="mr-2 h-5 w-5 text-primary" />
-              {t('analyticsPage.trendPopularityTitle')}
+              {t('analyticsPage.silhouettePopularityTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={trendChartConfig} className="h-[300px] w-full">
-              <LineChart data={mockTrendData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+            <ChartContainer config={silhouetteChartConfig} className="h-[300px] w-full">
+              <LineChart data={mockSilhouetteData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                 <CartesianGrid vertical={false} strokeDasharray="3 3" />
                 <XAxis 
                   dataKey="monthYear" 
@@ -117,19 +111,55 @@ export default function AnalyticsPage() {
                   tickMargin={8} 
                   interval="preserveStartEnd"
                   minTickGap={20}
-                  tickFormatter={(value) => value.substring(0,3)} // Show only month initials
+                  tickFormatter={(value) => value.substring(0,3)}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
                 <Legend />
                 <Line 
                   type="monotone" 
-                  dataKey="popularity" 
-                  stroke="var(--color-popularity)" 
+                  dataKey="aLine" 
+                  stroke="var(--color-aLine)" 
                   strokeWidth={2} 
-                  dot={{ r: 4, fill: "var(--color-popularity)" }} 
-                  activeDot={{ r: 6 }}
-                  name={t('analyticsPage.popularity')}
+                  dot={{ r: 3, fill: "var(--color-aLine)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.silhouette.aLine')}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="sheath" 
+                  stroke="var(--color-sheath)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-sheath)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.silhouette.sheath')}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="oversized" 
+                  stroke="var(--color-oversized)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-oversized)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.silhouette.oversized')}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="bodycon" 
+                  stroke="var(--color-bodycon)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-bodycon)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.silhouette.bodycon')}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="asymmetrical" 
+                  stroke="var(--color-asymmetrical)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-asymmetrical)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.silhouette.asymmetrical')}
                 />
               </LineChart>
             </ChartContainer>
