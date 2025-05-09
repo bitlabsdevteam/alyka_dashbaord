@@ -43,6 +43,7 @@ interface AnalyticsPageTranslations {
     stripes: string;
     polkaDots: string;
     abstract: string;
+    animalPrints: string; // Added for new line chart
   };
 }
 
@@ -128,7 +129,7 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'Bodycon',
         asymmetrical: 'Asymmetrical',
       },
-      patternTrendsTitle: 'Pattern Trends',
+      patternTrendsTitle: 'Pattern Popularity Trends',
       color: {
         ceruleanBlue: 'Cerulean Blue',
         dustyRose: 'Dusty Rose',
@@ -142,6 +143,7 @@ export const translations: Record<Locale, Translations> = {
         stripes: 'Stripes',
         polkaDots: 'Polka Dots',
         abstract: 'Abstract',
+        animalPrints: 'Animal Prints',
       },
     },
   },
@@ -186,7 +188,7 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'ボディコン',
         asymmetrical: 'アシンメトリー',
       },
-      patternTrendsTitle: 'パターントレンド',
+      patternTrendsTitle: 'パターン人気トレンド',
       color: {
         ceruleanBlue: 'セルリアンブルー',
         dustyRose: 'ダスティーローズ',
@@ -200,6 +202,7 @@ export const translations: Record<Locale, Translations> = {
         stripes: 'ストライプ',
         polkaDots: '水玉模様',
         abstract: '抽象柄',
+        animalPrints: 'アニマルプリント',
       },
     },
   },

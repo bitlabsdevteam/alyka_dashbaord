@@ -38,29 +38,31 @@ const mockColorData = [
 ];
 const COLORS = ['#2E9AFE', '#FF8042', '#00C49F', '#FFBB28', '#A42EFF']; // General purpose colors for pie charts
 
-const mockPatternData = [
-  { name: 'Floral', value: 350, translationKey: 'analyticsPage.pattern.floral' },
-  { name: 'Geometric', value: 250, translationKey: 'analyticsPage.pattern.geometric' },
-  { name: 'Stripes', value: 200, translationKey: 'analyticsPage.pattern.stripes' },
-  { name: 'Polka Dots', value: 180, translationKey: 'analyticsPage.pattern.polkaDots' },
-  { name: 'Abstract', value: 120, translationKey: 'analyticsPage.pattern.abstract' },
+const mockPatternLineData = [
+  { monthYear: 'Jan 2023', floral: 40, geometric: 35, stripes: 25, animalPrints: 15, abstract: 20 },
+  { monthYear: 'Feb 2023', floral: 42, geometric: 33, stripes: 28, animalPrints: 18, abstract: 22 },
+  { monthYear: 'Mar 2023', floral: 45, geometric: 30, stripes: 30, animalPrints: 20, abstract: 25 },
+  { monthYear: 'Apr 2023', floral: 48, geometric: 28, stripes: 32, animalPrints: 22, abstract: 28 },
+  { monthYear: 'May 2023', floral: 50, geometric: 25, stripes: 35, animalPrints: 25, abstract: 30 },
+  { monthYear: 'Jun 2023', floral: 52, geometric: 22, stripes: 38, animalPrints: 28, abstract: 32 },
+  { monthYear: 'Jul 2023', floral: 55, geometric: 20, stripes: 40, animalPrints: 30, abstract: 35 },
+  { monthYear: 'Aug 2023', floral: 53, geometric: 23, stripes: 42, animalPrints: 33, abstract: 33 },
+  { monthYear: 'Sep 2023', floral: 50, geometric: 25, stripes: 45, animalPrints: 35, abstract: 30 },
+  { monthYear: 'Oct 2023', floral: 48, geometric: 28, stripes: 48, animalPrints: 38, abstract: 28 },
+  { monthYear: 'Nov 2023', floral: 45, geometric: 30, stripes: 50, animalPrints: 40, abstract: 25 },
+  { monthYear: 'Dec 2023', floral: 42, geometric: 32, stripes: 52, animalPrints: 42, abstract: 22 },
+  { monthYear: 'Jan 2024', floral: 40, geometric: 35, stripes: 55, animalPrints: 45, abstract: 20 },
+  { monthYear: 'Feb 2024', floral: 38, geometric: 38, stripes: 58, animalPrints: 48, abstract: 18 },
+  { monthYear: 'Mar 2024', floral: 40, geometric: 40, stripes: 60, animalPrints: 50, abstract: 20 },
+  { monthYear: 'Apr 2024', floral: 42, geometric: 38, stripes: 62, animalPrints: 52, abstract: 22 },
 ];
+
 
 const chartConfigColor = (t: (key: string) => string) => ({
   value: {
-    label: t('analyticsPage.popularity'), // Use generic popularity for value
+    label: t('analyticsPage.popularity'), 
   },
   ...mockColorData.reduce((acc, item, index) => {
-    acc[item.name] = { label: t(item.translationKey as any), color: COLORS[index % COLORS.length] };
-    return acc;
-  }, {} as any)
-});
-
-const chartConfigPattern = (t: (key: string) => string) => ({
-  value: {
-    label: t('analyticsPage.popularity'), // Use generic popularity for value
-  },
-  ...mockPatternData.reduce((acc, item, index) => {
     acc[item.name] = { label: t(item.translationKey as any), color: COLORS[index % COLORS.length] };
     return acc;
   }, {} as any)
@@ -77,6 +79,15 @@ export default function AnalyticsPage() {
     bodycon: { label: t('analyticsPage.silhouette.bodycon'), color: "hsl(var(--chart-4))" },
     asymmetrical: { label: t('analyticsPage.silhouette.asymmetrical'), color: "hsl(var(--chart-5))" },
   };
+
+  const patternChartConfig = {
+    floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-1))" },
+    geometric: { label: t('analyticsPage.pattern.geometric'), color: "hsl(var(--chart-2))" },
+    stripes: { label: t('analyticsPage.pattern.stripes'), color: "hsl(var(--chart-3))" },
+    animalPrints: { label: t('analyticsPage.pattern.animalPrints'), color: "hsl(var(--chart-4))" },
+    abstract: { label: t('analyticsPage.pattern.abstract'), color: "hsl(var(--chart-5))" },
+  };
+
 
   return (
     <div className="space-y-6">
@@ -205,7 +216,7 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg md:col-span-2"> {/* Added md:col-span-2 for full width on medium screens if grid has 2 cols */}
+        <Card className="shadow-lg md:col-span-2"> 
           <CardHeader>
             <CardTitle className="flex items-center">
               <Layers className="mr-2 h-5 w-5 text-primary" />
@@ -213,16 +224,67 @@ export default function AnalyticsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfigPattern(t)} className="h-[300px] w-full">
-              <PieChart accessibilityLayer>
-                <RechartsTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartContainer config={patternChartConfig} className="h-[300px] w-full">
+              <LineChart data={mockPatternLineData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="monthYear" 
+                  tickLine={false} 
+                  axisLine={false} 
+                  tickMargin={8} 
+                  interval="preserveStartEnd"
+                  minTickGap={20}
+                  tickFormatter={(value) => value.substring(0,3)}
+                />
+                <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
                 <Legend />
-                <Pie data={mockPatternData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                  {mockPatternData.map((entry, index) => (
-                    <Cell key={`cell-pattern-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-              </PieChart>
+                <Line 
+                  type="monotone" 
+                  dataKey="floral" 
+                  stroke="var(--color-floral)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-floral)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.pattern.floral')}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="geometric" 
+                  stroke="var(--color-geometric)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-geometric)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.pattern.geometric')}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="stripes" 
+                  stroke="var(--color-stripes)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-stripes)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.pattern.stripes')}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="animalPrints" 
+                  stroke="var(--color-animalPrints)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-animalPrints)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.pattern.animalPrints')}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="abstract" 
+                  stroke="var(--color-abstract)" 
+                  strokeWidth={2} 
+                  dot={{ r: 3, fill: "var(--color-abstract)" }} 
+                  activeDot={{ r: 5 }}
+                  name={t('analyticsPage.pattern.abstract')}
+                />
+              </LineChart>
             </ChartContainer>
           </CardContent>
         </Card>
