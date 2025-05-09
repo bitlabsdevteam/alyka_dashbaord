@@ -7,12 +7,15 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // TODO: Add authentication check here. 
-    // If authenticated, redirect to '/analytics'.
-    // If not authenticated, redirect to '/login'.
-    // For now, defaulting to '/login'.
-    router.replace('/login');
+    // Check authentication status from localStorage
+    const isAuthenticated = localStorage.getItem('alyka-auth-status') === 'authenticated';
+
+    if (isAuthenticated) {
+      router.replace('/analytics');
+    } else {
+      router.replace('/login');
+    }
   }, [router]);
 
-  return null; // Or a loading spinner
+  return null; // Or a loading spinner while redirecting
 }

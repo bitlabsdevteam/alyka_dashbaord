@@ -3,6 +3,7 @@
 
 import type { PropsWithChildren } from 'react';
 import * as React from 'react';
+import { useRouter } from 'next/navigation';
 import {
   SidebarProvider,
   Sidebar,
@@ -17,10 +18,23 @@ import { Button } from '@/components/ui/button';
 import { LogOut, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { ChatbotDialog } from '@/components/chatbot/chatbot-dialog';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AppLayout({ children }: PropsWithChildren) {
   const { t } = useLanguage(); 
+  const router = useRouter();
+  const { toast } = useToast();
   const [isChatbotOpen, setIsChatbotOpen] = React.useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem('alyka-auth-status');
+    localStorage.removeItem('alyka-user-email');
+    toast({
+      title: t('header.userMenu.logoutSuccessTitle'), // Assuming these translations exist or will be added
+      description: t('header.userMenu.logoutSuccessDescription'),
+    });
+    router.push('/login');
+  };
 
   return (
     <SidebarProvider defaultOpen>
@@ -40,7 +54,11 @@ export default function AppLayout({ children }: PropsWithChildren) {
             <MessageSquare className="mr-2 h-5 w-5" />
             <span>{t('common.chat')}</span>
           </Button>
-          <Button variant="ghost" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            onClick={handleLogout}
+          >
             <LogOut className="mr-2 h-5 w-5" />
             <span>{t('common.logout')}</span>
           </Button>

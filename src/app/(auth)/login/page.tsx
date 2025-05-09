@@ -17,7 +17,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/language-context';
@@ -30,7 +29,7 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const loginFormSchema = z.object({
-    username: z.string().min(1, { message: t('loginPage.usernamePlaceholder') }),
+    email: z.string().email({ message: t('loginPage.emailInvalid') }),
     password: z.string().min(1, { message: t('loginPage.passwordPlaceholder') }),
   });
 
@@ -39,7 +38,7 @@ export default function LoginPage() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
@@ -49,13 +48,14 @@ export default function LoginPage() {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Simulate successful login for demo purposes
-    if (values.username === 'admin' && values.password === 'password') {
+    if (values.email === 'test@alyka.io' && values.password === 'test12345') {
+      localStorage.setItem('alyka-auth-status', 'authenticated');
+      localStorage.setItem('alyka-user-email', values.email);
       toast({
         title: t('loginPage.loginSuccessTitle'),
         description: t('loginPage.loginSuccessDescription'),
       });
-      router.push('/analytics'); // Redirect to a protected page
+      router.push('/analytics'); 
     } else {
       toast({
         title: t('loginPage.loginErrorTitle'),
@@ -77,12 +77,12 @@ export default function LoginPage() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('loginPage.usernameLabel')}</FormLabel>
+                  <FormLabel>{t('loginPage.emailLabel')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('loginPage.usernamePlaceholder')} {...field} />
+                    <Input type="email" placeholder={t('loginPage.emailPlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

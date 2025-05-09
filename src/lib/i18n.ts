@@ -53,6 +53,11 @@ interface HeaderTranslations {
     label: string;
     greeting: string; 
     email: string; 
+    defaultGreeting: string;
+    testUserGreeting: string;
+    avatarAlt: string;
+    logoutSuccessTitle: string;
+    logoutSuccessDescription: string;
   }
 }
 
@@ -199,8 +204,11 @@ interface ChatbotTranslations {
 interface LoginPageTranslations {
   title: string;
   description: string;
-  usernameLabel: string;
-  usernamePlaceholder: string;
+  usernameLabel: string; // Kept for potential other uses, but emailLabel is primary for login
+  usernamePlaceholder: string; // Kept for potential other uses
+  emailLabel: string;
+  emailPlaceholder: string;
+  emailInvalid: string;
   passwordLabel: string;
   passwordPlaceholder: string;
   loginButton: string;
@@ -272,8 +280,13 @@ export const translations: Record<Locale, Translations> = {
     header: {
       userMenu: {
         label: 'User Menu',
-        greeting: 'Analyst User',
-        email: 'analyst@alyka.ai'
+        greeting: 'Analyst User', // This will be overridden by specific greetings below
+        email: 'analyst@alyka.ai', // Default or placeholder
+        defaultGreeting: 'User',
+        testUserGreeting: 'Test User',
+        avatarAlt: 'User avatar',
+        logoutSuccessTitle: 'Logged Out',
+        logoutSuccessDescription: 'You have been successfully logged out.',
       }
     },
     nav: {
@@ -451,8 +464,11 @@ export const translations: Record<Locale, Translations> = {
     loginPage: {
       title: 'Login to Alyka',
       description: 'Access your AI-powered fashion analytics dashboard.',
-      usernameLabel: 'Username',
-      usernamePlaceholder: 'Enter your username',
+      usernameLabel: 'Username (Legacy)', // Keep for potential other uses, not for current email login
+      usernamePlaceholder: 'Enter your username (Legacy)',
+      emailLabel: 'Email',
+      emailPlaceholder: 'Enter your email',
+      emailInvalid: 'Please enter a valid email address.',
       passwordLabel: 'Password',
       passwordPlaceholder: 'Enter your password',
       loginButton: 'Login',
@@ -461,7 +477,7 @@ export const translations: Record<Locale, Translations> = {
       loginSuccessTitle: 'Login Successful',
       loginSuccessDescription: 'Welcome back to Alyka!',
       loginErrorTitle: 'Login Failed',
-      loginErrorDescription: 'Invalid username or password. Please try again.',
+      loginErrorDescription: 'Invalid email or password. Please try again.',
     },
     registerPage: {
       title: 'Create your Alyka Account',
@@ -469,7 +485,7 @@ export const translations: Record<Locale, Translations> = {
       usernameLabel: 'Username',
       usernamePlaceholder: 'Choose a username',
       passwordLabel: 'Password',
-      passwordPlaceholder: 'Create a strong password',
+      passwordPlaceholder: 'Create a strong password (min. 6 characters)',
       confirmPasswordLabel: 'Confirm Password',
       confirmPasswordPlaceholder: 'Re-enter your password',
       registerButton: 'Register',
@@ -494,8 +510,13 @@ export const translations: Record<Locale, Translations> = {
     header: {
       userMenu: {
         label: 'ユーザーメニュー',
-        greeting: 'アナリストユーザー',
-        email: 'analyst@alyka.ai'
+        greeting: 'アナリストユーザー', // 以下で上書きされます
+        email: 'analyst@alyka.ai', // デフォルトまたはプレースホルダー
+        defaultGreeting: 'ユーザー',
+        testUserGreeting: 'テストユーザー',
+        avatarAlt: 'ユーザーアバター',
+        logoutSuccessTitle: 'ログアウトしました',
+        logoutSuccessDescription: '正常にログアウトされました。',
       }
     },
     nav: {
@@ -673,8 +694,11 @@ export const translations: Record<Locale, Translations> = {
     loginPage: {
       title: 'Alykaにログイン',
       description: 'AI搭載のファッション分析ダッシュボードにアクセスします。',
-      usernameLabel: 'ユーザー名',
-      usernamePlaceholder: 'ユーザー名を入力してください',
+      usernameLabel: 'ユーザー名（旧）', // 他の用途のために保持、現在のメールログインには使用しない
+      usernamePlaceholder: 'ユーザー名を入力してください（旧）',
+      emailLabel: 'メールアドレス',
+      emailPlaceholder: 'メールアドレスを入力してください',
+      emailInvalid: '有効なメールアドレスを入力してください。',
       passwordLabel: 'パスワード',
       passwordPlaceholder: 'パスワードを入力してください',
       loginButton: 'ログイン',
@@ -683,7 +707,7 @@ export const translations: Record<Locale, Translations> = {
       loginSuccessTitle: 'ログイン成功',
       loginSuccessDescription: 'Alykaへようこそ！',
       loginErrorTitle: 'ログイン失敗',
-      loginErrorDescription: 'ユーザー名またはパスワードが無効です。もう一度お試しください。',
+      loginErrorDescription: 'メールアドレスまたはパスワードが無効です。もう一度お試しください。',
     },
     registerPage: {
       title: 'Alykaアカウントを作成',
@@ -691,7 +715,7 @@ export const translations: Record<Locale, Translations> = {
       usernameLabel: 'ユーザー名',
       usernamePlaceholder: 'ユーザー名を選択してください',
       passwordLabel: 'パスワード',
-      passwordPlaceholder: '強力なパスワードを作成してください',
+      passwordPlaceholder: '強力なパスワードを作成してください（最低6文字）',
       confirmPasswordLabel: 'パスワードを確認',
       confirmPasswordPlaceholder: 'パスワードを再入力してください',
       registerButton: '登録',
