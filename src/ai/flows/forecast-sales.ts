@@ -17,8 +17,7 @@ const ForecastSalesInputSchema = z.object({
   currentStock: z.number().describe('The current stock level of the SKU.'),
   forecastHorizon: z.string().describe("The desired forecast horizon, e.g., 'next 4 weeks', 'next 3 months'. Default to 'next 3 months' if not specified."),
   targetLanguage: z.enum(['en', 'ja']).optional().describe('The target language for the generated forecast reasoning and recommendations. Defaults to English if not provided.'),
-  // Optionally, we could add historical data for the SKU if available
-  // historicalSales: z.array(z.object({ period: z.string(), unitsSold: z.number() })).optional().describe('Historical sales data for this specific SKU.')
+  isTargetLanguageJa: z.boolean().optional().describe('Internal flag: true if the target language is Japanese. This is set by the flow.'),
 });
 export type ForecastSalesInput = z.infer<typeof ForecastSalesInputSchema>;
 
@@ -46,12 +45,8 @@ const forecastSalesPrompt = ai.definePrompt({
   output: {schema: ForecastSalesOutputSchema},
   prompt: `You are an AI assistant specializing in optimistic demand planning and inventory forecasting for the B2B apparel industry. Your goal is to highlight growth opportunities.
 
-{{#if targetLanguage}}
-  {{#eq targetLanguage "ja"}}
-    以下の応答はすべて日本語で生成してください。特に「理由」と「推奨事項」のセクションは詳細な日本語で記述する必要があります。
-  {{else}}
-    Please generate all responses in English. Specifically, the 'reasoning' and 'recommendations' sections must be detailed and in English.
-  {{/eq}}
+{{#if isTargetLanguageJa}}
+  以下の応答はすべて日本語で生成してください。特に「理由」と「推奨事項」のセクションは詳細な日本語で記述する必要があります。
 {{else}}
   Please generate all responses in English. Specifically, the 'reasoning' and 'recommendations' sections must be detailed and in English.
 {{/if}}
@@ -72,9 +67,9 @@ Instructions:
     -   *Strong positive seasonality effects* or highly successful marketing campaigns, significantly boosting demand for the SKU.
     -   *Rapid growth phase* in the product lifecycle for this type of apparel.
     -   *Assumptions of highly successful promotions, booming market conditions*, and efficient lead times fueling further demand.
-    {{#if targetLanguage}}{{#eq targetLanguage "ja"}}この「理由」セクションは、上記の英語の指示に基づいて、詳細な日本語で記述してください。{{/eq}}{{/if}}
+    {{#if isTargetLanguageJa}}この「理由」セクションは、上記の英語の指示に基づいて、詳細な日本語で記述してください。{{/if}}
 4.  Offer *actionable and aggressive growth-oriented 'recommendations'* based on the high sales forecast and rapidly depleting stock. For example, suggest *significantly increasing order quantities, implementing urgent proactive reorder points to prevent stockouts, scaling marketing efforts to further capitalize on surging demand, or exploring new sales channels to meet widespread interest*. Emphasize urgency and opportunity.
-    {{#if targetLanguage}}{{#eq targetLanguage "ja"}}これらの「推奨事項」セクションは、上記の英語の指示に基づいて、詳細な日本語で記述してください。{{/eq}}{{/if}}
+    {{#if isTargetLanguageJa}}これらの「推奨事項」セクションは、上記の英語の指示に基づいて、詳細な日本語で記述してください。{{/if}}
 5.  Ensure the output strictly conforms to the JSON schema for ForecastSalesOutputSchema. The 'currentStock' field in the output should reflect the input 'currentStock'.
 
 Leverage your knowledge of the B2B apparel market to make *very optimistic yet plausible assumptions* for high sales. For example, if the SKU is 'Men's Wool Overcoat', assume it's the season's must-have item due to celebrity endorsement, leading to an explosion in orders. If it's 'Basic White T-Shirt', assume a viral social media trend is driving unprecedented demand.
@@ -87,17 +82,20 @@ const forecastSalesFlow = ai.defineFlow(
     inputSchema: ForecastSalesInputSchema,
     outputSchema: ForecastSalesOutputSchema,
   },
-  async input => {
-    // Ensure targetLanguage defaults to 'en' if not provided, matching prompt logic
-    const flowInput = {...input, targetLanguage: input.targetLanguage || 'en'};
-    const {output} = await forecastSalesPrompt(flowInput);
-    // Ensure the output currentStock matches the input currentStock, as per prompt instructions.
+  async (input: ForecastSalesInput): Promise<ForecastSalesOutput> => {
+    const effectiveTargetLanguage = input.targetLanguage || 'en';
+    const promptReadyInput: ForecastSalesInput = {
+      ...input,
+      targetLanguage: effectiveTargetLanguage,
+      isTargetLanguageJa: effectiveTargetLanguage === 'ja',
+    };
+
+    const {output} = await forecastSalesPrompt(promptReadyInput);
+    
     if (output && output.currentStock !== input.currentStock) {
-        // This is a safeguard, the prompt should handle it.
         console.warn("AI output currentStock differs from input. Overriding with input value.");
         output.currentStock = input.currentStock;
     }
     return output!;
   }
 );
-
