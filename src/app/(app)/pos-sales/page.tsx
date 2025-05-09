@@ -130,30 +130,14 @@ export default function PosSalesPage() {
       .sort((a,b) => new Date(a.monthYear).getTime() - new Date(b.monthYear).getTime()); // Ensure chronological order
   }, []);
 
-  const salesByCategoryChartData = useMemo(() => {
-    const salesByCategory: { [categoryKey: string]: number } = {};
-     allDetailedPosData.forEach(item => {
-      const categoryName = t(`posSalesPage.categories.${item.categoryKey}` as any);
-      if (!salesByCategory[categoryName]) {
-        salesByCategory[categoryName] = 0;
-      }
-      salesByCategory[categoryName] += item.revenue;
-    });
-    return Object.entries(salesByCategory).map(([category, sales]) => ({ category, sales }));
-  }, [t]);
-
   const chartConfigSales: ChartConfig = {
     sales: { label: t('posSalesPage.chart.salesLabel'), color: "hsl(var(--primary))" },
     units: { label: t('posSalesPage.chart.unitsLabel'), color: "hsl(var(--accent))" },
   };
 
-  const chartConfigCategory: ChartConfig = {
-    sales: { label: t('posSalesPage.chart.categorySalesLabel'), color: "hsl(var(--chart-2))" },
-  };
-
   // Display only the last 12 months of detailed data for brevity in the table, or a selection.
   // For this example, let's take a sample from the most recent data.
-  const recentDetailedData = allDetailedPosData.slice(-30).reverse(); // Last 30 entries, newest first
+  const recentDetailedData = allDetailedPosData.slice(-60).reverse(); // Last 60 entries, newest first
 
   return (
     <div className="space-y-6">
@@ -229,63 +213,43 @@ export default function PosSalesPage() {
         </CardContent>
       </Card>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>{t('posSalesPage.salesByCategory')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfigCategory} className="h-[350px] w-full">
-              <BarChart data={salesByCategoryChartData} accessibilityLayer layout="vertical" margin={{ right: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false}/>
-                <XAxis type="number" tickFormatter={(value) => `$${(value/1000)}k`} />
-                <YAxis dataKey="category" type="category" tickLine={false} axisLine={false} tickMargin={8} width={120} />
-                <RechartsTooltip cursor={false} content={<ChartTooltipContent />} />
-                <Legend />
-                <Bar dataKey="sales" fill="var(--color-sales)" radius={4} layout="vertical" name={t('posSalesPage.chart.categorySalesLabel')} />
-              </BarChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>{t('posSalesPage.detailedSalesData')}</CardTitle>
-          </CardHeader>
-          <CardContent className="max-h-[400px] overflow-y-auto">
-            {recentDetailedData.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('posSalesPage.tableHeaders.monthYear')}</TableHead>
-                    <TableHead>{t('posSalesPage.tableHeaders.productName')}</TableHead>
-                    <TableHead className="hidden sm:table-cell">{t('posSalesPage.tableHeaders.category')}</TableHead>
-                    <TableHead className="hidden md:table-cell">{t('posSalesPage.tableHeaders.sku')}</TableHead>
-                    <TableHead className="text-right">{t('posSalesPage.tableHeaders.unitsSold')}</TableHead>
-                    <TableHead className="text-right">{t('posSalesPage.tableHeaders.revenue')}</TableHead>
-                    <TableHead className="hidden lg:table-cell">{t('posSalesPage.tableHeaders.posName')}</TableHead>
+      <Card className="shadow-lg">
+        <CardHeader>
+          <CardTitle>{t('posSalesPage.detailedSalesData')}</CardTitle>
+        </CardHeader>
+        <CardContent className="max-h-[600px] overflow-y-auto"> {/* Increased max-height */}
+          {recentDetailedData.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('posSalesPage.tableHeaders.monthYear')}</TableHead>
+                  <TableHead>{t('posSalesPage.tableHeaders.productName')}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t('posSalesPage.tableHeaders.category')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('posSalesPage.tableHeaders.sku')}</TableHead>
+                  <TableHead className="text-right">{t('posSalesPage.tableHeaders.unitsSold')}</TableHead>
+                  <TableHead className="text-right">{t('posSalesPage.tableHeaders.revenue')}</TableHead>
+                  <TableHead className="hidden lg:table-cell">{t('posSalesPage.tableHeaders.posName')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {recentDetailedData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.monthYear}</TableCell>
+                    <TableCell className="font-medium">{t(`posSalesPage.products.${item.productNameKey}` as any)}</TableCell>
+                    <TableCell className="hidden sm:table-cell">{t(`posSalesPage.categories.${item.categoryKey}` as any)}</TableCell>
+                    <TableCell className="hidden md:table-cell">{item.sku}</TableCell>
+                    <TableCell className="text-right">{item.unitsSold.toLocaleString()}</TableCell>
+                    <TableCell className="text-right">${item.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</TableCell>
+                    <TableCell className="hidden lg:table-cell">{item.posName}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentDetailedData.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.monthYear}</TableCell>
-                      <TableCell className="font-medium">{t(`posSalesPage.products.${item.productNameKey}` as any)}</TableCell>
-                      <TableCell className="hidden sm:table-cell">{t(`posSalesPage.categories.${item.categoryKey}` as any)}</TableCell>
-                      <TableCell className="hidden md:table-cell">{item.sku}</TableCell>
-                      <TableCell className="text-right">{item.unitsSold.toLocaleString()}</TableCell>
-                      <TableCell className="text-right">${item.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</TableCell>
-                      <TableCell className="hidden lg:table-cell">{item.posName}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <p>{t('posSalesPage.noData')}</p>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <p>{t('posSalesPage.noData')}</p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
