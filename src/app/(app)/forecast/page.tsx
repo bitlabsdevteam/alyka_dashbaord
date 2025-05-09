@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { forecastSales, type ForecastSalesOutput, type ForecastSalesInput } from '@/ai/flows/forecast-sales';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, TrendingUpIcon, PackageSearch, BarChartBig, Info, Lightbulb } from 'lucide-react';
+import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb } from 'lucide-react';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
@@ -31,7 +31,7 @@ const mockSkus: SkuItem[] = [
 ];
 
 export default function ForecastPage() {
-  const { t, language } = useLanguage(); // Added language
+  const { t, language } = useLanguage();
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
   const [forecastHorizon, setForecastHorizon] = useState<string>('next 3 months');
   const { toast } = useToast();
@@ -68,35 +68,44 @@ export default function ForecastPage() {
         skuName: skuDetails.label,
         currentStock: skuDetails.currentStock,
         forecastHorizon: forecastHorizon,
-        targetLanguage: language, // Pass the current language
+        targetLanguage: language,
       });
     }
   };
 
   const chartData = useMemo(() => {
-    if (!salesForecast || !salesForecast.forecastData) return [];
-    
-    const calculatedSales = [];
-    let lastStock = salesForecast.currentStock;
+    if (!salesForecast || !salesForecast.forecastData || salesForecast.forecastData.length === 0) return [];
+
+    const dataForChart = [];
+    let previousStock = salesForecast.currentStock;
+
+    // Add an initial point representing current stock before any forecasted sales
+    dataForChart.push({
+      period: t('forecastPage.chart.initialPeriodLabel'),
+      sales: 0, // No sales at the initial point
+      stock: salesForecast.currentStock,
+    });
 
     for (const dataPoint of salesForecast.forecastData) {
-      // Sales for the period is the reduction in stock
-      const salesForPeriod = lastStock - dataPoint.forecastedStock;
-      calculatedSales.push({ 
-        period: dataPoint.period, 
-        // Ensure sales are not negative (if stock weirdly increases)
-        // This reflects the number of units sold/demanded in this period
-        sales: Math.max(0, salesForPeriod) 
+      const salesForPeriod = Math.max(0, previousStock - dataPoint.forecastedStock);
+      dataForChart.push({
+        period: dataPoint.period,
+        sales: salesForPeriod,
+        stock: dataPoint.forecastedStock, // This is remaining stock at the end of the period
       });
-      lastStock = dataPoint.forecastedStock;
+      previousStock = dataPoint.forecastedStock;
     }
-    return calculatedSales;
-  }, [salesForecast]);
+    return dataForChart;
+  }, [salesForecast, t]);
   
   const chartConfig: ChartConfig = {
     sales: {
-      label: t('forecastPage.chart.salesLabel'), // Updated label
+      label: t('forecastPage.chart.salesLabel'),
       color: "hsl(var(--chart-1))",
+    },
+    stock: {
+      label: t('forecastPage.chart.stockLabel'),
+      color: "hsl(var(--chart-2))",
     },
   };
 
@@ -165,7 +174,7 @@ export default function ForecastPage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center text-2xl">
-              <TrendingUpIcon className="mr-2 h-6 w-6 text-primary" /> {/* Changed icon */}
+              <TrendingUpIcon className="mr-2 h-6 w-6 text-primary" />
               {t('forecastPage.forecastTitle', { skuName: salesForecast.skuName })}
             </CardTitle>
             <CardDescription>
@@ -174,7 +183,7 @@ export default function ForecastPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <h3 className="font-semibold text-lg mb-2">{t('forecastPage.chart.demandTitle')}</h3>
+              {/* Removed H3 title from here */}
               <ChartContainer config={chartConfig} className="h-[350px] w-full">
                 <LineChart data={chartData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                   <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -183,18 +192,27 @@ export default function ForecastPage() {
                     tickLine={false} 
                     axisLine={false} 
                     tickMargin={8}
-                    label={{ value: t('forecastPage.chart.yAxisDemandLabel'), angle: -90, position: 'insideLeft', offset: 0, style: { textAnchor: 'middle', fill: 'hsl(var(--muted-foreground))' } }}
+                    label={{ value: t('forecastPage.chart.yAxisUnitsLabel'), angle: -90, position: 'insideLeft', offset: 0, style: { textAnchor: 'middle', fill: 'hsl(var(--muted-foreground))' } }}
                   />
                   <RechartsTooltip content={<ChartTooltipContent indicator="dot" />} />
                   <Legend />
                   <Line 
                     type="monotone" 
-                    dataKey="sales" // Changed from forecastedStock to sales
+                    dataKey="sales"
                     stroke="var(--color-sales)" 
                     strokeWidth={2} 
-                    dot={{ r: 4, fill: "var(--color-sales)"}}  // Slightly larger dot
-                    activeDot={{ r: 6 }} // Slightly larger active dot
-                    name={t('forecastPage.chart.salesLabel')} // Updated name for legend
+                    dot={{ r: 4, fill: "var(--color-sales)"}}
+                    activeDot={{ r: 6 }}
+                    name={t('forecastPage.chart.salesLabel')}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="stock"
+                    stroke="var(--color-stock)" 
+                    strokeWidth={2} 
+                    dot={{ r: 4, fill: "var(--color-stock)"}}
+                    activeDot={{ r: 6 }}
+                    name={t('forecastPage.chart.stockLabel')}
                   />
                 </LineChart>
               </ChartContainer>
@@ -213,3 +231,4 @@ export default function ForecastPage() {
     </div>
   );
 }
+

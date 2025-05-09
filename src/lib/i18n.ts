@@ -78,7 +78,9 @@ interface ForecastPageTranslations {
     currentLabel: string; 
     salesLabel: string; 
     currentStockLabel: string;
-    yAxisDemandLabel: string; 
+    yAxisUnitsLabel: string; 
+    stockLabel: string; 
+    initialPeriodLabel: string; 
   };
   reasoningTitle: string;
   recommendationsTitle: string;
@@ -277,7 +279,9 @@ export const translations: Record<Locale, Translations> = {
         currentLabel: 'Current',
         salesLabel: 'Forecasted Sales (Units)',
         currentStockLabel: 'Initial Stock Level',
-        yAxisDemandLabel: 'Demand (Units)',
+        yAxisUnitsLabel: 'Units',
+        stockLabel: 'Forecasted Stock (Units)',
+        initialPeriodLabel: 'Initial',
       },
       reasoningTitle: 'Forecast Reasoning',
       recommendationsTitle: 'Recommendations',
@@ -448,7 +452,9 @@ export const translations: Record<Locale, Translations> = {
         currentLabel: '現在',
         salesLabel: '予測販売数（ユニット）',
         currentStockLabel: '初期在庫レベル',
-        yAxisDemandLabel: '需要（ユニット）',
+        yAxisUnitsLabel: 'ユニット',
+        stockLabel: '予測在庫数（ユニット）',
+        initialPeriodLabel: '初期',
       },
       reasoningTitle: '予測の根拠',
       recommendationsTitle: '推奨事項',
