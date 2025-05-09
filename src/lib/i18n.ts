@@ -20,7 +20,7 @@ interface AnalyticsPageTranslations {
   trendPopularityTitle: string; 
   colorTrendsTitle: string;
   popularity: string; 
-  colorPopularity: string; // Can be deprecated if 'popularity' is used generically
+  colorPopularity: string; 
   silhouettePopularityTitle: string; 
   silhouette: { 
     aLine: string;
@@ -29,21 +29,21 @@ interface AnalyticsPageTranslations {
     bodycon: string;
     asymmetrical: string;
   };
-  patternTrendsTitle: string; // New
-  color: { // New for specific color names
+  patternTrendsTitle: string; 
+  color: { 
     ceruleanBlue: string;
     dustyRose: string;
     oliveGreen: string;
     mustardYellow: string;
     lavender: string;
   };
-  pattern: { // New for specific pattern names
+  pattern: { 
     floral: string;
     geometric: string;
     stripes: string;
     polkaDots: string;
     abstract: string;
-    animalPrints: string; // Added for new line chart
+    animalPrints: string; 
   };
 }
 
@@ -71,25 +71,91 @@ interface ForecastPageTranslations {
   forecastHorizonLabel: string;
   generateButton: string;
   generatingButton: string;
-  forecastTitle: string; // e.g., "Stock Forecast for {{skuName}}"
+  forecastTitle: string; 
   currentStockValueLabel: string;
   chart: {
     title: string;
-    currentLabel: string; // For 'Current' period on X-axis
+    currentLabel: string; 
     forecastedStockLabel: string;
-    currentStockLabel: string; // For legend/tooltip of current stock line
+    currentStockLabel: string; 
   };
   reasoningTitle: string;
   recommendationsTitle: string;
   errorAlertTitle: string;
   toast: {
     successTitle: string;
-    successDescription: string; // e.g., "AI forecast generated for {{skuName}}."
+    successDescription: string; 
     errorTitle: string;
     errorDescription: string;
     skuMissingTitle: string;
     skuMissingDescription: string;
   };
+}
+
+interface PosSalesPageTranslations {
+  title: string;
+  description: string;
+  totalRevenue: string;
+  totalUnitsSold: string;
+  averageOrderValue: string;
+  comparison: {
+    fromLastMonth: string;
+    increasePrefix: string;
+  };
+  monthlySalesPerformance: string;
+  salesByCategory: string;
+  detailedSalesData: string;
+  chart: {
+    salesLabel: string;
+    unitsLabel: string;
+    categorySalesLabel: string;
+  };
+  tableHeaders: {
+    monthYear: string;
+    productName: string;
+    category: string;
+    sku: string;
+    unitsSold: string;
+    revenue: string;
+    posName: string;
+  };
+  categories: {
+    outerwear: string;
+    tops: string;
+    bottoms: string;
+    dresses: string;
+    accessories: string;
+    footwear: string;
+  };
+  products: { // For mock data, keys should be stable for mapping
+    woolCoat: string; // "Men's Wool Overcoat"
+    silkBlouse: string; // "Women's Silk Blouse"
+    denimJeans: string; // "Unisex Denim Jeans"
+    summerDress: string; // "Floral Summer Dress"
+    leatherBag: string; // "Leather Shoulder Bag"
+    sneakers: string; // "Limited Edition Sneakers"
+  };
+  noData: string;
+}
+
+interface TasksPageTranslations {
+  title: string;
+  description: string;
+  tableHeaders: {
+    taskName: string;
+    description: string;
+    status: string;
+    createdAt: string;
+    completedAt: string;
+  };
+  status: {
+    pending: string;
+    inProgress: string;
+    completed: string;
+    failed: string;
+  };
+  noTasks: string;
+  notApplicable: string;
 }
 
 
@@ -100,8 +166,8 @@ export interface Translations {
   header: HeaderTranslations;
   nav: NavTranslations;
   forecastPage: ForecastPageTranslations;
-  // Add other pages/components here
-  // settingsPage: { ... }
+  posSalesPage: PosSalesPageTranslations;
+  tasksPage: TasksPageTranslations;
 }
 
 // Helper type for deep key access
@@ -205,6 +271,70 @@ export const translations: Record<Locale, Translations> = {
         skuMissingDescription: 'Please select an SKU before generating a forecast.',
       },
     },
+    posSalesPage: {
+      title: 'POS Sales Data Overview',
+      description: 'Visualize your Point of Sale data to understand performance and identify trends.',
+      totalRevenue: 'Total Revenue',
+      totalUnitsSold: 'Total Units Sold',
+      averageOrderValue: 'Average Order Value',
+      comparison: {
+        fromLastMonth: 'from last month',
+        increasePrefix: '+',
+      },
+      monthlySalesPerformance: 'Monthly Sales Performance',
+      salesByCategory: 'Sales by Category',
+      detailedSalesData: 'Detailed Sales Data',
+      chart: {
+        salesLabel: 'Sales ($)',
+        unitsLabel: 'Units Sold',
+        categorySalesLabel: "Sales ($)",
+      },
+      tableHeaders: {
+        monthYear: 'Month/Year',
+        productName: 'Product Name',
+        category: 'Category',
+        sku: 'SKU',
+        unitsSold: 'Units Sold',
+        revenue: 'Revenue ($)',
+        posName: 'POS Name',
+      },
+      categories: {
+        outerwear: 'Outerwear',
+        tops: 'Tops',
+        bottoms: 'Bottoms',
+        dresses: 'Dresses',
+        accessories: 'Accessories',
+        footwear: 'Footwear',
+      },
+      products: {
+        woolCoat: "Men's Wool Overcoat",
+        silkBlouse: "Women's Silk Blouse",
+        denimJeans: "Unisex Denim Jeans",
+        summerDress: "Floral Summer Dress",
+        leatherBag: "Leather Shoulder Bag",
+        sneakers: "Limited Edition Sneakers",
+      },
+      noData: 'No POS data available.',
+    },
+    tasksPage: {
+      title: 'Task Manager',
+      description: 'Track the status and details of all AI-driven and manual tasks.',
+      tableHeaders: {
+        taskName: 'Task Name',
+        description: 'Description',
+        status: 'Status',
+        createdAt: 'Created At',
+        completedAt: 'Completed At',
+      },
+      status: {
+        pending: 'Pending',
+        inProgress: 'In Progress',
+        completed: 'Completed',
+        failed: 'Failed',
+      },
+      noTasks: 'No tasks found.',
+      notApplicable: 'N/A',
+    },
   },
   ja: {
     common: {
@@ -292,6 +422,70 @@ export const translations: Record<Locale, Translations> = {
         skuMissingTitle: 'SKU未選択',
         skuMissingDescription: '予測を生成する前にSKUを選択してください。',
       },
+    },
+    posSalesPage: {
+      title: 'POS販売データ概要',
+      description: 'POSデータを視覚化し、パフォーマンスを理解し、トレンドを特定します。',
+      totalRevenue: '総収益',
+      totalUnitsSold: '総販売ユニット数',
+      averageOrderValue: '平均注文額',
+      comparison: {
+        fromLastMonth: '前月比',
+        increasePrefix: '+',
+      },
+      monthlySalesPerformance: '月次販売実績',
+      salesByCategory: 'カテゴリ別売上',
+      detailedSalesData: '詳細販売データ',
+      chart: {
+        salesLabel: '売上 ($)',
+        unitsLabel: '販売ユニット数',
+        categorySalesLabel: "売上 ($)",
+      },
+      tableHeaders: {
+        monthYear: '年月',
+        productName: '製品名',
+        category: 'カテゴリ',
+        sku: 'SKU',
+        unitsSold: '販売ユニット数',
+        revenue: '収益 ($)',
+        posName: 'POS名',
+      },
+      categories: {
+        outerwear: 'アウターウェア',
+        tops: 'トップス',
+        bottoms: 'ボトムス',
+        dresses: 'ドレス',
+        accessories: 'アクセサリー',
+        footwear: 'フットウェア',
+      },
+      products: {
+        woolCoat: "メンズウールオーバーコート",
+        silkBlouse: "レディースシルクブラウス",
+        denimJeans: "ユニセックスデニムジーンズ",
+        summerDress: "フローラルサマードレス",
+        leatherBag: "レザーショルダーバッグ",
+        sneakers: "限定版スニーカー",
+      },
+      noData: 'POSデータがありません。',
+    },
+    tasksPage: {
+      title: 'タスク管理',
+      description: 'AI駆動および手動タスクのステータスと詳細を追跡します。',
+      tableHeaders: {
+        taskName: 'タスク名',
+        description: '説明',
+        status: 'ステータス',
+        createdAt: '作成日時',
+        completedAt: '完了日時',
+      },
+      status: {
+        pending: '保留中',
+        inProgress: '進行中',
+        completed: '完了',
+        failed: '失敗',
+      },
+      noTasks: 'タスクが見つかりません。',
+      notApplicable: '該当なし',
     },
   },
 };

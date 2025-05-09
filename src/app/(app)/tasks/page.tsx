@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import type { Task, TaskStatus } from '@/types';
 import { ListChecks, CheckCircle2, XCircle, CircleDotDashed, Hourglass } from 'lucide-react';
 import { format } from 'date-fns';
+import { useLanguage } from '@/context/language-context';
 
 const mockTasks: Task[] = [
   {
@@ -41,43 +42,51 @@ const mockTasks: Task[] = [
   },
 ];
 
-const StatusBadge = ({ status }: { status: TaskStatus }) => {
+const StatusBadge = ({ status, t }: { status: TaskStatus; t: (key: TranslationKey) => string }) => {
   let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'default';
   let Icon = Hourglass;
+  let statusText = '';
 
   switch (status) {
     case 'Completed':
       variant = 'default'; // Will use primary color
       Icon = CheckCircle2;
+      statusText = t('tasksPage.status.completed');
       break;
     case 'In Progress':
-      variant = 'secondary'; // Will use accent color (teal-ish) for this in theme
+      variant = 'secondary'; 
       Icon = CircleDotDashed;
+      statusText = t('tasksPage.status.inProgress');
       break;
     case 'Pending':
       variant = 'outline';
       Icon = Hourglass;
+      statusText = t('tasksPage.status.pending');
       break;
     case 'Failed':
       variant = 'destructive';
       Icon = XCircle;
+      statusText = t('tasksPage.status.failed');
       break;
   }
 
   return (
     <Badge variant={variant} className="flex items-center gap-1 text-xs">
       <Icon className="h-3 w-3" />
-      {status}
+      {statusText}
     </Badge>
   );
 };
 
 
 export default function TasksPage() {
+  const { t } = useLanguage();
   const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     // Simulate API call
+    // For task names and descriptions, if they were dynamic and from a DB, they'd need separate localization strategies
+    // For this mock, they are hardcoded in English.
     setTasks(mockTasks);
   }, []);
 
@@ -87,28 +96,28 @@ export default function TasksPage() {
         <CardHeader>
           <CardTitle className="flex items-center text-2xl">
             <ListChecks className="mr-2 h-6 w-6 text-primary" />
-            Task Manager
+            {t('tasksPage.title')}
           </CardTitle>
           <CardDescription>
-            Track the status and details of all AI-driven and manual tasks.
+            {t('tasksPage.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Task Name</TableHead>
-                <TableHead className="hidden md:table-cell">Description</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="hidden sm:table-cell">Created At</TableHead>
-                <TableHead className="hidden sm:table-cell">Completed At</TableHead>
+                <TableHead>{t('tasksPage.tableHeaders.taskName')}</TableHead>
+                <TableHead className="hidden md:table-cell">{t('tasksPage.tableHeaders.description')}</TableHead>
+                <TableHead>{t('tasksPage.tableHeaders.status')}</TableHead>
+                <TableHead className="hidden sm:table-cell">{t('tasksPage.tableHeaders.createdAt')}</TableHead>
+                <TableHead className="hidden sm:table-cell">{t('tasksPage.tableHeaders.completedAt')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {tasks.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center">
-                    No tasks found.
+                    {t('tasksPage.noTasks')}
                   </TableCell>
                 </TableRow>
               )}
@@ -117,13 +126,13 @@ export default function TasksPage() {
                   <TableCell className="font-medium">{task.name}</TableCell>
                   <TableCell className="hidden md:table-cell max-w-xs truncate">{task.description}</TableCell>
                   <TableCell>
-                    <StatusBadge status={task.status} />
+                    <StatusBadge status={task.status} t={t as any} />
                   </TableCell>
                   <TableCell className="hidden sm:table-cell">
                     {format(task.createdAt, 'PPpp')}
                   </TableCell>
                   <TableCell className="hidden sm:table-cell">
-                    {task.completedAt ? format(task.completedAt, 'PPpp') : 'N/A'}
+                    {task.completedAt ? format(task.completedAt, 'PPpp') : t('tasksPage.notApplicable')}
                   </TableCell>
                 </TableRow>
               ))}
