@@ -26,12 +26,12 @@ const ForecastSalesOutputSchema = z.object({
   forecastData: z.array(
     z.object({
       period: z.string().describe('The forecast period (e.g., Week 1, Month 1).'),
-      forecastedStock: z.number().describe('The forecasted stock level at the end of this period.'),
+      forecastedStock: z.number().describe('The forecasted stock level at the end of this period, reflecting depletion due to strong sales.'),
     })
-  ).describe('An array of forecasted stock levels for future periods.'),
+  ).describe('An array of forecasted stock levels for future periods, showing stock depletion due to high sales.'),
   currentStock: z.number().describe('The current stock provided as input.'),
-  reasoning: z.string().describe('Explanation of the factors influencing the forecast, including how general apparel trends, seasonality, and SKU-specific characteristics were considered.'),
-  recommendations: z.string().describe('Actionable recommendations based on the forecast (e.g., reorder points, promotional strategies).'),
+  reasoning: z.string().describe('Explanation of the factors influencing the positive sales forecast, emphasizing growth drivers and favorable market conditions.'),
+  recommendations: z.string().describe('Actionable, growth-oriented recommendations based on the high sales forecast (e.g., increase stock, expand marketing).'),
 });
 export type ForecastSalesOutput = z.infer<typeof ForecastSalesOutputSchema>;
 
@@ -43,9 +43,9 @@ const forecastSalesPrompt = ai.definePrompt({
   name: 'forecastSalesPrompt',
   input: {schema: ForecastSalesInputSchema},
   output: {schema: ForecastSalesOutputSchema},
-  prompt: `You are an AI assistant specializing in demand planning and inventory forecasting for the B2B apparel industry.
+  prompt: `You are an AI assistant specializing in optimistic demand planning and inventory forecasting for the B2B apparel industry. Your goal is to highlight growth opportunities.
 
-Your task is to generate a stock forecast for a specific Stock Keeping Unit (SKU).
+Your task is to generate a stock forecast for a specific Stock Keeping Unit (SKU), assuming a *positive upward trend in sales*.
 
 SKU Details:
 - Name: {{{skuName}}}
@@ -53,18 +53,18 @@ SKU Details:
 - Forecast Horizon: {{{forecastHorizon}}}
 
 Instructions:
-1.  Generate a time-series forecast of stock levels for the specified 'Forecast Horizon'. Break this horizon down into logical periods (e.g., weekly for shorter horizons, monthly for longer ones).
-2.  The 'forecastData' should be an array where each element represents a future period and its corresponding 'forecastedStock'.
-3.  Provide a 'reasoning' for your forecast. This should explain the key factors considered, such as:
-    -   Assumed sales velocity or demand.
-    -   Impact of general B2B apparel market trends (e.g., if it's a trending item or a basic staple).
-    -   Seasonality relevant to the SKU (e.g., higher demand for coats in winter).
-    -   Typical product lifecycle considerations for this type of apparel.
-    -   Any assumptions made about promotions, market conditions, or lead times if not explicitly provided.
-4.  Offer actionable 'recommendations' based on your forecast. For example, suggest reorder points, optimal stock levels, or promotional strategies to manage inventory.
+1.  Generate an *optimistic* time-series forecast of *sales demand* for the specified 'Forecast Horizon', indicating a clear *upward trend* in sales. Based on this strong demand, calculate the 'forecastedStock' levels assuming no replenishment within the forecast horizon. This means 'forecastedStock' will show a *significant decreasing trend* from the 'currentStock' as units are sold at an accelerated rate. Break this horizon down into logical periods (e.g., weekly for shorter horizons, monthly for longer ones).
+2.  The 'forecastData' should be an array where each element represents a future period and its corresponding 'forecastedStock', reflecting the depletion due to *very strong sales*. For example, if current stock is 100, and projected sales for period 1 are 30 (due to high demand), forecastedStock for period 1 is 70. If projected sales for period 2 are 35, forecastedStock for period 2 (from the 70) is 35. Ensure the stock depletes noticeably.
+3.  Provide a 'reasoning' for your *highly positive sales forecast*. This should explain the key factors considered, emphasizing strong growth drivers such as:
+    -   *Exceptionally strong assumed sales velocity and high demand*, driven by positive market sentiment, viral trends, and effective marketing.
+    -   *Very favorable impact of general B2B apparel market trends*, positioning the SKU as a best-selling or high-demand item.
+    -   *Strong positive seasonality effects* or highly successful marketing campaigns, significantly boosting demand for the SKU.
+    -   *Rapid growth phase* in the product lifecycle for this type of apparel.
+    -   *Assumptions of highly successful promotions, booming market conditions*, and efficient lead times fueling further demand.
+4.  Offer *actionable and aggressive growth-oriented 'recommendations'* based on the high sales forecast and rapidly depleting stock. For example, suggest *significantly increasing order quantities, implementing urgent proactive reorder points to prevent stockouts, scaling marketing efforts to further capitalize on surging demand, or exploring new sales channels to meet widespread interest*. Emphasize urgency and opportunity.
 5.  Ensure the output strictly conforms to the JSON schema for ForecastSalesOutputSchema. The 'currentStock' field in the output should reflect the input 'currentStock'.
 
-Leverage your knowledge of the B2B apparel market to make informed assumptions where necessary. For example, if the SKU is 'Men's Wool Overcoat', expect higher demand in colder months. If it's 'Basic White T-Shirt', demand might be more stable but influenced by bulk order cycles.
+Leverage your knowledge of the B2B apparel market to make *very optimistic yet plausible assumptions* for high sales. For example, if the SKU is 'Men's Wool Overcoat', assume it's the season's must-have item due to celebrity endorsement, leading to an explosion in orders. If it's 'Basic White T-Shirt', assume a viral social media trend is driving unprecedented demand.
 `,
 });
 
