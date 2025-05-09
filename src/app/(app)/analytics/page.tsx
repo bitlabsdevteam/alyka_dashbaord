@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Palette, Newspaper, TrendingUp } from 'lucide-react';
+import { Palette, Newspaper, TrendingUp, Layers } from 'lucide-react'; // Added Layers icon
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import Image from 'next/image';
@@ -30,21 +30,38 @@ const mockSilhouetteData = [
 
 
 const mockColorData = [
-  { name: 'Cerulean Blue', value: 400 },
-  { name: 'Dusty Rose', value: 300 },
-  { name: 'Olive Green', value: 200 },
-  { name: 'Mustard Yellow', value: 150 },
-  { name: 'Lavender', value: 250 },
+  { name: 'Cerulean Blue', value: 400, translationKey: 'analyticsPage.color.ceruleanBlue' },
+  { name: 'Dusty Rose', value: 300, translationKey: 'analyticsPage.color.dustyRose' },
+  { name: 'Olive Green', value: 200, translationKey: 'analyticsPage.color.oliveGreen' },
+  { name: 'Mustard Yellow', value: 150, translationKey: 'analyticsPage.color.mustardYellow' },
+  { name: 'Lavender', value: 250, translationKey: 'analyticsPage.color.lavender' },
 ];
-const COLORS = ['#2E9AFE', '#FF8042', '#00C49F', '#FFBB28', '#A42EFF'];
+const COLORS = ['#2E9AFE', '#FF8042', '#00C49F', '#FFBB28', '#A42EFF']; // General purpose colors for pie charts
 
+const mockPatternData = [
+  { name: 'Floral', value: 350, translationKey: 'analyticsPage.pattern.floral' },
+  { name: 'Geometric', value: 250, translationKey: 'analyticsPage.pattern.geometric' },
+  { name: 'Stripes', value: 200, translationKey: 'analyticsPage.pattern.stripes' },
+  { name: 'Polka Dots', value: 180, translationKey: 'analyticsPage.pattern.polkaDots' },
+  { name: 'Abstract', value: 120, translationKey: 'analyticsPage.pattern.abstract' },
+];
 
 const chartConfigColor = (t: (key: string) => string) => ({
   value: {
-    label: t('analyticsPage.colorPopularity'),
+    label: t('analyticsPage.popularity'), // Use generic popularity for value
   },
   ...mockColorData.reduce((acc, item, index) => {
-    acc[item.name] = { label: item.name, color: COLORS[index % COLORS.length] };
+    acc[item.name] = { label: t(item.translationKey as any), color: COLORS[index % COLORS.length] };
+    return acc;
+  }, {} as any)
+});
+
+const chartConfigPattern = (t: (key: string) => string) => ({
+  value: {
+    label: t('analyticsPage.popularity'), // Use generic popularity for value
+  },
+  ...mockPatternData.reduce((acc, item, index) => {
+    acc[item.name] = { label: t(item.translationKey as any), color: COLORS[index % COLORS.length] };
     return acc;
   }, {} as any)
 });
@@ -187,8 +204,29 @@ export default function AnalyticsPage() {
             </ChartContainer>
           </CardContent>
         </Card>
+
+        <Card className="shadow-lg md:col-span-2"> {/* Added md:col-span-2 for full width on medium screens if grid has 2 cols */}
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Layers className="mr-2 h-5 w-5 text-primary" />
+              {t('analyticsPage.patternTrendsTitle')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfigPattern(t)} className="h-[300px] w-full">
+              <PieChart accessibilityLayer>
+                <RechartsTooltip cursor={false} content={<ChartTooltipContent />} />
+                <Legend />
+                <Pie data={mockPatternData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
+                  {mockPatternData.map((entry, index) => (
+                    <Cell key={`cell-pattern-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 }
-

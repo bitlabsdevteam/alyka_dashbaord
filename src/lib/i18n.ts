@@ -17,34 +17,48 @@ interface AnalyticsPageTranslations {
     paragraph1: string;
     paragraph2: string;
   };
-  trendPopularityTitle: string; // Kept for potential future use, or remove if certain it's unused
+  trendPopularityTitle: string; 
   colorTrendsTitle: string;
-  popularity: string; // Generic popularity label, might be used by pie chart tooltip or other contexts
-  colorPopularity: string;
-  silhouettePopularityTitle: string; // New title for the silhouette chart
-  silhouette: { // New object for silhouette names
+  popularity: string; 
+  colorPopularity: string; // Can be deprecated if 'popularity' is used generically
+  silhouettePopularityTitle: string; 
+  silhouette: { 
     aLine: string;
     sheath: string;
     oversized: string;
     bodycon: string;
     asymmetrical: string;
   };
+  patternTrendsTitle: string; // New
+  color: { // New for specific color names
+    ceruleanBlue: string;
+    dustyRose: string;
+    oliveGreen: string;
+    mustardYellow: string;
+    lavender: string;
+  };
+  pattern: { // New for specific pattern names
+    floral: string;
+    geometric: string;
+    stripes: string;
+    polkaDots: string;
+    abstract: string;
+  };
 }
 
 interface HeaderTranslations {
   userMenu: {
     label: string;
-    greeting: string; // e.g. Analyst User
-    email: string; // e.g. analyst@alyka.ai
+    greeting: string; 
+    email: string; 
   }
 }
 
 interface NavTranslations {
   analytics: string;
   forecast: string;
-  posSales: string; // Changed from possales
-  taskManager: string; // Changed from taskmanager
-  // settings: string; // Removed settings
+  posSales: string; 
+  taskManager: string; 
 }
 
 
@@ -93,7 +107,6 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       posSales: 'POS Sales',
       taskManager: 'Task Manager',
-      // settings: 'Settings', // Removed
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Fashion Buzz',
@@ -103,10 +116,10 @@ export const translations: Record<Locale, Translations> = {
         paragraph1: 'The GALA 2024 red carpet was a breathtaking display of creativity and glamour. Designers pushed boundaries with innovative silhouettes, sustainable materials, and bold color choices. Themes of nature and technology intertwined, offering a glimpse into future fashion narratives.',
         paragraph2: 'Key takeaways include the resurgence of avant-garde tailoring, an emphasis on handcrafted details, and a notable shift towards gender-fluid designs. Metallic fabrics and ethereal sheers dominated, creating memorable moments that will undoubtedly influence upcoming B2B apparel collections.',
       },
-      trendPopularityTitle: 'Key Trend Popularity Over Time', // Original title, can be removed if not used elsewhere
+      trendPopularityTitle: 'Key Trend Popularity Over Time',
       colorTrendsTitle: 'Color Trends',
       popularity: 'Popularity',
-      colorPopularity: 'Popularity',
+      colorPopularity: 'Popularity', // Kept for backward compatibility, consider removing
       silhouettePopularityTitle: 'Silhouette Popularity Trends',
       silhouette: {
         aLine: 'A-Line',
@@ -114,6 +127,21 @@ export const translations: Record<Locale, Translations> = {
         oversized: 'Oversized/Boxy',
         bodycon: 'Bodycon',
         asymmetrical: 'Asymmetrical',
+      },
+      patternTrendsTitle: 'Pattern Trends',
+      color: {
+        ceruleanBlue: 'Cerulean Blue',
+        dustyRose: 'Dusty Rose',
+        oliveGreen: 'Olive Green',
+        mustardYellow: 'Mustard Yellow',
+        lavender: 'Lavender',
+      },
+      pattern: {
+        floral: 'Floral',
+        geometric: 'Geometric',
+        stripes: 'Stripes',
+        polkaDots: 'Polka Dots',
+        abstract: 'Abstract',
       },
     },
   },
@@ -137,7 +165,6 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       posSales: 'POS販売',
       taskManager: 'タスク管理',
-      // settings: '設定', // Removed
     },
     analyticsPage: {
       latestTrendTitle: '最新ファッショントレンド',
@@ -150,7 +177,7 @@ export const translations: Record<Locale, Translations> = {
       trendPopularityTitle: '主要トレンドの人気推移',
       colorTrendsTitle: 'カラートレンド',
       popularity: '人気度',
-      colorPopularity: '人気度',
+      colorPopularity: '人気度', // Kept for backward compatibility
       silhouettePopularityTitle: 'シルエット人気トレンド',
       silhouette: {
         aLine: 'Aライン',
@@ -159,7 +186,21 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'ボディコン',
         asymmetrical: 'アシンメトリー',
       },
+      patternTrendsTitle: 'パターントレンド',
+      color: {
+        ceruleanBlue: 'セルリアンブルー',
+        dustyRose: 'ダスティーローズ',
+        oliveGreen: 'オリーブグリーン',
+        mustardYellow: 'マスタードイエロー',
+        lavender: 'ラベンダー',
+      },
+      pattern: {
+        floral: '花柄',
+        geometric: '幾何学模様',
+        stripes: 'ストライプ',
+        polkaDots: '水玉模様',
+        abstract: '抽象柄',
+      },
     },
   },
 };
-
