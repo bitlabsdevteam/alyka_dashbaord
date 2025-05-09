@@ -1,7 +1,8 @@
 // src/app/(app)/layout.tsx
-'use client'; // Add 'use client' because we are using a hook (useLanguage)
+'use client'; 
 
 import type { PropsWithChildren } from 'react';
+import * as React from 'react';
 import {
   SidebarProvider,
   Sidebar,
@@ -13,11 +14,13 @@ import {
 import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
-import { LogOut } from 'lucide-react';
-import { useLanguage } from '@/context/language-context'; // Import useLanguage
+import { LogOut, MessageSquare } from 'lucide-react';
+import { useLanguage } from '@/context/language-context';
+import { ChatbotDialog } from '@/components/chatbot/chatbot-dialog';
 
 export default function AppLayout({ children }: PropsWithChildren) {
-  const { t } = useLanguage(); // Use language hook
+  const { t } = useLanguage(); 
+  const [isChatbotOpen, setIsChatbotOpen] = React.useState(false);
 
   return (
     <SidebarProvider defaultOpen>
@@ -29,9 +32,17 @@ export default function AppLayout({ children }: PropsWithChildren) {
           <SidebarNav />
         </SidebarContent>
         <SidebarFooter>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            onClick={() => setIsChatbotOpen(true)}
+          >
+            <MessageSquare className="mr-2 h-5 w-5" />
+            <span>{t('common.chat')}</span>
+          </Button>
           <Button variant="ghost" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
             <LogOut className="mr-2 h-5 w-5" />
-            <span>{t('common.logout')}</span> {/* Localized logout text */}
+            <span>{t('common.logout')}</span>
           </Button>
         </SidebarFooter>
       </Sidebar>
@@ -41,6 +52,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
           {children}
         </main>
       </SidebarInset>
+      <ChatbotDialog isOpen={isChatbotOpen} onOpenChange={setIsChatbotOpen} />
     </SidebarProvider>
   );
 }

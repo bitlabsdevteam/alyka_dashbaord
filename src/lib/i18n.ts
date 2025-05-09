@@ -8,6 +8,7 @@ interface CommonTranslations {
   japanese: string;
   profile: string;
   logout: string;
+  chat: string; // Added for chat button
 }
 interface AnalyticsPageTranslations {
   latestTrendTitle: string;
@@ -93,7 +94,7 @@ interface ForecastPageTranslations {
     skuMissingTitle: string;
     skuMissingDescription: string;
   };
-  skus: { // Added for SKU localization
+  skus: {
     classicWhiteTShirt: string;
     skinnyBlueJeans: string;
     oversizedHoodieBlack: string;
@@ -186,6 +187,15 @@ interface TasksPageTranslations {
   notApplicable: string;
 }
 
+interface ChatbotTranslations { // Added for chatbot
+  title: string;
+  description: string;
+  greeting: string;
+  inputPlaceholder: string;
+  sendButton: string;
+  simulatedResponse: string;
+}
+
 
 // This defines the structure of your translations
 export interface Translations {
@@ -196,6 +206,7 @@ export interface Translations {
   forecastPage: ForecastPageTranslations;
   posSalesPage: PosSalesPageTranslations;
   tasksPage: TasksPageTranslations;
+  chatbot: ChatbotTranslations; // Added chatbot translations
 }
 
 // Helper type for deep key access
@@ -219,6 +230,7 @@ export const translations: Record<Locale, Translations> = {
       japanese: '日本語 (Japanese)',
       profile: 'Profile',
       logout: 'Log out',
+      chat: 'Chat',
     },
     header: {
       userMenu: {
@@ -391,6 +403,14 @@ export const translations: Record<Locale, Translations> = {
       noTasks: 'No tasks found.',
       notApplicable: 'N/A',
     },
+    chatbot: {
+      title: 'Alyka Chat Support',
+      description: 'Ask me anything about fashion trends, sales data, or forecasts!',
+      greeting: 'Hello! I am Alyka, your AI fashion assistant. How can I help you today?',
+      inputPlaceholder: 'Type your message...',
+      sendButton: 'Send',
+      simulatedResponse: "Thanks for your message! I'm processing your request. For now, here's a general tip: Keep an eye on sustainable fabrics, as they are a growing trend!",
+    },
   },
   ja: {
     common: {
@@ -399,6 +419,7 @@ export const translations: Record<Locale, Translations> = {
       japanese: '日本語',
       profile: 'プロフィール',
       logout: 'ログアウト',
+      chat: 'チャット',
     },
     header: {
       userMenu: {
@@ -503,9 +524,9 @@ export const translations: Record<Locale, Translations> = {
       salesByCategory: 'カテゴリ別売上',
       detailedSalesData: '詳細販売データ',
       chart: {
-        salesLabel: '売上 (¥)', // Changed $ to ¥
+        salesLabel: '売上 (¥)',
         unitsLabel: '販売ユニット数',
-        categorySalesLabel: "売上 (¥)", // Changed $ to ¥
+        categorySalesLabel: "売上 (¥)",
       },
       tableHeaders: {
         monthYear: '年月',
@@ -513,7 +534,7 @@ export const translations: Record<Locale, Translations> = {
         category: 'カテゴリ',
         sku: 'SKU',
         unitsSold: '販売ユニット数',
-        revenue: '収益 (¥)', // Changed $ to ¥
+        revenue: '収益 (¥)',
         posName: 'POS名',
       },
       categories: {
@@ -570,6 +591,14 @@ export const translations: Record<Locale, Translations> = {
       },
       noTasks: 'タスクが見つかりません。',
       notApplicable: '該当なし',
+    },
+    chatbot: {
+      title: 'Alykaチャットサポート',
+      description: 'ファッショントレンド、販売データ、予測について何でも聞いてください！',
+      greeting: 'こんにちは！私はあなたのAIファッションアシスタント、Alykaです。今日はどうしましたか？',
+      inputPlaceholder: 'メッセージを入力してください...',
+      sendButton: '送信',
+      simulatedResponse: 'メッセージありがとうございます！リクエストを処理中です。今のところ、一般的なヒントです：サステナブルな生地に注目してください、成長しているトレンドです！',
     },
   },
 };
