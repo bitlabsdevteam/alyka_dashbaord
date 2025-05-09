@@ -66,10 +66,13 @@ const mockPatternLineData = [
   { monthYear: 'Apr 2024', floral: 42, geometric: 38, stripes: 62, animalPrints: 52, abstract: 22 },
 ];
 
+// NOTE: To use local images, create a `public/images` folder in your project root.
+// Place your images (e.g., runway1.jpg, runway2.jpg, runway3.jpg) in this folder.
+// Then update the `src` paths below accordingly. Example: `/images/runway1.jpg`
 const carouselImages = [
-  { src: "https://picsum.photos/800/450?random=1", alt: "Fashion Runway Model 1", "data-ai-hint": "runway fashion" },
-  { src: "https://picsum.photos/800/450?random=2", alt: "Fashion Runway Model 2", "data-ai-hint": "haute couture" },
-  { src: "https://picsum.photos/800/450?random=3", alt: "Fashion Runway Model 3", "data-ai-hint": "avant garde" },
+  { src: "/images/runway1.jpg", alt: "Fashion Runway Model 1", "data-ai-hint": "runway fashion" },
+  { src: "/images/runway2.jpg", alt: "Fashion Runway Model 2", "data-ai-hint": "haute couture" },
+  { src: "/images/runway3.jpg", alt: "Fashion Runway Model 3", "data-ai-hint": "avant garde" },
 ];
 
 const chartConfigColor = (t: (key: string) => string) => ({
@@ -138,6 +141,13 @@ export default function AnalyticsPage() {
                     height={450}
                     className="w-full h-auto object-cover aspect-[16/9]" // aspect-ratio to maintain consistency
                     data-ai-hint={image['data-ai-hint']}
+                    // Add onError to handle missing local images gracefully during development
+                    onError={(e) => {
+                      // Fallback to a picsum image if local one is not found
+                      // This is helpful for development if images aren't set up yet
+                      e.currentTarget.srcset = `https://picsum.photos/800/450?random=${index + 1}`;
+                      e.currentTarget.src = `https://picsum.photos/800/450?random=${index + 1}`;
+                    }}
                   />
                 </CarouselItem>
               ))}
