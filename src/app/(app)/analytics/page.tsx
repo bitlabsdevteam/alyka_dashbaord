@@ -2,11 +2,51 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Palette, Newspaper, TrendingUp, Layers } from 'lucide-react'; 
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+
+// Component for rendering images with a fallback to picsum.photos
+interface ImageWithFallbackProps {
+  src: string;
+  alt: string;
+  aiHint?: string;
+  priority?: boolean;
+}
+
+const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ src, alt, aiHint, priority = false }) => {
+  const [currentSrc, setCurrentSrc] = React.useState(src);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    setCurrentSrc(src); // Reset src if the prop changes
+    setIsLoading(true);
+  }, [src]);
+
+  return (
+    <Image
+      src={currentSrc}
+      alt={alt}
+      fill
+      className={`object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+      onError={() => {
+        setIsLoading(false);
+        // Create a unique seed for picsum based on alt text to get different images
+        const seed = alt.replace(/\s+/g, '-').toLowerCase().slice(0, 20);
+        setCurrentSrc(`https://picsum.photos/seed/${seed}/800/450`);
+      }}
+      onLoadingComplete={() => setIsLoading(false)}
+      data-ai-hint={aiHint || alt.split(' ').slice(0, 2).join(' ').toLowerCase()}
+      priority={priority}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+    />
+  );
+};
 
 
 const mockSilhouetteData = [
@@ -71,6 +111,9 @@ const chartConfigColor = (t: (key: string) => string) => ({
 
 export default function AnalyticsPage() {
   const { t } = useLanguage();
+  const autoplayPlugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
 
   const silhouetteChartConfig = {
     aLine: { label: t('analyticsPage.silhouette.aLine'), color: "hsl(var(--chart-1))" },
@@ -79,6 +122,11 @@ export default function AnalyticsPage() {
     bodycon: { label: t('analyticsPage.silhouette.bodycon'), color: "hsl(var(--chart-4))" },
     asymmetrical: { label: t('analyticsPage.silhouette.asymmetrical'), color: "hsl(var(--chart-5))" },
   };
+
+  const carouselImages = [
+    { src: '/images/gala_image_2.jpeg', alt: 'People attending a glamorous gala event', "data-ai-hint": "gala event" },
+    { src: '/images/image_gala_1.jpeg', alt: 'Elegant guests at a formal gala gathering', "data-ai-hint": "fashion model" },
+  ];
 
   const patternChartConfig = {
     floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-1))" },
@@ -101,9 +149,35 @@ export default function AnalyticsPage() {
             {t('analyticsPage.latestTrendDescription')}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Carousel has been removed */}
-          <h3 className="text-xl font-semibold">{t('analyticsPage.galaArticle.title')}</h3>
+        <CardContent className="space-y-6">
+          <Carousel
+            plugins={[autoplayPlugin.current]}
+            className="w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg"
+            onMouseEnter={autoplayPlugin.current.stop}
+            onMouseLeave={autoplayPlugin.current.reset}
+            opts={{
+              loop: true,
+            }}
+          >
+            <CarouselContent>
+              {carouselImages.map((image, index) => (
+                <CarouselItem key={index}>
+                  <div className="aspect-video relative w-full">
+                    <ImageWithFallback
+                      src={image.src}
+                      alt={image.alt}
+                      aiHint={image['data-ai-hint']}
+                      priority={index === 0} // Prioritize the first image
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10" />
+            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10" />
+          </Carousel>
+
+          <h3 className="text-xl font-semibold pt-4">{t('analyticsPage.galaArticle.title')}</h3>
           <p className="text-base text-muted-foreground">
             {t('analyticsPage.galaArticle.paragraph1')}
           </p>
@@ -285,3 +359,4 @@ export default function AnalyticsPage() {
     </div>
   );
 }
+
