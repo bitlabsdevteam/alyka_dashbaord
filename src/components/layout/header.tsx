@@ -18,7 +18,7 @@ import {
   DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { User, Languages } from 'lucide-react'; 
+import { User, Languages, Settings } from 'lucide-react'; 
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useLanguage } from '@/context/language-context'; 
 import { useToast } from '@/hooks/use-toast';
@@ -45,16 +45,6 @@ export function Header() {
     }
   }, [t, language]); // Rerun if language changes for t function
 
-  // Logout function is no longer called from here, it's in the app layout sidebar
-  // const handleLogout = () => {
-  //   localStorage.removeItem('alyka-auth-status');
-  //   localStorage.removeItem('alyka-user-email');
-  //   toast({
-  //     title: t('header.userMenu.logoutSuccessTitle'),
-  //     description: t('header.userMenu.logoutSuccessDescription'),
-  //   });
-  //   router.push('/login');
-  // };
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -83,7 +73,7 @@ export function Header() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push('/profile')}>
                 <User className="mr-2 h-4 w-4" />
                 <span>{t('common.profile')}</span>
               </DropdownMenuItem>
@@ -100,15 +90,12 @@ export function Header() {
                   </DropdownMenuRadioGroup>
                 </DropdownMenuSubContent>
               </DropdownMenuSub>
+
+              <DropdownMenuItem onClick={() => router.push('/settings')}>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>{t('common.settings')}</span>
+              </DropdownMenuItem>
               
-              {/* Removed Logout item from here */}
-              {/* 
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>{t('common.logout')}</span>
-              </DropdownMenuItem> 
-              */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -116,4 +103,3 @@ export function Header() {
     </header>
   );
 }
-

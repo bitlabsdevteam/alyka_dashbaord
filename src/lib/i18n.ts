@@ -9,6 +9,7 @@ interface CommonTranslations {
   profile: string;
   logout: string;
   chat: string; 
+  settings: string; // Added for settings
 }
 interface AnalyticsPageTranslations {
   latestTrendTitle: string;
@@ -66,6 +67,7 @@ interface NavTranslations {
   forecast: string;
   posSales: string; 
   taskManager: string; 
+  settings: string; // Added for settings
 }
 
 interface ForecastPageTranslations {
@@ -204,8 +206,8 @@ interface ChatbotTranslations {
 interface LoginPageTranslations {
   title: string;
   description: string;
-  usernameLabel: string; // Kept for potential other uses, but emailLabel is primary for login
-  usernamePlaceholder: string; // Kept for potential other uses
+  usernameLabel: string; 
+  usernamePlaceholder: string; 
   emailLabel: string;
   emailPlaceholder: string;
   emailInvalid: string;
@@ -239,6 +241,39 @@ interface RegisterPageTranslations {
   registrationErrorDescription: string;
 }
 
+interface SettingsPageTranslations {
+  title: string;
+  description: string;
+  paymentMethod: {
+    title: string;
+    description: string;
+    currentMethod: string;
+    cardNumberEndingIn: string; 
+    noPaymentMethod: string;
+    updateButton: string;
+    billingHistoryButton: string;
+  };
+  mcpConfig: {
+    title: string;
+    description: string;
+    serverAddressLabel: string;
+    serverAddressPlaceholder: string;
+    portLabel: string;
+    portPlaceholder: string;
+    apiKeyLabel: string;
+    apiKeyPlaceholder: string;
+    enableMcpLabel: string;
+    saveButton: string;
+    testConnectionButton: string;
+    toast: {
+      saveSuccessTitle: string;
+      saveSuccessDescription: string;
+      saveErrorTitle: string;
+      saveErrorDescription: string;
+    }
+  };
+}
+
 
 // This defines the structure of your translations
 export interface Translations {
@@ -252,6 +287,7 @@ export interface Translations {
   chatbot: ChatbotTranslations; 
   loginPage: LoginPageTranslations;
   registerPage: RegisterPageTranslations;
+  settingsPage: SettingsPageTranslations; // Added for settings page
 }
 
 // Helper type for deep key access
@@ -276,12 +312,13 @@ export const translations: Record<Locale, Translations> = {
       profile: 'Profile',
       logout: 'Log out',
       chat: 'Chat',
+      settings: 'Settings',
     },
     header: {
       userMenu: {
         label: 'User Menu',
-        greeting: 'Analyst User', // This will be overridden by specific greetings below
-        email: 'analyst@alyka.ai', // Default or placeholder
+        greeting: 'Analyst User', 
+        email: 'analyst@alyka.ai', 
         defaultGreeting: 'User',
         testUserGreeting: 'Test User',
         avatarAlt: 'User avatar',
@@ -294,6 +331,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       posSales: 'POS Sales',
       taskManager: 'Task Manager',
+      settings: 'Settings',
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Fashion Buzz',
@@ -464,7 +502,7 @@ export const translations: Record<Locale, Translations> = {
     loginPage: {
       title: 'Login to Alyka',
       description: 'Access your AI-powered fashion analytics dashboard.',
-      usernameLabel: 'Username (Legacy)', // Keep for potential other uses, not for current email login
+      usernameLabel: 'Username (Legacy)', 
       usernamePlaceholder: 'Enter your username (Legacy)',
       emailLabel: 'Email',
       emailPlaceholder: 'Enter your email',
@@ -497,6 +535,38 @@ export const translations: Record<Locale, Translations> = {
       registrationErrorTitle: 'Registration Failed',
       registrationErrorDescription: 'Could not create your account. Please try again.',
     },
+    settingsPage: {
+      title: 'Settings',
+      description: 'Manage your account preferences and configurations.',
+      paymentMethod: {
+        title: 'Payment Method',
+        description: 'Manage your billing information and payment methods.',
+        currentMethod: 'Current Payment Method:',
+        cardNumberEndingIn: 'Visa ending in **** 1234',
+        noPaymentMethod: 'No payment method on file.',
+        updateButton: 'Update Payment Method',
+        billingHistoryButton: 'View Billing History',
+      },
+      mcpConfig: {
+        title: 'MCP Server Configuration',
+        description: 'Configure the Model Context Protocol server settings.',
+        serverAddressLabel: 'Server Address',
+        serverAddressPlaceholder: 'e.g., https://mcp.example.com',
+        portLabel: 'Port',
+        portPlaceholder: 'e.g., 443',
+        apiKeyLabel: 'API Key',
+        apiKeyPlaceholder: 'Enter your MCP API Key',
+        enableMcpLabel: 'Enable MCP Integration',
+        saveButton: 'Save Configuration',
+        testConnectionButton: 'Test Connection',
+        toast: {
+          saveSuccessTitle: 'Configuration Saved',
+          saveSuccessDescription: 'MCP server settings updated successfully.',
+          saveErrorTitle: 'Save Failed',
+          saveErrorDescription: 'Could not save MCP server settings.',
+        }
+      },
+    },
   },
   ja: {
     common: {
@@ -506,12 +576,13 @@ export const translations: Record<Locale, Translations> = {
       profile: 'プロフィール',
       logout: 'ログアウト',
       chat: 'チャット',
+      settings: '設定',
     },
     header: {
       userMenu: {
         label: 'ユーザーメニュー',
-        greeting: 'アナリストユーザー', // 以下で上書きされます
-        email: 'analyst@alyka.ai', // デフォルトまたはプレースホルダー
+        greeting: 'アナリストユーザー', 
+        email: 'analyst@alyka.ai', 
         defaultGreeting: 'ユーザー',
         testUserGreeting: 'テストユーザー',
         avatarAlt: 'ユーザーアバター',
@@ -524,6 +595,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       posSales: 'POS販売',
       taskManager: 'タスク管理',
+      settings: '設定',
     },
     analyticsPage: {
       latestTrendTitle: '最新ファッショントレンド',
@@ -694,7 +766,7 @@ export const translations: Record<Locale, Translations> = {
     loginPage: {
       title: 'Alykaにログイン',
       description: 'AI搭載のファッション分析ダッシュボードにアクセスします。',
-      usernameLabel: 'ユーザー名（旧）', // 他の用途のために保持、現在のメールログインには使用しない
+      usernameLabel: 'ユーザー名（旧）', 
       usernamePlaceholder: 'ユーザー名を入力してください（旧）',
       emailLabel: 'メールアドレス',
       emailPlaceholder: 'メールアドレスを入力してください',
@@ -726,6 +798,38 @@ export const translations: Record<Locale, Translations> = {
       registrationSuccessDescription: 'Alykaアカウントが作成されました。ログインしてください。',
       registrationErrorTitle: '登録失敗',
       registrationErrorDescription: 'アカウントを作成できませんでした。もう一度お試しください。',
+    },
+    settingsPage: {
+      title: '設定',
+      description: 'アカウント設定と構成を管理します。',
+      paymentMethod: {
+        title: '支払い方法',
+        description: '請求情報と支払い方法を管理します。',
+        currentMethod: '現在の支払い方法：',
+        cardNumberEndingIn: 'Visa カード番号末尾 **** 1234',
+        noPaymentMethod: '登録されている支払い方法がありません。',
+        updateButton: '支払い方法を更新',
+        billingHistoryButton: '請求履歴を表示',
+      },
+      mcpConfig: {
+        title: 'MCPサーバー構成',
+        description: 'モデルコンテキストプロトコルサーバーの設定を構成します。',
+        serverAddressLabel: 'サーバーアドレス',
+        serverAddressPlaceholder: '例：https://mcp.example.com',
+        portLabel: 'ポート',
+        portPlaceholder: '例：443',
+        apiKeyLabel: 'APIキー',
+        apiKeyPlaceholder: 'MCP APIキーを入力してください',
+        enableMcpLabel: 'MCP統合を有効にする',
+        saveButton: '構成を保存',
+        testConnectionButton: '接続テスト',
+        toast: {
+          saveSuccessTitle: '構成が保存されました',
+          saveSuccessDescription: 'MCPサーバー設定が正常に更新されました。',
+          saveErrorTitle: '保存に失敗しました',
+          saveErrorDescription: 'MCPサーバー設定を保存できませんでした。',
+        }
+      },
     },
   },
 };

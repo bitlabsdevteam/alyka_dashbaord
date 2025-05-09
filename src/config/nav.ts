@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { LineChart, TrendingUp, ShoppingCart, ListChecks } from 'lucide-react'; // Removed Settings icon
+import { LineChart, TrendingUp, ShoppingCart, ListChecks, Settings } from 'lucide-react'; 
 
 export interface NavItem {
   title: string;
@@ -29,9 +29,9 @@ export const navItems: NavItem[] = [
     href: '/tasks',
     icon: ListChecks,
   },
-  // { // Removed Settings
-  //   title: 'Settings',
-  //   href: '/settings',
-  //   icon: Settings,
-  // },
+  { 
+    title: 'Settings',
+    href: '/settings',
+    icon: Settings,
+  },
 ];

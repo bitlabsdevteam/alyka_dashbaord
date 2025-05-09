@@ -12,28 +12,38 @@ import {
   SidebarGroupLabel,
 } from '@/components/ui/sidebar';
 import { Icons } from '@/components/icons';
-import { useLanguage } from '@/context/language-context'; // Import useLanguage
+import { useLanguage } from '@/context/language-context'; 
+import type { TranslationKey } from '@/lib/i18n';
 
 export function SidebarNav() {
   const pathname = usePathname();
-  const { t } = useLanguage(); // Use language hook
+  const { t } = useLanguage(); 
 
-  // Map originalNavItems to include translated titles
   const navItems: NavItem[] = originalNavItems.map(item => {
-    let translationKey: string;
-    switch (item.title) {
-      case 'POS Sales':
+    let translationKey: TranslationKey;
+    switch (item.title.toLowerCase()) {
+      case 'analytics':
+        translationKey = 'nav.analytics';
+        break;
+      case 'forecast':
+        translationKey = 'nav.forecast';
+        break;
+      case 'pos sales':
         translationKey = 'nav.posSales';
         break;
-      case 'Task Manager':
+      case 'task manager':
         translationKey = 'nav.taskManager';
         break;
+      case 'settings':
+        translationKey = 'nav.settings';
+        break;
       default:
-        translationKey = `nav.${item.title.toLowerCase().replace(/\s+/g, '')}`;
+        // Fallback for any new items, assuming a pattern like 'nav.title'
+        translationKey = `nav.${item.title.toLowerCase().replace(/\s+/g, '')}` as TranslationKey;
     }
     return {
       ...item,
-      title: t(translationKey as any) || item.title, // Use translation, fallback to original
+      title: t(translationKey) || item.title, 
     };
   });
 
