@@ -93,6 +93,13 @@ interface ForecastPageTranslations {
     skuMissingTitle: string;
     skuMissingDescription: string;
   };
+  skus: { // Added for SKU localization
+    classicWhiteTShirt: string;
+    skinnyBlueJeans: string;
+    oversizedHoodieBlack: string;
+    stripedCottonPJs: string;
+    luxurySilkScarfFloral: string;
+  };
 }
 
 interface PosSalesPageTranslations {
@@ -294,6 +301,13 @@ export const translations: Record<Locale, Translations> = {
         skuMissingTitle: 'SKU Not Selected',
         skuMissingDescription: 'Please select an SKU before generating a forecast.',
       },
+      skus: {
+        classicWhiteTShirt: "Men's Classic White T-Shirt",
+        skinnyBlueJeans: "Women's Skinny Blue Jeans",
+        oversizedHoodieBlack: "Unisex Oversized Hoodie - Black",
+        stripedCottonPJs: "Children's Striped Cotton PJs",
+        luxurySilkScarfFloral: "Luxury Silk Scarf - Floral Print",
+      },
     },
     posSalesPage: {
       title: 'POS Sales Data Overview',
@@ -467,6 +481,13 @@ export const translations: Record<Locale, Translations> = {
         skuMissingTitle: 'SKU未選択',
         skuMissingDescription: '予測を生成する前にSKUを選択してください。',
       },
+      skus: {
+        classicWhiteTShirt: "メンズ クラシックホワイトTシャツ",
+        skinnyBlueJeans: "レディース スキニーブルージーンズ",
+        oversizedHoodieBlack: "ユニセックス オーバーサイズパーカー - ブラック",
+        stripedCottonPJs: "子供用 ストライプコットンパジャマ",
+        luxurySilkScarfFloral: "高級シルクスカーフ - フローラルプリント",
+      },
     },
     posSalesPage: {
       title: 'POS販売データ概要',
@@ -482,9 +503,9 @@ export const translations: Record<Locale, Translations> = {
       salesByCategory: 'カテゴリ別売上',
       detailedSalesData: '詳細販売データ',
       chart: {
-        salesLabel: '売上 ($)',
+        salesLabel: '売上 (¥)', // Changed $ to ¥
         unitsLabel: '販売ユニット数',
-        categorySalesLabel: "売上 ($)",
+        categorySalesLabel: "売上 (¥)", // Changed $ to ¥
       },
       tableHeaders: {
         monthYear: '年月',
@@ -492,7 +513,7 @@ export const translations: Record<Locale, Translations> = {
         category: 'カテゴリ',
         sku: 'SKU',
         unitsSold: '販売ユニット数',
-        revenue: '収益 ($)',
+        revenue: '収益 (¥)', // Changed $ to ¥
         posName: 'POS名',
       },
       categories: {
@@ -552,4 +573,3 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
-

@@ -15,19 +15,20 @@ import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb } from 'lucide-
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
+import type { TranslationKey } from '@/lib/i18n';
 
 interface SkuItem {
   value: string;
-  label: string;
+  labelKey: TranslationKey; // Use TranslationKey for localization
   currentStock: number;
 }
 
 const mockSkus: SkuItem[] = [
-  { value: 'SKU001', label: "Men's Classic White T-Shirt", currentStock: 1200 },
-  { value: 'SKU002', label: "Women's Skinny Blue Jeans", currentStock: 800 },
-  { value: 'SKU003', label: "Unisex Oversized Hoodie - Black", currentStock: 1500 },
-  { value: 'SKU004', label: "Children's Striped Cotton PJs", currentStock: 2000 },
-  { value: 'SKU005', label: "Luxury Silk Scarf - Floral Print", currentStock: 500 },
+  { value: 'SKU001', labelKey: 'forecastPage.skus.classicWhiteTShirt', currentStock: 1200 },
+  { value: 'SKU002', labelKey: 'forecastPage.skus.skinnyBlueJeans', currentStock: 800 },
+  { value: 'SKU003', labelKey: 'forecastPage.skus.oversizedHoodieBlack', currentStock: 1500 },
+  { value: 'SKU004', labelKey: 'forecastPage.skus.stripedCottonPJs', currentStock: 2000 },
+  { value: 'SKU005', labelKey: 'forecastPage.skus.luxurySilkScarfFloral', currentStock: 500 },
 ];
 
 export default function ForecastPage() {
@@ -65,7 +66,7 @@ export default function ForecastPage() {
     const skuDetails = mockSkus.find(s => s.value === selectedSkuValue);
     if (skuDetails) {
       mutate({
-        skuName: skuDetails.label,
+        skuName: t(skuDetails.labelKey), // Get localized SKU name for the AI prompt
         currentStock: skuDetails.currentStock,
         forecastHorizon: forecastHorizon,
         targetLanguage: language,
@@ -132,7 +133,7 @@ export default function ForecastPage() {
               <SelectContent>
                 {mockSkus.map(sku => (
                   <SelectItem key={sku.value} value={sku.value} className="text-base">
-                    {sku.label} ({t('forecastPage.currentStockLabel')}: {sku.currentStock})
+                    {t(sku.labelKey)} ({t('forecastPage.currentStockLabel')}: {sku.currentStock})
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -231,4 +232,3 @@ export default function ForecastPage() {
     </div>
   );
 }
-
