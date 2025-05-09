@@ -31,12 +31,15 @@ export function SidebarNav() {
       case 'pos sales':
         translationKey = 'nav.posSales';
         break;
-      case 'task manager':
-        translationKey = 'nav.taskManager';
+      case 'tasks manager': // Updated from 'task manager'
+        translationKey = 'nav.tasksManager';
         break;
-      case 'settings':
-        translationKey = 'nav.settings';
+      case 'reports':
+        translationKey = 'nav.reports';
         break;
+      // case 'settings': // Settings is removed
+      //   translationKey = 'nav.settings';
+      //   break;
       default:
         // Fallback for any new items, assuming a pattern like 'nav.title'
         translationKey = `nav.${item.title.toLowerCase().replace(/\s+/g, '')}` as TranslationKey;

@@ -73,7 +73,8 @@ interface NavTranslations {
   analytics: string;
   forecast: string;
   posSales: string; 
-  taskManager: string; 
+  tasksManager: string; // Changed from taskManager
+  reports: string; // New nav item
   settings: string;
 }
 
@@ -339,7 +340,8 @@ export const translations: Record<Locale, Translations> = {
       analytics: 'Analytics',
       forecast: 'Forecast',
       posSales: 'POS Sales',
-      taskManager: 'Task Manager',
+      tasksManager: 'Tasks Manager',
+      reports: 'Reports',
       settings: 'Settings',
     },
     analyticsPage: {
@@ -465,7 +467,7 @@ export const translations: Record<Locale, Translations> = {
       noData: 'No POS data available.',
     },
     tasksPage: {
-      title: 'Task Manager',
+      title: 'Tasks Manager',
       description: 'Track the status and details of all AI-driven tasks.',
       tableHeaders: {
         taskName: 'Task Name',
@@ -605,7 +607,8 @@ export const translations: Record<Locale, Translations> = {
       analytics: '分析',
       forecast: '予測',
       posSales: 'POS販売',
-      taskManager: 'タスク管理',
+      tasksManager: 'タスク管理',
+      reports: 'レポート',
       settings: '設定',
     },
     analyticsPage: {

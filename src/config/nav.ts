@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { LineChart, TrendingUp, ShoppingCart, ListChecks } from 'lucide-react'; 
+import { LineChart, TrendingUp, ShoppingCart, ListChecks, FileText } from 'lucide-react'; 
 
 export interface NavItem {
   title: string;
@@ -25,14 +25,14 @@ export const navItems: NavItem[] = [
     icon: ShoppingCart,
   },
   {
-    title: 'Task Manager', // Key for translation will be 'nav.taskManager'
+    title: 'Tasks Manager', // Key for translation will be 'nav.tasksManager'
     href: '/tasks',
     icon: ListChecks,
   },
-  // { 
-  //   title: 'Settings',
-  //   href: '/settings',
-  //   icon: Settings,
-  // },
+  {
+    title: 'Reports', // Key for translation will be 'nav.reports'
+    href: '/reports', // Assuming a /reports route, can be changed
+    icon: FileText, 
+    disabled: true, // Placeholder, enable when page is ready
+  },
 ];
-
