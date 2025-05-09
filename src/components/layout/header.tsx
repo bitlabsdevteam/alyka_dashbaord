@@ -18,7 +18,7 @@ import {
   DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { LogOut, User, Languages } from 'lucide-react'; 
+import { User, Languages } from 'lucide-react'; 
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useLanguage } from '@/context/language-context'; 
 import { useToast } from '@/hooks/use-toast';
@@ -45,15 +45,16 @@ export function Header() {
     }
   }, [t, language]); // Rerun if language changes for t function
 
-  const handleLogout = () => {
-    localStorage.removeItem('alyka-auth-status');
-    localStorage.removeItem('alyka-user-email');
-    toast({
-      title: t('header.userMenu.logoutSuccessTitle'),
-      description: t('header.userMenu.logoutSuccessDescription'),
-    });
-    router.push('/login');
-  };
+  // Logout function is no longer called from here, it's in the app layout sidebar
+  // const handleLogout = () => {
+  //   localStorage.removeItem('alyka-auth-status');
+  //   localStorage.removeItem('alyka-user-email');
+  //   toast({
+  //     title: t('header.userMenu.logoutSuccessTitle'),
+  //     description: t('header.userMenu.logoutSuccessDescription'),
+  //   });
+  //   router.push('/login');
+  // };
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -100,11 +101,14 @@ export function Header() {
                 </DropdownMenuSubContent>
               </DropdownMenuSub>
               
+              {/* Removed Logout item from here */}
+              {/* 
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>{t('common.logout')}</span>
-              </DropdownMenuItem>
+              </DropdownMenuItem> 
+              */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -112,3 +116,4 @@ export function Header() {
     </header>
   );
 }
+
