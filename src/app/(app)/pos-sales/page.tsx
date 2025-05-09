@@ -1,26 +1,26 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, BarChart, Bar, CartesianGrid } from 'recharts';
+import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
-import { ShoppingCart, DollarSign, TrendingUp, Package } from 'lucide-react'; // Using Package for units
+import { ShoppingCart, DollarSign, Package, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { format, subMonths, startOfMonth } from 'date-fns';
+import type { Translations } from '@/lib/i18n';
 
 interface DetailedPosEntry {
   id: string;
-  monthYear: string; // "Jan 2023"
-  productNameKey: keyof Translations['posSalesPage']['products']; // Key for localization
-  categoryKey: keyof Translations['posSalesPage']['categories'];   // Key for localization
+  monthYear: string; 
+  productNameKey: keyof Translations['posSalesPage']['products']; 
+  categoryKey: keyof Translations['posSalesPage']['categories'];   
   sku: string;
   unitsSold: number;
   revenue: number;
   posName: 'Smartregi';
 }
 
-// Generate mock data from Jan 2023 to May 2025
 const generateMockPosData = (): DetailedPosEntry[] => {
   const data: DetailedPosEntry[] = [];
   const productKeys: Array<keyof Translations['posSalesPage']['products']> = [
@@ -69,17 +69,31 @@ const generateMockPosData = (): DetailedPosEntry[] => {
   return data;
 };
 
-const allDetailedPosData = generateMockPosData();
-
 export default function PosSalesPage() {
   const { t } = useLanguage();
+  const [allDetailedPosData, setAllDetailedPosData] = useState<DetailedPosEntry[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setAllDetailedPosData(generateMockPosData());
+    setIsMounted(true);
+  }, []);
 
   const summaryStats = useMemo(() => {
+    if (allDetailedPosData.length === 0) {
+        return {
+            totalRevenue: 0,
+            totalUnitsSold: 0,
+            revenueChange: 0,
+            averageOrderValue: 0,
+            aovChange: 0,
+        };
+    }
     const totalRevenue = allDetailedPosData.reduce((sum, item) => sum + item.revenue, 0);
     const totalUnitsSold = allDetailedPosData.reduce((sum, item) => sum + item.unitsSold, 0);
     
-    const currentMonthStr = format(new Date(2025, 4, 1), 'MMM yyyy'); // May 2025
-    const prevMonthStr = format(subMonths(new Date(2025, 4, 1), 1), 'MMM yyyy'); // Apr 2025
+    const currentMonthStr = format(new Date(2025, 4, 1), 'MMM yyyy'); 
+    const prevMonthStr = format(subMonths(new Date(2025, 4, 1), 1), 'MMM yyyy');
 
     const currentMonthRevenue = allDetailedPosData
       .filter(item => item.monthYear === currentMonthStr)
@@ -92,9 +106,8 @@ export default function PosSalesPage() {
       ? ((currentMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100 
       : (currentMonthRevenue > 0 ? 100 : 0);
 
-    const averageOrderValue = totalUnitsSold > 0 ? totalRevenue / totalUnitsSold : 0; // Simplified AOV
+    const averageOrderValue = totalUnitsSold > 0 ? totalRevenue / totalUnitsSold : 0;
 
-    // For AOV change, let's mock it or use a simpler logic
      const currentMonthUnits = allDetailedPosData
       .filter(item => item.monthYear === currentMonthStr)
       .reduce((sum, item) => sum + item.unitsSold, 0);
@@ -106,7 +119,6 @@ export default function PosSalesPage() {
     const prevMonthAOV = prevMonthUnits > 0 ? prevMonthRevenue / prevMonthUnits : 0;
     const aovChange = prevMonthAOV > 0 ? ((currentMonthAOV - prevMonthAOV) / prevMonthAOV) * 100 : (currentMonthAOV > 0 ? 100 : 0);
 
-
     return {
       totalRevenue,
       totalUnitsSold,
@@ -114,9 +126,10 @@ export default function PosSalesPage() {
       averageOrderValue,
       aovChange,
     };
-  }, []);
+  }, [allDetailedPosData]);
 
   const monthlySalesChartData = useMemo(() => {
+    if (allDetailedPosData.length === 0) return [];
     const salesByMonth: { [monthYear: string]: { sales: number; units: number } } = {};
     allDetailedPosData.forEach(item => {
       if (!salesByMonth[item.monthYear]) {
@@ -127,18 +140,67 @@ export default function PosSalesPage() {
     });
     return Object.entries(salesByMonth)
       .map(([monthYear, data]) => ({ monthYear, ...data }))
-      .sort((a,b) => new Date(a.monthYear).getTime() - new Date(b.monthYear).getTime()); // Ensure chronological order
-  }, []);
+      .sort((a,b) => new Date(a.monthYear).getTime() - new Date(b.monthYear).getTime());
+  }, [allDetailedPosData, t]);
 
-  const chartConfigSales: ChartConfig = {
+  const chartConfigSales: ChartConfig = useMemo(() => ({
     sales: { label: t('posSalesPage.chart.salesLabel'), color: "hsl(var(--primary))" },
     units: { label: t('posSalesPage.chart.unitsLabel'), color: "hsl(var(--accent))" },
-  };
+  }), [t]);
 
-  // Display only the last 12 months of detailed data for brevity in the table, or a selection.
-  // For this example, let's take a sample from the most recent data.
-  const recentDetailedData = allDetailedPosData.slice(-60).reverse(); // Last 60 entries, newest first
+  const recentDetailedData = useMemo(() => {
+    if (allDetailedPosData.length === 0) return [];
+    return allDetailedPosData.slice(-60).reverse();
+  }, [allDetailedPosData]);
 
+  if (!isMounted) {
+    return (
+      <div className="space-y-6">
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center text-2xl">
+              <ShoppingCart className="mr-2 h-6 w-6 text-primary" />
+              {t('posSalesPage.title')}
+            </CardTitle>
+            <CardDescription>
+              {t('posSalesPage.description')}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <div className="grid gap-6 md:grid-cols-3">
+          {[...Array(3)].map((_, i) => (
+            <Card key={i} className="shadow-md">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <div className="h-4 bg-muted rounded w-3/4 animate-pulse"></div>
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="h-8 bg-muted rounded w-1/2 mb-2 animate-pulse"></div>
+                <div className="h-3 bg-muted rounded w-1/4 animate-pulse"></div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <Card className="shadow-lg">
+          <CardHeader>
+            <div className="h-6 bg-muted rounded w-1/3 animate-pulse"></div>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[350px] w-full bg-muted rounded animate-pulse"></div>
+          </CardContent>
+        </Card>
+         <Card className="shadow-lg">
+          <CardHeader>
+            <div className="h-6 bg-muted rounded w-1/4 animate-pulse"></div>
+          </CardHeader>
+          <CardContent className="max-h-[600px] overflow-y-auto">
+             <div className="h-40 bg-muted rounded animate-pulse"></div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+  
   return (
     <div className="space-y-6">
       <Card className="shadow-lg">
@@ -174,7 +236,6 @@ export default function PosSalesPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{summaryStats.totalUnitsSold.toLocaleString()}</div>
-            {/* Placeholder for units change, as logic is similar to revenue and can be complex */}
              <p className="text-xs text-muted-foreground">{t('posSalesPage.comparison.increasePrefix')}15.5% {t('posSalesPage.comparison.fromLastMonth')}</p>
           </CardContent>
         </Card>
@@ -217,7 +278,7 @@ export default function PosSalesPage() {
         <CardHeader>
           <CardTitle>{t('posSalesPage.detailedSalesData')}</CardTitle>
         </CardHeader>
-        <CardContent className="max-h-[600px] overflow-y-auto"> {/* Increased max-height */}
+        <CardContent className="max-h-[600px] overflow-y-auto">
           {recentDetailedData.length > 0 ? (
             <Table>
               <TableHeader>
@@ -253,3 +314,4 @@ export default function PosSalesPage() {
     </div>
   );
 }
+
