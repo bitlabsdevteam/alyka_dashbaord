@@ -10,6 +10,7 @@ interface CommonTranslations {
   logout: string;
   chat: string; 
   settings: string; // Added for settings
+  saving: string; // Added for saving state
 }
 interface AnalyticsPageTranslations {
   latestTrendTitle: string;
@@ -313,6 +314,7 @@ export const translations: Record<Locale, Translations> = {
       logout: 'Log out',
       chat: 'Chat',
       settings: 'Settings',
+      saving: 'Saving...',
     },
     header: {
       userMenu: {
@@ -456,7 +458,7 @@ export const translations: Record<Locale, Translations> = {
     },
     tasksPage: {
       title: 'Task Manager',
-      description: 'Track the status and details of all AI-driven and manual tasks.',
+      description: 'Track the status and details of all AI-driven tasks.',
       tableHeaders: {
         taskName: 'Task Name',
         description: 'Description',
@@ -577,6 +579,7 @@ export const translations: Record<Locale, Translations> = {
       logout: 'ログアウト',
       chat: 'チャット',
       settings: '設定',
+      saving: '保存中...',
     },
     header: {
       userMenu: {
@@ -720,7 +723,7 @@ export const translations: Record<Locale, Translations> = {
     },
     tasksPage: {
       title: 'タスク管理',
-      description: 'AI駆動および手動タスクのステータスと詳細を追跡します。',
+      description: 'AI駆動タスクのステータスと詳細を追跡します。',
       tableHeaders: {
         taskName: 'タスク名',
         description: '説明',
