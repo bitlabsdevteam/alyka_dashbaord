@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -17,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'TrendVision AI',
+  title: 'Alyka',
   description: 'AI-Powered Trend Analysis and Sales Forecasting for B2B Apparel',
 };
 

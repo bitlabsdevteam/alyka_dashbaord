@@ -19,7 +19,7 @@ export function SidebarNav() {
     <div className="flex flex-col h-full">
       <SidebarGroupLabel className="flex items-center gap-2">
         <Icons.Logo className="w-6 h-6 text-primary" />
-        <span className="text-lg font-semibold">TrendVision AI</span>
+        <span className="text-lg font-semibold">Alyka</span>
       </SidebarGroupLabel>
       <SidebarMenu className="mt-4">
         {navItems.map((item) => (

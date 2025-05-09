@@ -95,7 +95,7 @@ export default function SettingsPage() {
         <CardContent className="space-y-4">
           <div>
             <Label htmlFor="email">Email Address</Label>
-            <Input id="email" type="email" defaultValue="analyst@trendvision.ai" disabled className="mt-1" />
+            <Input id="email" type="email" defaultValue="analyst@alyka.ai" disabled className="mt-1" />
           </div>
           <div>
             <Button variant="outline">Change Password</Button>
