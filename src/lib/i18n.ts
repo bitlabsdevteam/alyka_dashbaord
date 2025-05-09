@@ -155,6 +155,24 @@ interface TasksPageTranslations {
     completed: string;
     failed: string;
   };
+  tasks: {
+    q3TrendReport: {
+      name: string;
+      description: string;
+    };
+    q4Sales: {
+      name: string;
+      description: string;
+    };
+    consumerSentiment: {
+      name: string;
+      description: string;
+    };
+    competitorAnalysis: {
+      name: string;
+      description: string;
+    };
+  };
   noTasks: string;
   notApplicable: string;
 }
@@ -334,6 +352,24 @@ export const translations: Record<Locale, Translations> = {
         completed: 'Completed',
         failed: 'Failed',
       },
+      tasks: {
+        q3TrendReport: {
+          name: 'Generate Q3 Trend Report',
+          description: 'Analyze menswear trends for Fall/Winter 2024 focusing on European market.',
+        },
+        q4Sales: {
+          name: 'Forecast Q4 Sales',
+          description: 'Based on Q3 trend report and historical data for womenswear.',
+        },
+        consumerSentiment: {
+          name: 'Analyze Consumer Sentiment - New Collection',
+          description: 'Process social media data for feedback on the new sustainable line.',
+        },
+        competitorAnalysis: {
+          name: 'Generate Competitor Analysis Report',
+          description: 'Focus on pricing and material usage of top 5 competitors.',
+        },
+      },
       noTasks: 'No tasks found.',
       notApplicable: 'N/A',
     },
@@ -487,8 +523,27 @@ export const translations: Record<Locale, Translations> = {
         completed: '完了',
         failed: '失敗',
       },
+      tasks: {
+        q3TrendReport: {
+          name: 'Q3トレンドレポート生成',
+          description: '2024年秋冬メンズウェアトレンドを分析（ヨーロッパ市場中心）。',
+        },
+        q4Sales: {
+          name: 'Q4売上予測',
+          description: 'Q3トレンドレポートとレディースウェアの過去データに基づく。',
+        },
+        consumerSentiment: {
+          name: '消費者センチメント分析 - 新コレクション',
+          description: '新しいサステナブルラインのフィードバックのためソーシャルメディアデータを処理。',
+        },
+        competitorAnalysis: {
+          name: '競合分析レポート生成',
+          description: '上位5社の競合他社の価格設定と素材使用に焦点を当てる。',
+        },
+      },
       noTasks: 'タスクが見つかりません。',
       notApplicable: '該当なし',
     },
   },
 };
+

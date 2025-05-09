@@ -8,34 +8,44 @@ import type { Task, TaskStatus } from '@/types';
 import { ListChecks, CheckCircle2, XCircle, CircleDotDashed, Hourglass } from 'lucide-react';
 import { format } from 'date-fns';
 import { useLanguage } from '@/context/language-context';
+import type { TranslationKey } from '@/lib/i18n';
 
-const mockTasks: Task[] = [
+interface MockTaskData {
+  id: string;
+  nameKey: TranslationKey;
+  descriptionKey: TranslationKey;
+  status: TaskStatus;
+  createdAt: Date;
+  completedAt?: Date;
+}
+
+const mockTaskData: MockTaskData[] = [
   {
     id: '1',
-    name: 'Generate Q3 Trend Report',
-    description: 'Analyze menswear trends for Fall/Winter 2024 focusing on European market.',
+    nameKey: 'tasksPage.tasks.q3TrendReport.name',
+    descriptionKey: 'tasksPage.tasks.q3TrendReport.description',
     status: 'Completed',
     createdAt: new Date(2023, 10, 15, 9, 30),
     completedAt: new Date(2023, 10, 15, 14, 0),
   },
   {
     id: '2',
-    name: 'Forecast Q4 Sales',
-    description: 'Based on Q3 trend report and historical data for womenswear.',
+    nameKey: 'tasksPage.tasks.q4Sales.name',
+    descriptionKey: 'tasksPage.tasks.q4Sales.description',
     status: 'In Progress',
     createdAt: new Date(2023, 11, 1, 10, 0),
   },
   {
     id: '3',
-    name: 'Analyze Consumer Sentiment - New Collection',
-    description: 'Process social media data for feedback on the new sustainable line.',
+    nameKey: 'tasksPage.tasks.consumerSentiment.name',
+    descriptionKey: 'tasksPage.tasks.consumerSentiment.description',
     status: 'Pending',
     createdAt: new Date(2023, 11, 5, 11, 15),
   },
   {
     id: '4',
-    name: 'Generate Competitor Analysis Report',
-    description: 'Focus on pricing and material usage of top 5 competitors.',
+    nameKey: 'tasksPage.tasks.competitorAnalysis.name',
+    descriptionKey: 'tasksPage.tasks.competitorAnalysis.description',
     status: 'Failed',
     createdAt: new Date(2023, 10, 20, 14, 0),
     completedAt: new Date(2023, 10, 20, 16, 30),
@@ -85,10 +95,13 @@ export default function TasksPage() {
 
   useEffect(() => {
     // Simulate API call
-    // For task names and descriptions, if they were dynamic and from a DB, they'd need separate localization strategies
-    // For this mock, they are hardcoded in English.
-    setTasks(mockTasks);
-  }, []);
+    const localizedTasks: Task[] = mockTaskData.map(taskData => ({
+      ...taskData,
+      name: t(taskData.nameKey),
+      description: t(taskData.descriptionKey),
+    }));
+    setTasks(localizedTasks);
+  }, [t]);
 
   return (
     <div className="space-y-6">
@@ -143,3 +156,4 @@ export default function TasksPage() {
     </div>
   );
 }
+
