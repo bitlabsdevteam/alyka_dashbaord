@@ -37,9 +37,7 @@ export function SidebarNav() {
       case 'reports':
         translationKey = 'nav.reports';
         break;
-      case 'feedback':
-        translationKey = 'nav.feedback';
-        break;
+      // Removed Feedback case
       default:
         // Fallback for any new items, assuming a pattern like 'nav.title'
         translationKey = `nav.${item.title.toLowerCase().replace(/\s+/g, '')}` as TranslationKey;
@@ -81,3 +79,4 @@ export function SidebarNav() {
     </div>
   );
 }
+

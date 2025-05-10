@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { LineChart, TrendingUp, ShoppingCart, ListChecks, FileText, MessageCircleQuestion } from 'lucide-react'; 
+import { LineChart, TrendingUp, ShoppingCart, ListChecks, FileText } from 'lucide-react'; 
 
 export interface NavItem {
   title: string;
@@ -35,9 +35,5 @@ export const navItems: NavItem[] = [
     icon: FileText, 
     disabled: false, 
   },
-  {
-    title: 'Feedback',
-    href: '/feedback',
-    icon: MessageCircleQuestion,
-  }
 ];
+
