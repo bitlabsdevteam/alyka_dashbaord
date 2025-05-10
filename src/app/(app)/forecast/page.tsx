@@ -5,7 +5,7 @@ import { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea'; // Changed from Input
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
@@ -161,14 +161,17 @@ export default function ForecastPage() {
           </div>
           <div>
             <Label htmlFor="yourVoiceCount">{t('forecastPage.yourVoiceCountLabel')}</Label>
-            <Input
+            <Textarea
               id="yourVoiceCount"
-              type="text" // Changed from "number" to "text"
               value={yourVoiceCount}
               onChange={(e) => setYourVoiceCount(e.target.value)}
               placeholder={t('forecastPage.yourVoiceCountPlaceholder')}
-              className="w-full text-base mt-1 h-12 py-3"
+              className="w-full text-base mt-1 min-h-[80px] resize-y" 
+              rows={3}
             />
+            <p className="text-sm text-muted-foreground mt-1">
+              {t('forecastPage.yourVoiceCountDescription')}
+            </p>
           </div>
         </CardContent>
         <CardFooter>
@@ -252,4 +255,3 @@ export default function ForecastPage() {
     </div>
   );
 }
-

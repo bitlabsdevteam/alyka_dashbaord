@@ -69,7 +69,7 @@ interface NavTranslations {
   posSales: string; 
   tasksManager: string;
   reports: string; 
-  settings: string;
+  // settings: string; // Removed as per user request
 }
 
 interface ForecastPageTranslations {
@@ -82,6 +82,7 @@ interface ForecastPageTranslations {
   forecastHorizonValueDisplay: string; 
   yourVoiceCountLabel: string;
   yourVoiceCountPlaceholder: string;
+  yourVoiceCountDescription: string; // Added new key
   generateButton: string;
   generatingButton: string;
   forecastTitle: string; 
@@ -277,6 +278,34 @@ interface SettingsPageTranslations {
       saveErrorDescription: string;
     }
   };
+   posIntegration: { // Added for POS Integration
+    title: string;
+    description: string;
+    enableIntegrationLabel: string;
+    posSystemLabel: string;
+    selectPosSystemPlaceholder: string;
+    squarePos: string;
+    shopifyPos: string;
+    cloverPos: string;
+    otherPos: string;
+    apiKeyLabel: string;
+    apiKeyPlaceholder: string;
+    apiKeyDescription: string;
+    uploadDataLabel: string;
+    uploadDataDescription: string;
+    saveButton: string;
+    testConnectionButton: string;
+    toast: {
+      saveSuccessTitle: string;
+      saveSuccessDescription: string;
+      saveErrorTitle: string;
+      saveErrorDescription: string;
+      connectionSuccessTitle: string;
+      connectionSuccessDescription: string;
+      connectionErrorTitle: string;
+      connectionErrorDescription: string;
+    };
+  };
 }
 
 // This defines the structure of your translations
@@ -337,7 +366,7 @@ export const translations: Record<Locale, Translations> = {
       posSales: 'POS Sales',
       tasksManager: 'Tasks Manager',
       reports: 'Reports',
-      settings: 'Settings',
+      // settings: 'Settings', // Removed as per user request
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Fashion Buzz',
@@ -385,7 +414,8 @@ export const translations: Record<Locale, Translations> = {
       forecastHorizonLabel: 'Forecast Horizon',
       forecastHorizonValueDisplay: 'Next {{count}} months',
       yourVoiceCountLabel: 'Your Voice Count',
-      yourVoiceCountPlaceholder: 'Enter your voice count (optional)',
+      yourVoiceCountPlaceholder: 'Enter your feedback or specific insights for this forecast (e.g., "Expecting high demand due to recent celebrity endorsement", "Local event might boost sales for this item next month").',
+      yourVoiceCountDescription: 'Your feedback will help us to learn better.',
       generateButton: 'Generate Forecast',
       generatingButton: 'Generating Forecast...',
       forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
@@ -575,6 +605,34 @@ export const translations: Record<Locale, Translations> = {
           saveErrorDescription: 'Could not save MCP server settings.',
         }
       },
+      posIntegration: {
+        title: 'POS Integration',
+        description: 'Connect your Point of Sale system to automatically import sales data.',
+        enableIntegrationLabel: 'Enable POS Integration',
+        posSystemLabel: 'Select your POS System',
+        selectPosSystemPlaceholder: 'Choose a POS System',
+        squarePos: 'Square',
+        shopifyPos: 'Shopify',
+        cloverPos: 'Clover',
+        otherPos: 'Other (Manual Upload)',
+        apiKeyLabel: 'API Key',
+        apiKeyPlaceholder: 'Enter API Key',
+        apiKeyDescription: 'You can find your API key in your POS system settings.',
+        uploadDataLabel: 'Upload POS Data',
+        uploadDataDescription: 'Upload a .CSV or .XLSX file containing your sales data.',
+        saveButton: 'Save Integration Settings',
+        testConnectionButton: 'Test Connection',
+        toast: {
+          saveSuccessTitle: 'POS Settings Saved',
+          saveSuccessDescription: 'Your POS integration settings have been updated.',
+          saveErrorTitle: 'Error Saving Settings',
+          saveErrorDescription: 'There was an error saving your POS integration settings.',
+          connectionSuccessTitle: 'Connection Successful',
+          connectionSuccessDescription: 'Successfully connected to your POS system.',
+          connectionErrorTitle: 'Connection Error',
+          connectionErrorDescription: 'Could not connect to your POS system. Check your API key and try again.',
+        },
+      },
     },
   },
   ja: {
@@ -606,7 +664,7 @@ export const translations: Record<Locale, Translations> = {
       posSales: 'POS販売',
       tasksManager: 'タスク管理',
       reports: 'レポート',
-      settings: '設定',
+      // settings: '設定', // Removed as per user request
     },
     analyticsPage: {
       latestTrendTitle: '最新ファッショントレンド',
@@ -654,7 +712,8 @@ export const translations: Record<Locale, Translations> = {
       forecastHorizonLabel: '予測期間',
       forecastHorizonValueDisplay: '今後 {{count}} か月',
       yourVoiceCountLabel: 'あなたの声の数',
-      yourVoiceCountPlaceholder: 'あなたの声の数を入力してください（任意）',
+      yourVoiceCountPlaceholder: 'この予測に関するフィードバックや特定の洞察を入力してください（例：「最近の有名人の推薦により高い需要が見込まれる」、「来月、地元のイベントがこの商品の売上を押し上げる可能性がある」）。',
+      yourVoiceCountDescription: 'あなたのフィードバックは、私たちがより良く学ぶのに役立ちます。',
       generateButton: '予測を生成',
       generatingButton: '予測を生成中...',
       forecastTitle: '{{skuName}}の販売と在庫予測',
@@ -843,6 +902,34 @@ export const translations: Record<Locale, Translations> = {
           saveErrorTitle: '保存に失敗しました',
           saveErrorDescription: 'MCPサーバー設定を保存できませんでした。',
         }
+      },
+      posIntegration: {
+        title: 'POS統合',
+        description: 'POSシステムを接続して、販売データを自動的にインポートします。',
+        enableIntegrationLabel: 'POS統合を有効にする',
+        posSystemLabel: 'POSシステムを選択してください',
+        selectPosSystemPlaceholder: 'POSシステムを選択',
+        squarePos: 'Square',
+        shopifyPos: 'Shopify',
+        cloverPos: 'Clover',
+        otherPos: 'その他（手動アップロード）',
+        apiKeyLabel: 'APIキー',
+        apiKeyPlaceholder: 'APIキーを入力',
+        apiKeyDescription: 'APIキーはPOSシステムの設定で見つけることができます。',
+        uploadDataLabel: 'POSデータをアップロード',
+        uploadDataDescription: '販売データを含む.CSVまたは.XLSXファイルをアップロードします。',
+        saveButton: '統合設定を保存',
+        testConnectionButton: '接続テスト',
+        toast: {
+          saveSuccessTitle: 'POS設定が保存されました',
+          saveSuccessDescription: 'POS統合設定が更新されました。',
+          saveErrorTitle: '設定保存エラー',
+          saveErrorDescription: 'POS統合設定の保存中にエラーが発生しました。',
+          connectionSuccessTitle: '接続成功',
+          connectionSuccessDescription: 'POSシステムへの接続に成功しました。',
+          connectionErrorTitle: '接続エラー',
+          connectionErrorDescription: 'POSシステムに接続できませんでした。APIキーを確認して再試行してください。',
+        },
       },
     },
   },
