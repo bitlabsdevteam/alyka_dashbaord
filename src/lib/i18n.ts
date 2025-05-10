@@ -34,12 +34,6 @@ interface AnalyticsPageTranslations {
   };
   patternTrendsTitle: string; 
   color: { 
-    // Old colors commented out for reference if needed
-    // ceruleanBlue: string;
-    // dustyRose: string;
-    // oliveGreen: string;
-    // mustardYellow: string;
-    // lavender: string;
     deepSapphire: string;
     desertKhaki: string;
     richBurgundy: string;
@@ -73,9 +67,10 @@ interface NavTranslations {
   analytics: string;
   forecast: string;
   posSales: string; 
-  tasksManager: string; // Changed from taskManager
-  reports: string; // New nav item
+  tasksManager: string;
+  reports: string; 
   settings: string;
+  feedback: string; // New nav item
 }
 
 interface ForecastPageTranslations {
@@ -85,7 +80,7 @@ interface ForecastPageTranslations {
   selectSkuPlaceholder: string;
   currentStockLabel: string;
   forecastHorizonLabel: string;
-  forecastHorizonValueDisplay: string; // New key for slider value display
+  forecastHorizonValueDisplay: string; 
   generateButton: string;
   generatingButton: string;
   forecastTitle: string; 
@@ -283,6 +278,28 @@ interface SettingsPageTranslations {
   };
 }
 
+interface FeedbackPageTranslations {
+  title: string;
+  description: string;
+  satisfactionLabel: string;
+  options: {
+    verySatisfied: string;
+    satisfied: string;
+    neutral: string;
+    dissatisfied: string;
+    veryDissatisfied: string;
+  };
+  commentsLabel: string;
+  commentsPlaceholder: string;
+  submitButton: string;
+  toast: {
+    successTitle: string;
+    successDescription: string;
+    errorTitle: string;
+    errorDescriptionEmpty: string;
+  };
+}
+
 
 // This defines the structure of your translations
 export interface Translations {
@@ -297,6 +314,7 @@ export interface Translations {
   loginPage: LoginPageTranslations;
   registerPage: RegisterPageTranslations;
   settingsPage: SettingsPageTranslations; 
+  feedbackPage: FeedbackPageTranslations;
 }
 
 // Helper type for deep key access
@@ -343,6 +361,7 @@ export const translations: Record<Locale, Translations> = {
       tasksManager: 'Tasks Manager',
       reports: 'Reports',
       settings: 'Settings',
+      feedback: 'Feedback',
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Fashion Buzz',
@@ -579,6 +598,27 @@ export const translations: Record<Locale, Translations> = {
         }
       },
     },
+    feedbackPage: {
+      title: 'Feedback',
+      description: 'Help us improve our trend forecasting and platform features. Your input is valuable!',
+      satisfactionLabel: 'How satisfied are you with Alyka overall?',
+      options: {
+        verySatisfied: 'Very Satisfied',
+        satisfied: 'Satisfied',
+        neutral: 'Neutral',
+        dissatisfied: 'Dissatisfied',
+        veryDissatisfied: 'Very Dissatisfied',
+      },
+      commentsLabel: 'Additional Comments or Suggestions',
+      commentsPlaceholder: 'Please share any specific feedback, suggestions for improvement, or features you\'d like to see...',
+      submitButton: 'Submit Feedback',
+      toast: {
+        successTitle: 'Feedback Received',
+        successDescription: 'Thank you for your feedback! We appreciate your input.',
+        errorTitle: 'Feedback Incomplete',
+        errorDescriptionEmpty: 'Please provide either a satisfaction rating or a comment.',
+      },
+    },
   },
   ja: {
     common: {
@@ -610,6 +650,7 @@ export const translations: Record<Locale, Translations> = {
       tasksManager: 'タスク管理',
       reports: 'レポート',
       settings: '設定',
+      feedback: 'フィードバック',
     },
     analyticsPage: {
       latestTrendTitle: '最新ファッショントレンド',
@@ -844,6 +885,27 @@ export const translations: Record<Locale, Translations> = {
           saveErrorTitle: '保存に失敗しました',
           saveErrorDescription: 'MCPサーバー設定を保存できませんでした。',
         }
+      },
+    },
+    feedbackPage: {
+      title: 'フィードバック',
+      description: 'トレンド予測とプラットフォーム機能の改善にご協力ください。あなたの意見は貴重です！',
+      satisfactionLabel: 'Alyka全体に対する満足度はいかがですか？',
+      options: {
+        verySatisfied: '非常に満足',
+        satisfied: '満足',
+        neutral: '普通',
+        dissatisfied: '不満',
+        veryDissatisfied: '非常に不満',
+      },
+      commentsLabel: '追加のコメントや提案',
+      commentsPlaceholder: '具体的なフィードバック、改善のための提案、または希望する機能などをご記入ください...',
+      submitButton: 'フィードバックを送信',
+      toast: {
+        successTitle: 'フィードバック受信',
+        successDescription: 'フィードバックありがとうございます！貴重なご意見に感謝いたします。',
+        errorTitle: 'フィードバック未完了',
+        errorDescriptionEmpty: '満足度評価またはコメントのいずれかを入力してください。',
       },
     },
   },
