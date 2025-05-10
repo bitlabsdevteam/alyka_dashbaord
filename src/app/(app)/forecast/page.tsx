@@ -167,7 +167,7 @@ export default function ForecastPage() {
               value={yourVoiceCount}
               onChange={(e) => setYourVoiceCount(e.target.value)}
               placeholder={t('forecastPage.yourVoiceCountPlaceholder')}
-              className="w-full text-base mt-1"
+              className="w-full text-base mt-1 h-12 py-3"
             />
           </div>
         </CardContent>
@@ -252,3 +252,4 @@ export default function ForecastPage() {
     </div>
   );
 }
+
