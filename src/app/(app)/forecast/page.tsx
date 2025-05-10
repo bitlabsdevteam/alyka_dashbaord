@@ -163,7 +163,7 @@ export default function ForecastPage() {
             <Label htmlFor="yourVoiceCount">{t('forecastPage.yourVoiceCountLabel')}</Label>
             <Input
               id="yourVoiceCount"
-              type="number"
+              type="text" // Changed from "number" to "text"
               value={yourVoiceCount}
               onChange={(e) => setYourVoiceCount(e.target.value)}
               placeholder={t('forecastPage.yourVoiceCountPlaceholder')}
