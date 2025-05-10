@@ -5,6 +5,7 @@ import { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
@@ -35,6 +36,7 @@ export default function ForecastPage() {
   const { t, language } = useLanguage();
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
   const [forecastMonths, setForecastMonths] = useState<number>(3); // Default to 3 months
+  const [yourVoiceCount, setYourVoiceCount] = useState<string>('');
   const { toast } = useToast();
 
   const { mutate, data: salesForecast, isPending, error } = useMutation<ForecastSalesOutput, Error, ForecastSalesInput>({
@@ -70,6 +72,7 @@ export default function ForecastPage() {
         currentStock: skuDetails.currentStock,
         forecastHorizon: `next ${forecastMonths} months`,
         targetLanguage: language,
+        // yourVoiceCount could be passed here if needed by the AI flow
       });
     }
   };
@@ -155,6 +158,17 @@ export default function ForecastPage() {
                 {t('forecastPage.forecastHorizonValueDisplay', { count: forecastMonths })}
               </span>
             </div>
+          </div>
+          <div>
+            <Label htmlFor="yourVoiceCount">{t('forecastPage.yourVoiceCountLabel')}</Label>
+            <Input
+              id="yourVoiceCount"
+              type="number"
+              value={yourVoiceCount}
+              onChange={(e) => setYourVoiceCount(e.target.value)}
+              placeholder={t('forecastPage.yourVoiceCountPlaceholder')}
+              className="w-full text-base mt-1"
+            />
           </div>
         </CardContent>
         <CardFooter>

@@ -80,6 +80,8 @@ interface ForecastPageTranslations {
   currentStockLabel: string;
   forecastHorizonLabel: string;
   forecastHorizonValueDisplay: string; 
+  yourVoiceCountLabel: string;
+  yourVoiceCountPlaceholder: string;
   generateButton: string;
   generatingButton: string;
   forecastTitle: string; 
@@ -382,6 +384,8 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: 'Current Stock',
       forecastHorizonLabel: 'Forecast Horizon',
       forecastHorizonValueDisplay: 'Next {{count}} months',
+      yourVoiceCountLabel: 'Your Voice Count',
+      yourVoiceCountPlaceholder: 'Enter your voice count (optional)',
       generateButton: 'Generate Forecast',
       generatingButton: 'Generating Forecast...',
       forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
@@ -649,6 +653,8 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: '現在の在庫',
       forecastHorizonLabel: '予測期間',
       forecastHorizonValueDisplay: '今後 {{count}} か月',
+      yourVoiceCountLabel: 'あなたの声の数',
+      yourVoiceCountPlaceholder: 'あなたの声の数を入力してください（任意）',
       generateButton: '予測を生成',
       generatingButton: '予測を生成中...',
       forecastTitle: '{{skuName}}の販売と在庫予測',
@@ -841,4 +847,3 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
-
