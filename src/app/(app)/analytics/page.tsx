@@ -66,6 +66,18 @@ const mockSilhouetteData = [
   { monthYear: 'Feb 2024', aLine: 65, sheath: 20, oversized: 75, bodycon: 35, asymmetrical: 55 },
   { monthYear: 'Mar 2024', aLine: 62, sheath: 22, oversized: 78, bodycon: 38, asymmetrical: 58 },
   { monthYear: 'Apr 2024', aLine: 60, sheath: 25, oversized: 80, bodycon: 40, asymmetrical: 60 },
+  { monthYear: 'May 2024', aLine: 58, sheath: 28, oversized: 82, bodycon: 42, asymmetrical: 62 },
+  { monthYear: 'Jun 2024', aLine: 55, sheath: 30, oversized: 85, bodycon: 45, asymmetrical: 65 },
+  { monthYear: 'Jul 2024', aLine: 52, sheath: 32, oversized: 88, bodycon: 48, asymmetrical: 68 },
+  { monthYear: 'Aug 2024', aLine: 50, sheath: 35, oversized: 90, bodycon: 50, asymmetrical: 70 },
+  { monthYear: 'Sep 2024', aLine: 48, sheath: 38, oversized: 92, bodycon: 52, asymmetrical: 72 },
+  { monthYear: 'Oct 2024', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
+  { monthYear: 'Nov 2024', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
+  { monthYear: 'Dec 2024', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
+  { monthYear: 'Jan 2025', aLine: 38, sheath: 48, oversized: 102, bodycon: 62, asymmetrical: 82 },
+  { monthYear: 'Feb 2025', aLine: 35, sheath: 50, oversized: 105, bodycon: 65, asymmetrical: 85 },
+  { monthYear: 'Mar 2025', aLine: 32, sheath: 52, oversized: 108, bodycon: 68, asymmetrical: 88 },
+  { monthYear: 'Apr 2025', aLine: 30, sheath: 55, oversized: 110, bodycon: 70, asymmetrical: 90 },
 ];
 
 
@@ -96,6 +108,18 @@ const mockPatternLineData = [
   { monthYear: 'Feb 2024', floral: 63, geometric: 55, stripes: 71, animalPrints: 55, abstract: 63 },
   { monthYear: 'Mar 2024', floral: 67, geometric: 59, stripes: 75, animalPrints: 59, abstract: 67 },
   { monthYear: 'Apr 2024', floral: 70, geometric: 62, stripes: 78, animalPrints: 63, abstract: 70 },
+  { monthYear: 'May 2024', floral: 72, geometric: 65, stripes: 80, animalPrints: 65, abstract: 72 },
+  { monthYear: 'Jun 2024', floral: 75, geometric: 68, stripes: 83, animalPrints: 68, abstract: 75 },
+  { monthYear: 'Jul 2024', floral: 78, geometric: 72, stripes: 86, animalPrints: 71, abstract: 78 },
+  { monthYear: 'Aug 2024', floral: 80, geometric: 75, stripes: 89, animalPrints: 74, abstract: 80 },
+  { monthYear: 'Sep 2024', floral: 78, geometric: 78, stripes: 92, animalPrints: 77, abstract: 78 }, // Floral starts slight dip
+  { monthYear: 'Oct 2024', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 }, // Floral continues dip, Abstract starts dip
+  { monthYear: 'Nov 2024', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
+  { monthYear: 'Dec 2024', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
+  { monthYear: 'Jan 2025', floral: 64, geometric: 92, stripes: 102, animalPrints: 89, abstract: 64 }, // Downtrend for Floral & Abstract
+  { monthYear: 'Feb 2025', floral: 60, geometric: 95, stripes: 105, animalPrints: 92, abstract: 60 },
+  { monthYear: 'Mar 2025', floral: 55, geometric: 98, stripes: 108, animalPrints: 95, abstract: 55 },
+  { monthYear: 'Apr 2025', floral: 50, geometric: 100, stripes: 110, animalPrints: 98, abstract: 50 },
 ];
 
 
@@ -362,3 +386,4 @@ export default function AnalyticsPage() {
     </div>
   );
 }
+
