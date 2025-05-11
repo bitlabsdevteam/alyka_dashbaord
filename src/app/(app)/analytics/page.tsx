@@ -233,7 +233,7 @@ export default function AnalyticsPage() {
                   tickMargin={8} 
                   interval="preserveStartEnd"
                   minTickGap={20}
-                  tickFormatter={(value) => value.substring(0,3)}
+                  // tickFormatter removed to show full "Month Year"
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
@@ -292,7 +292,7 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Palette className="mr-2 h-5 w-5 text-primary" />
-              {t('analyticsPage.colorTrendsTitle')}
+              {t('analyticsPage.colorTrendsTitle')} - 2025
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -328,7 +328,7 @@ export default function AnalyticsPage() {
                   tickMargin={8} 
                   interval="preserveStartEnd"
                   minTickGap={20}
-                  tickFormatter={(value) => value.substring(0,3)}
+                  // tickFormatter removed to show full "Month Year"
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
