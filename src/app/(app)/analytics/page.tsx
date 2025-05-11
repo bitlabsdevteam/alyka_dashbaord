@@ -80,22 +80,22 @@ const mockColorData = [
 const COLORS = ['#1E3A8A', '#BEB7A4', '#831843', '#166534', '#E2725B']; 
 
 const mockPatternLineData = [
-  { monthYear: 'Jan 2023', floral: 40, geometric: 35, stripes: 25, animalPrints: 15, abstract: 20 },
-  { monthYear: 'Feb 2023', floral: 42, geometric: 33, stripes: 28, animalPrints: 18, abstract: 22 },
-  { monthYear: 'Mar 2023', floral: 45, geometric: 30, stripes: 30, animalPrints: 20, abstract: 25 },
-  { monthYear: 'Apr 2023', floral: 48, geometric: 28, stripes: 32, animalPrints: 22, abstract: 28 },
-  { monthYear: 'May 2023', floral: 50, geometric: 25, stripes: 35, animalPrints: 25, abstract: 30 },
-  { monthYear: 'Jun 2023', floral: 52, geometric: 22, stripes: 38, animalPrints: 28, abstract: 32 },
-  { monthYear: 'Jul 2023', floral: 55, geometric: 20, stripes: 40, animalPrints: 30, abstract: 35 },
-  { monthYear: 'Aug 2023', floral: 53, geometric: 23, stripes: 42, animalPrints: 33, abstract: 33 },
-  { monthYear: 'Sep 2023', floral: 50, geometric: 25, stripes: 45, animalPrints: 35, abstract: 30 },
-  { monthYear: 'Oct 2023', floral: 48, geometric: 28, stripes: 48, animalPrints: 38, abstract: 28 },
-  { monthYear: 'Nov 2023', floral: 45, geometric: 30, stripes: 50, animalPrints: 40, abstract: 25 },
-  { monthYear: 'Dec 2023', floral: 42, geometric: 32, stripes: 52, animalPrints: 42, abstract: 22 },
-  { monthYear: 'Jan 2024', floral: 40, geometric: 35, stripes: 55, animalPrints: 45, abstract: 20 },
-  { monthYear: 'Feb 2024', floral: 38, geometric: 38, stripes: 58, animalPrints: 48, abstract: 18 },
-  { monthYear: 'Mar 2024', floral: 40, geometric: 40, stripes: 60, animalPrints: 50, abstract: 20 },
-  { monthYear: 'Apr 2024', floral: 42, geometric: 38, stripes: 62, animalPrints: 52, abstract: 22 },
+  { monthYear: 'Jan 2023', floral: 20, geometric: 15, stripes: 25, animalPrints: 10, abstract: 18 },
+  { monthYear: 'Feb 2023', floral: 22, geometric: 17, stripes: 28, animalPrints: 12, abstract: 20 },
+  { monthYear: 'Mar 2023', floral: 25, geometric: 20, stripes: 32, animalPrints: 15, abstract: 23 },
+  { monthYear: 'Apr 2023', floral: 28, geometric: 22, stripes: 35, animalPrints: 18, abstract: 27 },
+  { monthYear: 'May 2023', floral: 32, geometric: 25, stripes: 39, animalPrints: 22, abstract: 30 },
+  { monthYear: 'Jun 2023', floral: 35, geometric: 28, stripes: 42, animalPrints: 25, abstract: 34 },
+  { monthYear: 'Jul 2023', floral: 39, geometric: 32, stripes: 46, animalPrints: 29, abstract: 38 },
+  { monthYear: 'Aug 2023', floral: 42, geometric: 35, stripes: 49, animalPrints: 33, abstract: 41 },
+  { monthYear: 'Sep 2023', floral: 46, geometric: 38, stripes: 53, animalPrints: 37, abstract: 45 },
+  { monthYear: 'Oct 2023', floral: 50, geometric: 42, stripes: 57, animalPrints: 41, abstract: 49 },
+  { monthYear: 'Nov 2023', floral: 53, geometric: 45, stripes: 60, animalPrints: 45, abstract: 52 },
+  { monthYear: 'Dec 2023', floral: 57, geometric: 48, stripes: 64, animalPrints: 48, abstract: 56 },
+  { monthYear: 'Jan 2024', floral: 60, geometric: 52, stripes: 68, animalPrints: 52, abstract: 60 },
+  { monthYear: 'Feb 2024', floral: 63, geometric: 55, stripes: 71, animalPrints: 55, abstract: 63 },
+  { monthYear: 'Mar 2024', floral: 67, geometric: 59, stripes: 75, animalPrints: 59, abstract: 67 },
+  { monthYear: 'Apr 2024', floral: 70, geometric: 62, stripes: 78, animalPrints: 63, abstract: 70 },
 ];
 
 
@@ -362,4 +362,3 @@ export default function AnalyticsPage() {
     </div>
   );
 }
-
