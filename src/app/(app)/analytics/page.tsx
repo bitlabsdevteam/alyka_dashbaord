@@ -40,7 +40,7 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ src, alt, aiHint,
         const seed = alt.replace(/\s+/g, '-').toLowerCase().slice(0, 20);
         setCurrentSrc(`https://picsum.photos/seed/${seed}/200/300`); // Updated picsum dimensions
       }}
-      onLoadingComplete={() => setIsLoading(false)}
+      onLoad={() => setIsLoading(false)}
       data-ai-hint={aiHint || alt.split(' ').slice(0, 2).join(' ').toLowerCase()}
       priority={priority}
       sizes="200px" // Updated sizes attribute
