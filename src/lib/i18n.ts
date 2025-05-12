@@ -8,9 +8,9 @@ interface CommonTranslations {
   japanese: string;
   profile: string;
   logout: string;
-  chat: string; 
-  settings: string; 
-  saving: string; 
+  chat: string;
+  settings: string;
+  saving: string;
 }
 interface AnalyticsPageTranslations {
   latestTrendTitle: string;
@@ -20,41 +20,41 @@ interface AnalyticsPageTranslations {
     paragraph1: string;
     paragraph2: string;
   };
-  trendPopularityTitle: string; 
+  trendPopularityTitle: string;
   colorTrendsTitle: string;
-  popularity: string; 
-  colorPopularity: string; 
-  silhouettePopularityTitle: string; 
-  silhouette: { 
+  popularity: string;
+  colorPopularity: string;
+  silhouettePopularityTitle: string;
+  silhouette: {
     aLine: string;
     sheath: string;
     oversized: string;
     bodycon: string;
     asymmetrical: string;
   };
-  patternTrendsTitle: string; 
-  color: { 
+  patternTrendsTitle: string;
+  color: {
     deepSapphire: string;
     desertKhaki: string;
     richBurgundy: string;
     forestGreen: string;
     warmTerracotta: string;
   };
-  pattern: { 
+  pattern: {
     floral: string;
     geometric: string;
     stripes: string;
     polkaDots: string;
     abstract: string;
-    animalPrints: string; 
+    animalPrints: string;
   };
 }
 
 interface HeaderTranslations {
   userMenu: {
     label: string;
-    greeting: string; 
-    email: string; 
+    greeting: string;
+    email: string;
     defaultGreeting: string;
     testUserGreeting: string;
     avatarAlt: string;
@@ -66,9 +66,9 @@ interface HeaderTranslations {
 interface NavTranslations {
   analytics: string;
   forecast: string;
-  posSales: string; 
+  posSales: string;
   tasksManager: string;
-  reports: string; 
+  reports: string;
 }
 
 interface ForecastPageTranslations {
@@ -78,29 +78,29 @@ interface ForecastPageTranslations {
   selectSkuPlaceholder: string;
   currentStockLabel: string;
   forecastHorizonLabel: string;
-  forecastHorizonValueDisplay: string; 
-  yourVoiceCountLabel: string; // This is the key for "Ground Voice"
+  forecastHorizonValueDisplay: string;
+  yourVoiceCountLabel: string;
   yourVoiceCountPlaceholder: string;
-  yourVoiceCountDescription: string; 
+  yourVoiceCountDescription: string;
   generateButton: string;
   generatingButton: string;
-  forecastTitle: string; 
+  forecastTitle: string;
   currentStockValueLabel: string;
   chart: {
-    demandTitle: string; 
-    currentLabel: string; 
-    salesLabel: string; 
+    demandTitle: string;
+    currentLabel: string;
+    salesLabel: string;
     currentStockLabel: string;
-    yAxisUnitsLabel: string; 
-    stockLabel: string; 
-    initialPeriodLabel: string; 
+    yAxisUnitsLabel: string;
+    stockLabel: string;
+    initialPeriodLabel: string;
   };
   reasoningTitle: string;
   recommendationsTitle: string;
   errorAlertTitle: string;
   toast: {
     successTitle: string;
-    successDescription: string; 
+    successDescription: string;
     errorTitle: string;
     errorDescription: string;
     skuMissingTitle: string;
@@ -150,13 +150,13 @@ interface PosSalesPageTranslations {
     accessories: string;
     footwear: string;
   };
-  products: { 
-    woolCoat: string; 
-    silkBlouse: string; 
-    denimJeans: string; 
-    summerDress: string; 
-    leatherBag: string; 
-    sneakers: string; 
+  products: {
+    woolCoat: string;
+    silkBlouse: string;
+    denimJeans: string;
+    summerDress: string;
+    leatherBag: string;
+    sneakers: string;
   };
   noData: string;
 }
@@ -199,7 +199,7 @@ interface TasksPageTranslations {
   notApplicable: string;
 }
 
-interface ChatbotTranslations { 
+interface ChatbotTranslations {
   title: string;
   description: string;
   greeting: string;
@@ -211,8 +211,8 @@ interface ChatbotTranslations {
 interface LoginPageTranslations {
   title: string;
   description: string;
-  usernameLabel: string; 
-  usernamePlaceholder: string; 
+  usernameLabel: string;
+  usernamePlaceholder: string;
   emailLabel: string;
   emailPlaceholder: string;
   emailInvalid: string;
@@ -253,7 +253,7 @@ interface SettingsPageTranslations {
     title: string;
     description: string;
     currentMethod: string;
-    cardNumberEndingIn: string; 
+    cardNumberEndingIn: string;
     noPaymentMethod: string;
     updateButton: string;
     billingHistoryButton: string;
@@ -277,7 +277,7 @@ interface SettingsPageTranslations {
       saveErrorDescription: string;
     }
   };
-   posIntegration: { 
+   posIntegration: {
     title: string;
     description: string;
     enableIntegrationLabel: string;
@@ -316,10 +316,10 @@ export interface Translations {
   forecastPage: ForecastPageTranslations;
   posSalesPage: PosSalesPageTranslations;
   tasksPage: TasksPageTranslations;
-  chatbot: ChatbotTranslations; 
+  chatbot: ChatbotTranslations;
   loginPage: LoginPageTranslations;
   registerPage: RegisterPageTranslations;
-  settingsPage: SettingsPageTranslations; 
+  settingsPage: SettingsPageTranslations;
 }
 
 // Helper type for deep key access
@@ -350,8 +350,8 @@ export const translations: Record<Locale, Translations> = {
     header: {
       userMenu: {
         label: 'User Menu',
-        greeting: 'Analyst User', 
-        email: 'analyst@alyka.ai', 
+        greeting: 'Analyst User',
+        email: 'analyst@alyka.ai',
         defaultGreeting: 'User',
         testUserGreeting: 'Test User',
         avatarAlt: 'User avatar',
@@ -377,7 +377,7 @@ export const translations: Record<Locale, Translations> = {
       trendPopularityTitle: 'Key Trend Popularity Over Time',
       colorTrendsTitle: 'Color Trends',
       popularity: 'Popularity',
-      colorPopularity: 'Popularity', 
+      colorPopularity: 'Popularity',
       silhouettePopularityTitle: 'Silhouette Popularity Trends',
       silhouette: {
         aLine: 'A-Line',
@@ -411,7 +411,7 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: 'Current Stock',
       forecastHorizonLabel: 'Forecast Horizon',
       forecastHorizonValueDisplay: 'Next {{count}} months',
-      yourVoiceCountLabel: 'Ground Voice', // Changed from 'Your Voice Count'
+      yourVoiceCountLabel: 'Ground Voice',
       yourVoiceCountPlaceholder: 'Enter your feedback or specific insights for this forecast (e.g., "Expecting high demand due to recent celebrity endorsement", "Local event might boost sales for this item next month").',
       yourVoiceCountDescription: 'Your feedback will help us to learn better.',
       generateButton: 'Generate Forecast',
@@ -539,7 +539,7 @@ export const translations: Record<Locale, Translations> = {
     loginPage: {
       title: 'Login',
       description: 'Access your AI-powered fashion analytics dashboard.',
-      usernameLabel: 'Username (Legacy)', 
+      usernameLabel: 'Username (Legacy)',
       usernamePlaceholder: 'Enter your username (Legacy)',
       emailLabel: 'Email',
       emailPlaceholder: 'Enter your email',
@@ -647,8 +647,8 @@ export const translations: Record<Locale, Translations> = {
     header: {
       userMenu: {
         label: 'ユーザーメニュー',
-        greeting: 'アナリストユーザー', 
-        email: 'analyst@alyka.ai', 
+        greeting: 'アナリストユーザー',
+        email: 'analyst@alyka.ai',
         defaultGreeting: 'ユーザー',
         testUserGreeting: 'テストユーザー',
         avatarAlt: 'ユーザーアバター',
@@ -708,7 +708,7 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: '現在の在庫',
       forecastHorizonLabel: '予測期間',
       forecastHorizonValueDisplay: '今後 {{count}} か月',
-      yourVoiceCountLabel: '現場の声', // Changed from 'あなたの声の数'
+      yourVoiceCountLabel: '現場の声',
       yourVoiceCountPlaceholder: 'この予測に関するフィードバックや特定の洞察を入力してください（例：「最近の有名人の推薦により高い需要が見込まれる」、「来月、地元のイベントがこの商品の売上を押し上げる可能性がある」）。',
       yourVoiceCountDescription: 'あなたのフィードバックは、私たちがより良く学ぶのに役立ちます。',
       generateButton: '予測を生成',
@@ -836,7 +836,7 @@ export const translations: Record<Locale, Translations> = {
     loginPage: {
       title: 'ログイン',
       description: 'AI搭載のファッション分析ダッシュボードにアクセスします。',
-      usernameLabel: 'ユーザー名（旧）', 
+      usernameLabel: 'ユーザー名（旧）',
       usernamePlaceholder: 'ユーザー名を入力してください（旧）',
       emailLabel: 'メールアドレス',
       emailPlaceholder: 'メールアドレスを入力してください',
@@ -931,4 +931,3 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
-

@@ -1,11 +1,11 @@
 // src/app/(app)/forecast/page.tsx
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea'; // Changed from Input
+import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
@@ -16,11 +16,12 @@ import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb } from 'lucide-
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
-import type { TranslationKey } from '@/lib/i18n';
+import type { TranslationKey, Translations } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
 
 interface SkuItem {
   value: string;
-  labelKey: TranslationKey; 
+  labelKey: TranslationKey;
   currentStock: number;
 }
 
@@ -35,9 +36,28 @@ const mockSkus: SkuItem[] = [
 export default function ForecastPage() {
   const { t, language } = useLanguage();
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
-  const [forecastMonths, setForecastMonths] = useState<number>(3); // Default to 3 months
+  const [forecastMonths, setForecastMonths] = useState<number>(3);
   const [yourVoiceCount, setYourVoiceCount] = useState<string>('');
   const { toast } = useToast();
+
+  const [groundVoiceLabelText, setGroundVoiceLabelText] = useState<string | null>(null);
+  const [skuLabelText, setSkuLabelText] = useState<string | null>(null);
+  const [selectSkuPlaceholderText, setSelectSkuPlaceholderText] = useState<string | null>(null);
+  const [currentStockLabelText, setCurrentStockLabelText] = useState<string | null>(null);
+  const [forecastHorizonLabelText, setForecastHorizonLabelText] = useState<string | null>(null);
+  const [yourVoiceCountPlaceholderText, setYourVoiceCountPlaceholderText] = useState<string | null>(null);
+  const [yourVoiceCountDescriptionText, setYourVoiceCountDescriptionText] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    setGroundVoiceLabelText(t('forecastPage.yourVoiceCountLabel'));
+    setSkuLabelText(t('forecastPage.skuLabel'));
+    setSelectSkuPlaceholderText(t('forecastPage.selectSkuPlaceholder'));
+    setCurrentStockLabelText(t('forecastPage.currentStockLabel'));
+    setForecastHorizonLabelText(t('forecastPage.forecastHorizonLabel'));
+    setYourVoiceCountPlaceholderText(t('forecastPage.yourVoiceCountPlaceholder'));
+    setYourVoiceCountDescriptionText(t('forecastPage.yourVoiceCountDescription'));
+  }, [t]);
 
   const { mutate, data: salesForecast, isPending, error } = useMutation<ForecastSalesOutput, Error, ForecastSalesInput>({
     mutationFn: forecastSales,
@@ -68,11 +88,10 @@ export default function ForecastPage() {
     const skuDetails = mockSkus.find(s => s.value === selectedSkuValue);
     if (skuDetails) {
       mutate({
-        skuName: t(skuDetails.labelKey), 
+        skuName: t(skuDetails.labelKey),
         currentStock: skuDetails.currentStock,
         forecastHorizon: `next ${forecastMonths} months`,
         targetLanguage: language,
-        // yourVoiceCount could be passed here if needed by the AI flow
       });
     }
   };
@@ -85,7 +104,7 @@ export default function ForecastPage() {
 
     dataForChart.push({
       period: t('forecastPage.chart.initialPeriodLabel'),
-      sales: 0, 
+      sales: 0,
       stock: salesForecast.currentStock,
     });
 
@@ -94,13 +113,13 @@ export default function ForecastPage() {
       dataForChart.push({
         period: dataPoint.period,
         sales: salesForPeriod,
-        stock: dataPoint.forecastedStock, 
+        stock: dataPoint.forecastedStock,
       });
       previousStock = dataPoint.forecastedStock;
     }
     return dataForChart;
   }, [salesForecast, t]);
-  
+
   const chartConfig: ChartConfig = {
     sales: {
       label: t('forecastPage.chart.salesLabel'),
@@ -127,22 +146,22 @@ export default function ForecastPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor="skuSelect">{t('forecastPage.skuLabel')}</Label>
+            <Label htmlFor="skuSelect">{skuLabelText !== null ? skuLabelText : translations[language].forecastPage.skuLabel}</Label>
             <Select value={selectedSkuValue} onValueChange={setSelectedSkuValue}>
               <SelectTrigger id="skuSelect" className="w-full text-base">
-                <SelectValue placeholder={t('forecastPage.selectSkuPlaceholder')} />
+                <SelectValue placeholder={selectSkuPlaceholderText !== null ? selectSkuPlaceholderText : translations[language].forecastPage.selectSkuPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {mockSkus.map(sku => (
                   <SelectItem key={sku.value} value={sku.value} className="text-base">
-                    {t(sku.labelKey)} ({t('forecastPage.currentStockLabel')}: {sku.currentStock})
+                    {t(sku.labelKey)} ({currentStockLabelText !== null ? currentStockLabelText : translations[language].forecastPage.currentStockLabel}: {sku.currentStock})
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="forecastHorizonSlider">{t('forecastPage.forecastHorizonLabel')}</Label>
+            <Label htmlFor="forecastHorizonSlider">{forecastHorizonLabelText !== null ? forecastHorizonLabelText : translations[language].forecastPage.forecastHorizonLabel}</Label>
             <div className="flex items-center space-x-4 pt-2">
               <Slider
                 id="forecastHorizonSlider"
@@ -152,7 +171,7 @@ export default function ForecastPage() {
                 step={1}
                 onValueChange={(value) => setForecastMonths(value[0])}
                 className="flex-grow"
-                aria-label={t('forecastPage.forecastHorizonLabel')}
+                aria-label={forecastHorizonLabelText !== null ? forecastHorizonLabelText : translations[language].forecastPage.forecastHorizonLabel}
               />
               <span className="text-base w-32 text-right tabular-nums">
                 {t('forecastPage.forecastHorizonValueDisplay', { count: forecastMonths })}
@@ -160,17 +179,19 @@ export default function ForecastPage() {
             </div>
           </div>
           <div>
-            <Label htmlFor="yourVoiceCount">{t('forecastPage.yourVoiceCountLabel')}</Label>
+            <Label htmlFor="yourVoiceCount">
+              {groundVoiceLabelText !== null ? groundVoiceLabelText : translations[language].forecastPage.yourVoiceCountLabel}
+            </Label>
             <Textarea
               id="yourVoiceCount"
               value={yourVoiceCount}
               onChange={(e) => setYourVoiceCount(e.target.value)}
-              placeholder={t('forecastPage.yourVoiceCountPlaceholder')}
-              className="w-full text-base mt-1 min-h-[80px] resize-y" 
+              placeholder={yourVoiceCountPlaceholderText !== null ? yourVoiceCountPlaceholderText : translations[language].forecastPage.yourVoiceCountPlaceholder}
+              className="w-full text-base mt-1 min-h-[80px] resize-y"
               rows={3}
             />
             <p className="text-sm text-muted-foreground mt-1">
-              {t('forecastPage.yourVoiceCountDescription')}
+              {yourVoiceCountDescriptionText !== null ? yourVoiceCountDescriptionText : translations[language].forecastPage.yourVoiceCountDescription}
             </p>
           </div>
         </CardContent>
@@ -212,28 +233,28 @@ export default function ForecastPage() {
                 <LineChart data={chartData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                   <CartesianGrid vertical={false} strokeDasharray="3 3" />
                   <XAxis dataKey="period" tickLine={false} axisLine={false} tickMargin={8} />
-                  <YAxis 
-                    tickLine={false} 
-                    axisLine={false} 
+                  <YAxis
+                    tickLine={false}
+                    axisLine={false}
                     tickMargin={8}
                     label={{ value: t('forecastPage.chart.yAxisUnitsLabel'), angle: -90, position: 'insideLeft', offset: 0, style: { textAnchor: 'middle', fill: 'hsl(var(--muted-foreground))' } }}
                   />
                   <RechartsTooltip content={<ChartTooltipContent indicator="dot" />} />
                   <Legend />
-                  <Line 
-                    type="monotone" 
+                  <Line
+                    type="monotone"
                     dataKey="sales"
-                    stroke="var(--color-sales)" 
-                    strokeWidth={2} 
+                    stroke="var(--color-sales)"
+                    strokeWidth={2}
                     dot={{ r: 4, fill: "var(--color-sales)"}}
                     activeDot={{ r: 6 }}
                     name={t('forecastPage.chart.salesLabel')}
                   />
-                  <Line 
-                    type="monotone" 
+                  <Line
+                    type="monotone"
                     dataKey="stock"
-                    stroke="var(--color-stock)" 
-                    strokeWidth={2} 
+                    stroke="var(--color-stock)"
+                    strokeWidth={2}
                     dot={{ r: 4, fill: "var(--color-stock)"}}
                     activeDot={{ r: 6 }}
                     name={t('forecastPage.chart.stockLabel')}
