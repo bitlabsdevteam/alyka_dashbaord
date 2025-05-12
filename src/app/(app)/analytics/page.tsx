@@ -6,10 +6,11 @@ import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Palette, Newspaper, TrendingUp, Layers } from 'lucide-react'; 
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
-import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import type { TranslationKey } from '@/lib/i18n';
 
 // Component for rendering images with a fallback to picsum.photos
 interface ImageWithFallbackProps {
@@ -38,12 +39,12 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ src, alt, aiHint,
         setIsLoading(false);
         // Create a unique seed for picsum based on alt text to get different images
         const seed = alt.replace(/\s+/g, '-').toLowerCase().slice(0, 20);
-        setCurrentSrc(`https://picsum.photos/seed/${seed}/200/300`); // Updated picsum dimensions
+        setCurrentSrc(`https://picsum.photos/seed/${seed}/200/300`);
       }}
       onLoad={() => setIsLoading(false)}
       data-ai-hint={aiHint || alt.split(' ').slice(0, 2).join(' ').toLowerCase()}
       priority={priority}
-      sizes="200px" // Updated sizes attribute
+      sizes="200px"
     />
   );
 };
@@ -80,13 +81,12 @@ const mockSilhouetteData = [
   { monthYear: 'Apr 2025', aLine: 30, sheath: 55, oversized: 110, bodycon: 70, asymmetrical: 90 },
 ];
 
-
 const mockColorData = [
-  { name: 'Deep Sapphire', value: 400, translationKey: 'analyticsPage.color.deepSapphire' },
-  { name: 'Desert Khaki', value: 300, translationKey: 'analyticsPage.color.desertKhaki' },
-  { name: 'Rich Burgundy', value: 280, translationKey: 'analyticsPage.color.richBurgundy' },
-  { name: 'Forest Green', value: 220, translationKey: 'analyticsPage.color.forestGreen' },
-  { name: 'Warm Terracotta', value: 180, translationKey: 'analyticsPage.color.warmTerracotta' },
+  { name: 'Deep Sapphire', value: 400, translationKey: 'analyticsPage.color.deepSapphire' as TranslationKey },
+  { name: 'Desert Khaki', value: 300, translationKey: 'analyticsPage.color.desertKhaki' as TranslationKey },
+  { name: 'Rich Burgundy', value: 280, translationKey: 'analyticsPage.color.richBurgundy' as TranslationKey },
+  { name: 'Forest Green', value: 220, translationKey: 'analyticsPage.color.forestGreen' as TranslationKey },
+  { name: 'Warm Terracotta', value: 180, translationKey: 'analyticsPage.color.warmTerracotta' as TranslationKey },
 ];
 
 const COLORS = ['#1E3A8A', '#BEB7A4', '#831843', '#166534', '#E2725B']; 
@@ -112,18 +112,17 @@ const mockPatternLineData = [
   { monthYear: 'Jun 2024', floral: 75, geometric: 68, stripes: 83, animalPrints: 68, abstract: 75 },
   { monthYear: 'Jul 2024', floral: 78, geometric: 72, stripes: 86, animalPrints: 71, abstract: 78 },
   { monthYear: 'Aug 2024', floral: 80, geometric: 75, stripes: 89, animalPrints: 74, abstract: 80 },
-  { monthYear: 'Sep 2024', floral: 78, geometric: 78, stripes: 92, animalPrints: 77, abstract: 78 }, // Floral starts slight dip
-  { monthYear: 'Oct 2024', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 }, // Floral continues dip, Abstract starts dip
+  { monthYear: 'Sep 2024', floral: 78, geometric: 78, stripes: 92, animalPrints: 77, abstract: 78 }, 
+  { monthYear: 'Oct 2024', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 }, 
   { monthYear: 'Nov 2024', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
   { monthYear: 'Dec 2024', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
-  { monthYear: 'Jan 2025', floral: 64, geometric: 92, stripes: 102, animalPrints: 89, abstract: 64 }, // Downtrend for Floral & Abstract
+  { monthYear: 'Jan 2025', floral: 64, geometric: 92, stripes: 102, animalPrints: 89, abstract: 64 }, 
   { monthYear: 'Feb 2025', floral: 60, geometric: 95, stripes: 105, animalPrints: 92, abstract: 60 },
   { monthYear: 'Mar 2025', floral: 55, geometric: 98, stripes: 108, animalPrints: 95, abstract: 55 },
   { monthYear: 'Apr 2025', floral: 50, geometric: 100, stripes: 110, animalPrints: 98, abstract: 50 },
 ];
 
-
-const chartConfigColor = (t: (key: string) => string) => ({
+const chartConfigColorFn = (t: (key: string) => string): ChartConfig => ({
   value: {
     label: t('analyticsPage.popularity'), 
   },
@@ -133,34 +132,80 @@ const chartConfigColor = (t: (key: string) => string) => ({
   }, {} as any)
 });
 
+const carouselImages = [
+  { src: "/images/gala_image_2.jpeg", alt: "People attending a glamorous gala event", "data-ai-hint": "gala event" },
+  { src: "/images/image_gala_1.jpeg", alt: "Elegant guests at a formal gala gathering", "data-ai-hint": "fashion model" },
+];
 
 export default function AnalyticsPage() {
   const { t } = useLanguage();
+  const [isMounted, setIsMounted] = React.useState(false);
   const autoplayPlugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
 
-  const silhouetteChartConfig = {
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const silhouetteChartConfig = React.useMemo(() => ({
     aLine: { label: t('analyticsPage.silhouette.aLine'), color: "hsl(var(--chart-1))" },
     sheath: { label: t('analyticsPage.silhouette.sheath'), color: "hsl(var(--chart-2))" },
     oversized: { label: t('analyticsPage.silhouette.oversized'), color: "hsl(var(--chart-3))" },
     bodycon: { label: t('analyticsPage.silhouette.bodycon'), color: "hsl(var(--chart-4))" },
     asymmetrical: { label: t('analyticsPage.silhouette.asymmetrical'), color: "hsl(var(--chart-5))" },
-  };
+  }), [t]);
 
-  const carouselImages = [
-    { src: '/images/gala_image_2.jpeg', alt: 'People attending a glamorous gala event', "data-ai-hint": "gala event" },
-    { src: '/images/image_gala_1.jpeg', alt: 'Elegant guests at a formal gala gathering', "data-ai-hint": "fashion model" },
-  ];
+  const currentChartConfigColor = React.useMemo(() => chartConfigColorFn(t), [t]);
 
-  const patternChartConfig = {
+  const patternChartConfig = React.useMemo(() => ({
     floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-6))" },
     geometric: { label: t('analyticsPage.pattern.geometric'), color: "hsl(var(--chart-7))" },
     stripes: { label: t('analyticsPage.pattern.stripes'), color: "hsl(var(--chart-8))" },
     animalPrints: { label: t('analyticsPage.pattern.animalPrints'), color: "hsl(var(--chart-9))" },
     abstract: { label: t('analyticsPage.pattern.abstract'), color: "hsl(var(--chart-10))" },
-  };
+  }), [t]);
+  
+  const translatedMockColorData = React.useMemo(() => {
+    return mockColorData.map(item => ({
+      ...item,
+      name: t(item.translationKey as any) 
+    }));
+  }, [t]);
 
+
+  if (!isMounted) {
+    return (
+        <div className="space-y-6 p-4">
+            <Card className="shadow-lg">
+                <CardHeader>
+                    <div className="h-8 w-3/4 animate-pulse rounded bg-muted mb-2"></div>
+                    <div className="h-4 w-1/2 animate-pulse rounded bg-muted"></div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="mx-auto h-[300px] w-full max-w-sm animate-pulse rounded-lg bg-muted"></div>
+                    <div className="h-6 w-1/3 animate-pulse rounded bg-muted pt-4"></div>
+                    <div className="h-10 w-full animate-pulse rounded bg-muted"></div>
+                    <div className="h-10 w-full animate-pulse rounded bg-muted"></div>
+                </CardContent>
+            </Card>
+             <div className="grid gap-6 md:grid-cols-2">
+                <Card className="shadow-lg">
+                  <CardHeader><div className="h-6 w-1/2 animate-pulse rounded bg-muted"></div></CardHeader>
+                  <CardContent><div className="h-[300px] w-full animate-pulse rounded bg-muted"></div></CardContent>
+                </Card>
+                <Card className="shadow-lg">
+                  <CardHeader><div className="h-6 w-1/2 animate-pulse rounded bg-muted"></div></CardHeader>
+                  <CardContent><div className="h-[300px] w-full animate-pulse rounded bg-muted"></div></CardContent>
+                </Card>
+             </div>
+             <Card className="shadow-lg md:col-span-2">
+                <CardHeader><div className="h-6 w-1/2 animate-pulse rounded bg-muted"></div></CardHeader>
+                <CardContent><div className="h-[300px] w-full animate-pulse rounded bg-muted"></div></CardContent>
+            </Card>
+        </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -177,7 +222,7 @@ export default function AnalyticsPage() {
         <CardContent className="space-y-6">
           <Carousel
             plugins={[autoplayPlugin.current]}
-            className="w-full max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg" // Reduced max-width
+            className="w-full max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg"
             onMouseEnter={autoplayPlugin.current.stop}
             onMouseLeave={autoplayPlugin.current.reset}
             opts={{
@@ -187,8 +232,8 @@ export default function AnalyticsPage() {
             <CarouselContent>
               {carouselImages.map((image, index) => (
                 <CarouselItem key={index}>
-                  <div className="flex justify-center items-center py-4"> {/* Centering wrapper */}
-                    <div className="relative w-[200px] h-[300px] rounded-lg overflow-hidden shadow-md"> {/* Fixed size container */}
+                  <div className="flex justify-center items-center py-4">
+                    <div className="relative w-[200px] h-[300px] rounded-lg overflow-hidden shadow-md">
                       <ImageWithFallback
                         src={image.src}
                         alt={image.alt}
@@ -233,7 +278,6 @@ export default function AnalyticsPage() {
                   tickMargin={8} 
                   interval="preserveStartEnd"
                   minTickGap={20}
-                  // tickFormatter removed to show full "Month Year"
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
@@ -245,7 +289,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-aLine)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.silhouette.aLine')}
+                  name={silhouetteChartConfig.aLine.label}
                 />
                 <Line 
                   type="monotone" 
@@ -254,7 +298,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-sheath)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.silhouette.sheath')}
+                  name={silhouetteChartConfig.sheath.label}
                 />
                 <Line 
                   type="monotone" 
@@ -263,7 +307,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-oversized)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.silhouette.oversized')}
+                  name={silhouetteChartConfig.oversized.label}
                 />
                 <Line 
                   type="monotone" 
@@ -272,7 +316,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-bodycon)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.silhouette.bodycon')}
+                  name={silhouetteChartConfig.bodycon.label}
                 />
                 <Line 
                   type="monotone" 
@@ -281,7 +325,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-asymmetrical)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.silhouette.asymmetrical')}
+                  name={silhouetteChartConfig.asymmetrical.label}
                 />
               </LineChart>
             </ChartContainer>
@@ -296,12 +340,12 @@ export default function AnalyticsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfigColor(t)} className="h-[300px] w-full">
+            <ChartContainer config={currentChartConfigColor} className="h-[300px] w-full">
               <PieChart accessibilityLayer>
                 <RechartsTooltip cursor={false} content={<ChartTooltipContent />} />
                 <Legend />
-                <Pie data={mockColorData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                  {mockColorData.map((entry, index) => (
+                <Pie data={translatedMockColorData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
+                  {translatedMockColorData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
@@ -328,7 +372,6 @@ export default function AnalyticsPage() {
                   tickMargin={8} 
                   interval="preserveStartEnd"
                   minTickGap={20}
-                  // tickFormatter removed to show full "Month Year"
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
@@ -340,7 +383,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-floral)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.pattern.floral')}
+                  name={patternChartConfig.floral.label}
                 />
                 <Line 
                   type="monotone" 
@@ -349,7 +392,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-geometric)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.pattern.geometric')}
+                  name={patternChartConfig.geometric.label}
                 />
                 <Line 
                   type="monotone" 
@@ -358,7 +401,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-stripes)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.pattern.stripes')}
+                  name={patternChartConfig.stripes.label}
                 />
                 <Line 
                   type="monotone" 
@@ -367,7 +410,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-animalPrints)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.pattern.animalPrints')}
+                  name={patternChartConfig.animalPrints.label}
                 />
                 <Line 
                   type="monotone" 
@@ -376,7 +419,7 @@ export default function AnalyticsPage() {
                   strokeWidth={2} 
                   dot={{ r: 3, fill: "var(--color-abstract)" }} 
                   activeDot={{ r: 5 }}
-                  name={t('analyticsPage.pattern.abstract')}
+                  name={patternChartConfig.abstract.label}
                 />
               </LineChart>
             </ChartContainer>
@@ -386,4 +429,3 @@ export default function AnalyticsPage() {
     </div>
   );
 }
-
