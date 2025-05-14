@@ -1,16 +1,19 @@
+
 // analytics/page.tsx
 'use client';
 
 import * as React from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Palette, Newspaper, TrendingUp, Layers } from 'lucide-react'; 
+import { Palette, Newspaper, TrendingUp, Layers, Settings } from 'lucide-react'; 
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import type { TranslationKey } from '@/lib/i18n';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 // Component for rendering images with a fallback to placehold.co
 interface ImageWithFallbackProps {
@@ -37,7 +40,6 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ src, alt, aiHint,
       className={`object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       onError={() => {
         setIsLoading(false);
-        // Create a unique seed for placehold.co based on alt text to get different images
         setCurrentSrc(`https://placehold.co/200x300.png`); 
       }}
       onLoad={() => setIsLoading(false)}
@@ -70,15 +72,34 @@ const mockSilhouetteData = [
   { monthYear: 'Jun 2024', aLine: 55, sheath: 30, oversized: 85, bodycon: 45, asymmetrical: 65 },
   { monthYear: 'Jul 2024', aLine: 52, sheath: 32, oversized: 88, bodycon: 48, asymmetrical: 68 },
   { monthYear: 'Aug 2024', aLine: 50, sheath: 35, oversized: 90, bodycon: 50, asymmetrical: 70 },
-  { monthYear: 'Sep 2024', aLine: 48, sheath: 38, oversized: 92, bodycon: 52, asymmetrical: 72 },
-  { monthYear: 'Oct 2024', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
-  { monthYear: 'Nov 2024', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
-  { monthYear: 'Dec 2024', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
+  { monthYear: 'Sep-2024', aLine: 48, sheath: 38, oversized: 92, bodycon: 52, asymmetrical: 72 },
+  { monthYear: 'Oct-2024', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
+  { monthYear: 'Nov-2024', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
+  { monthYear: 'Dec-2024', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
   { monthYear: 'Jan-2025', aLine: 38, sheath: 48, oversized: 102, bodycon: 62, asymmetrical: 82 },
   { monthYear: 'Feb-2025', aLine: 35, sheath: 50, oversized: 105, bodycon: 65, asymmetrical: 85 },
   { monthYear: 'Mar-2025', aLine: 32, sheath: 52, oversized: 108, bodycon: 68, asymmetrical: 88 },
   { monthYear: 'Apr-2025', aLine: 30, sheath: 55, oversized: 110, bodycon: 70, asymmetrical: 90 },
 ];
+
+const mockWeeklySilhouetteData = [
+  // Oct 2024
+  { weekLabel: 'W1 Oct-24', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
+  { weekLabel: 'W2 Oct-24', aLine: 44, sheath: 41, oversized: 96, bodycon: 56, asymmetrical: 76 },
+  { weekLabel: 'W3 Oct-24', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
+  { weekLabel: 'W4 Oct-24', aLine: 43, sheath: 42, oversized: 97, bodycon: 57, asymmetrical: 77 },
+  // Nov 2024
+  { weekLabel: 'W1 Nov-24', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
+  { weekLabel: 'W2 Nov-24', aLine: 41, sheath: 43, oversized: 99, bodycon: 59, asymmetrical: 79 },
+  { weekLabel: 'W3 Nov-24', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
+  { weekLabel: 'W4 Nov-24', aLine: 40, sheath: 44, oversized: 100, bodycon: 60, asymmetrical: 80 },
+  // Dec 2024
+  { weekLabel: 'W1 Dec-24', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
+  { weekLabel: 'W2 Dec-24', aLine: 39, sheath: 46, oversized: 101, bodycon: 61, asymmetrical: 81 },
+  { weekLabel: 'W3 Dec-24', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
+  { weekLabel: 'W4 Dec-24', aLine: 38, sheath: 47, oversized: 102, bodycon: 62, asymmetrical: 82 },
+];
+
 
 const mockColorData = [
   { name: 'Deep Sapphire', value: 400, translationKey: 'analyticsPage.color.deepSapphire' as TranslationKey },
@@ -121,6 +142,25 @@ const mockPatternLineData = [
   { monthYear: 'Apr-2025', floral: 50, geometric: 100, stripes: 110, animalPrints: 98, abstract: 50 },
 ];
 
+const mockWeeklyPatternLineData = [
+  // Oct 2024
+  { weekLabel: 'W1 Oct-24', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 },
+  { weekLabel: 'W2 Oct-24', floral: 74, geometric: 83, stripes: 96, animalPrints: 81, abstract: 74 },
+  { weekLabel: 'W3 Oct-24', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 },
+  { weekLabel: 'W4 Oct-24', floral: 73, geometric: 84, stripes: 97, animalPrints: 82, abstract: 73 },
+  // Nov 2024
+  { weekLabel: 'W1 Nov-24', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
+  { weekLabel: 'W2 Nov-24', floral: 71, geometric: 86, stripes: 99, animalPrints: 84, abstract: 71 },
+  { weekLabel: 'W3 Nov-24', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
+  { weekLabel: 'W4 Nov-24', floral: 70, geometric: 87, stripes: 100, animalPrints: 85, abstract: 70 },
+  // Dec 2024
+  { weekLabel: 'W1 Dec-24', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
+  { weekLabel: 'W2 Dec-24', floral: 67, geometric: 89, stripes: 101, animalPrints: 87, abstract: 67 },
+  { weekLabel: 'W3 Dec-24', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
+  { weekLabel: 'W4 Dec-24', floral: 66, geometric: 90, stripes: 102, animalPrints: 88, abstract: 66 },
+];
+
+
 const chartConfigColorFn = (t: (key: string) => string): ChartConfig => ({
   value: {
     label: t('analyticsPage.popularity'), 
@@ -143,6 +183,7 @@ export default function AnalyticsPage() {
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
   const [pageDescription, setPageDescription] = React.useState<string | null>(null);
+  const [timeGranularity, setTimeGranularity] = React.useState<'monthly' | 'weekly'>('monthly');
 
   React.useEffect(() => {
     setIsMounted(true);
@@ -174,6 +215,14 @@ export default function AnalyticsPage() {
     }));
   }, [t]);
 
+  const silhouetteChartDataToDisplay = React.useMemo(() => {
+    return timeGranularity === 'weekly' ? mockWeeklySilhouetteData : mockSilhouetteData;
+  }, [timeGranularity]);
+
+  const patternChartDataToDisplay = React.useMemo(() => {
+    return timeGranularity === 'weekly' ? mockWeeklyPatternLineData : mockPatternLineData;
+  }, [timeGranularity]);
+
 
   if (!isMounted) {
     return (
@@ -189,6 +238,10 @@ export default function AnalyticsPage() {
                     <div className="h-10 w-full animate-pulse rounded bg-muted"></div>
                     <div className="h-10 w-full animate-pulse rounded bg-muted"></div>
                 </CardContent>
+            </Card>
+            <Card className="shadow-lg mb-6">
+              <CardHeader><div className="h-6 w-1/2 animate-pulse rounded bg-muted"></div></CardHeader>
+              <CardContent><div className="h-10 w-1/3 animate-pulse rounded bg-muted"></div></CardContent>
             </Card>
              <div className="grid gap-6 md:grid-cols-2">
                 <Card className="shadow-lg">
@@ -260,6 +313,31 @@ export default function AnalyticsPage() {
         </CardContent>
       </Card>
 
+      <Card className="shadow-lg mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center text-xl">
+            <Settings className="mr-2 h-5 w-5 text-primary" />
+            {t('analyticsPage.chartSettings.title')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center space-x-3">
+            <Label htmlFor="timeGranularitySelect" className="text-base">
+              {t('analyticsPage.timeGranularity.label')}
+            </Label>
+            <Select value={timeGranularity} onValueChange={(value) => setTimeGranularity(value as 'monthly' | 'weekly')}>
+              <SelectTrigger id="timeGranularitySelect" className="w-[180px] text-base">
+                <SelectValue placeholder={t('analyticsPage.timeGranularity.placeholder')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="monthly" className="text-base">{t('analyticsPage.timeGranularity.monthly')}</SelectItem>
+                <SelectItem value="weekly" className="text-base">{t('analyticsPage.timeGranularity.weekly')}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-6 md:grid-cols-2">
         <Card className="shadow-lg">
           <CardHeader>
@@ -270,16 +348,19 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <ChartContainer config={silhouetteChartConfig} className="h-[300px] w-full">
-              <LineChart data={mockSilhouetteData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+              <LineChart data={silhouetteChartDataToDisplay} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                 <CartesianGrid vertical={false} strokeDasharray="3 3" />
                 <XAxis 
-                  dataKey="monthYear" 
+                  dataKey={timeGranularity === 'weekly' ? 'weekLabel' : 'monthYear'}
                   tickLine={false} 
                   axisLine={false} 
                   tickMargin={8} 
                   interval="preserveStartEnd"
-                  minTickGap={20}
-                  tickFormatter={(value) => value.replace(' ', '-')}
+                  minTickGap={timeGranularity === 'weekly' ? 10 : 20}
+                  tickFormatter={(value) => {
+                    if (timeGranularity === 'weekly') return value;
+                    return value.replace(' ', '-');
+                  }}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
@@ -365,16 +446,19 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <ChartContainer config={patternChartConfig} className="h-[300px] w-full">
-              <LineChart data={mockPatternLineData} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+              <LineChart data={patternChartDataToDisplay} accessibilityLayer margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                 <CartesianGrid vertical={false} strokeDasharray="3 3" />
                 <XAxis 
-                  dataKey="monthYear" 
+                  dataKey={timeGranularity === 'weekly' ? 'weekLabel' : 'monthYear'}
                   tickLine={false} 
                   axisLine={false} 
                   tickMargin={8} 
                   interval="preserveStartEnd"
-                  minTickGap={20}
-                  tickFormatter={(value) => value.replace(' ', '-')}
+                  minTickGap={timeGranularity === 'weekly' ? 10 : 20}
+                  tickFormatter={(value) => {
+                    if (timeGranularity === 'weekly') return value;
+                    return value.replace(' ', '-');
+                  }}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
@@ -432,3 +516,4 @@ export default function AnalyticsPage() {
     </div>
   );
 }
+

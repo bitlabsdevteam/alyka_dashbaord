@@ -1,3 +1,4 @@
+
 // src/lib/i18n.ts
 
 export type Locale = 'en' | 'ja';
@@ -48,6 +49,15 @@ interface AnalyticsPageTranslations {
     abstract: string;
     animalPrints: string;
   };
+  chartSettings: {
+    title: string;
+  };
+  timeGranularity: {
+    label: string;
+    monthly: string;
+    weekly: string;
+    placeholder: string;
+  };
 }
 
 interface HeaderTranslations {
@@ -79,7 +89,7 @@ interface ForecastPageTranslations {
   selectSkuPlaceholder: string;
   currentStockLabel: string;
   periodLabel: string;
-  forecastHorizonValueDisplay: string;
+  forecastHorizonValueDisplay: string; // Kept for consistency if used elsewhere, but slider text is now specific
   chatInputPlaceholder: string;
   sendButton: string; 
   forecastingButton: string; 
@@ -419,6 +429,15 @@ export const translations: Record<Locale, Translations> = {
         abstract: 'Abstract',
         animalPrints: 'Animal Prints',
       },
+      chartSettings: {
+        title: 'Chart Settings',
+      },
+      timeGranularity: {
+        label: 'View data by:',
+        monthly: 'Monthly',
+        weekly: 'Weekly',
+        placeholder: 'Select granularity',
+      },
     },
     forecastPage: {
       selectSkuTitle: 'SKU Stock Forecast',
@@ -427,7 +446,7 @@ export const translations: Record<Locale, Translations> = {
       selectSkuPlaceholder: 'Select an SKU',
       currentStockLabel: 'Current Stock',
       periodLabel: 'Period',
-      forecastHorizonValueDisplay: 'Next {{count}} months',
+      forecastHorizonValueDisplay: 'Next {{count}} months', // For slider text
       chatInputPlaceholder: 'Message Alyka agent...',
       sendButton: 'Send',
       forecastingButton: 'Forecasting...', 
@@ -732,6 +751,15 @@ export const translations: Record<Locale, Translations> = {
         abstract: '抽象柄',
         animalPrints: 'アニマルプリント',
       },
+      chartSettings: {
+        title: 'チャート設定',
+      },
+      timeGranularity: {
+        label: '表示単位:',
+        monthly: '月単位',
+        weekly: '週単位',
+        placeholder: '表示単位を選択',
+      },
     },
     forecastPage: {
       selectSkuTitle: 'SKU在庫予測',
@@ -740,7 +768,7 @@ export const translations: Record<Locale, Translations> = {
       selectSkuPlaceholder: 'SKUを選択してください',
       currentStockLabel: '現在の在庫',
       periodLabel: '期間',
-      forecastHorizonValueDisplay: '今後 {{count}} か月',
+      forecastHorizonValueDisplay: '今後 {{count}} か月', // スライダー用
       chatInputPlaceholder: 'Alykaエージェントにメッセージを送信...',
       sendButton: '送信',
       forecastingButton: '予測中...',
@@ -979,3 +1007,4 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
+
