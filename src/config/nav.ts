@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { LineChart, TrendingUp, Store, ListChecks, FileText, Database } from 'lucide-react'; 
+import { LineChart, TrendingUp, Store, ListChecks } from 'lucide-react'; 
 
 export interface NavItem {
   title: string;
@@ -29,16 +29,5 @@ export const navItems: NavItem[] = [
     href: '/tasks',
     icon: ListChecks,
   },
-  {
-    title: 'Reports', 
-    href: '/reports', 
-    icon: FileText, 
-    disabled: false, 
-  },
-  {
-    title: 'Data Input',
-    href: '/data-input',
-    icon: Database,
-    disabled: true,
-  },
 ];
+

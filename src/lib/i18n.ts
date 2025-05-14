@@ -78,8 +78,8 @@ interface NavTranslations {
   forecast: string;
   stores: string;
   tasksManager: string;
-  reports: string;
-  dataInput: string;
+  // reports: string; // Removed
+  // dataInput: string; // Removed
 }
 
 interface ForecastPageTranslations {
@@ -89,7 +89,7 @@ interface ForecastPageTranslations {
   selectSkuPlaceholder: string;
   currentStockLabel: string;
   periodLabel: string;
-  forecastHorizonValueDisplay: string; // Kept for consistency if used elsewhere, but slider text is now specific
+  forecastHorizonValueDisplay: string;
   chatInputPlaceholder: string;
   sendButton: string; 
   forecastingButton: string; 
@@ -126,6 +126,9 @@ interface ForecastPageTranslations {
     title: string;
     description: string;
   };
+  // groundVoiceLabel: string; // Removed
+  // yourVoiceCountPlaceholder: string; // Removed
+  // yourVoiceCountDescription: string; // Removed
 }
 
 interface PosSalesPageTranslations {
@@ -390,8 +393,8 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       stores: 'Stores',
       tasksManager: 'Tasks Manager',
-      reports: 'Reports',
-      dataInput: 'Data Input',
+      // reports: 'Reports', // Removed
+      // dataInput: 'Data Input', // Removed
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Trend Updates',
@@ -446,7 +449,7 @@ export const translations: Record<Locale, Translations> = {
       selectSkuPlaceholder: 'Select an SKU',
       currentStockLabel: 'Current Stock',
       periodLabel: 'Period',
-      forecastHorizonValueDisplay: 'Next {{count}} months', // For slider text
+      forecastHorizonValueDisplay: 'Next {{count}} months', 
       chatInputPlaceholder: 'Message Alyka agent...',
       sendButton: 'Send',
       forecastingButton: 'Forecasting...', 
@@ -482,7 +485,10 @@ export const translations: Record<Locale, Translations> = {
       aiProcessing: { 
         title: "AI is Processing Your Request",
         description: "Our AI is analyzing trends and generating your forecast. This might take a few moments..."
-      }
+      },
+      // groundVoiceLabel: "Ground Voice", // Removed
+      // yourVoiceCountPlaceholder: "Enter your feedback or specific requests here...", // Removed
+      // yourVoiceCountDescription: "Your feedback will help us to learn better.", // Removed
     },
     posSalesPage: {
       title: 'POS Sales Data Overview',
@@ -712,8 +718,8 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       stores: '店舗',
       tasksManager: 'タスク管理',
-      reports: 'レポート',
-      dataInput: 'データ入力',
+      // reports: 'レポート', // Removed
+      // dataInput: 'データ入力', // Removed
     },
     analyticsPage: {
       latestTrendTitle: '最新トレンドアップデート',
@@ -768,7 +774,7 @@ export const translations: Record<Locale, Translations> = {
       selectSkuPlaceholder: 'SKUを選択してください',
       currentStockLabel: '現在の在庫',
       periodLabel: '期間',
-      forecastHorizonValueDisplay: '今後 {{count}} か月', // スライダー用
+      forecastHorizonValueDisplay: '今後 {{count}} か月', 
       chatInputPlaceholder: 'Alykaエージェントにメッセージを送信...',
       sendButton: '送信',
       forecastingButton: '予測中...',
@@ -804,7 +810,10 @@ export const translations: Record<Locale, Translations> = {
       aiProcessing: {
         title: "AIがリクエストを処理中です",
         description: "AIがトレンドを分析し、予測を生成しています。少々お待ちください..."
-      }
+      },
+      // groundVoiceLabel: "現場の声", // Removed
+      // yourVoiceCountPlaceholder: "フィードバックや具体的な要望をこちらに入力してください...", // Removed
+      // yourVoiceCountDescription: "あなたのフィードバックは、私たちがより良く学習するのに役立ちます。", // Removed
     },
     posSalesPage: {
       title: 'POS販売データ概要',
