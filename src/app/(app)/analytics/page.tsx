@@ -4,13 +4,14 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Palette, Newspaper, TrendingUp, Layers } from 'lucide-react'; 
+import { Palette, Newspaper, TrendingUp, Layers, AlertTriangle } from 'lucide-react'; 
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import type { TranslationKey } from '@/lib/i18n';
+import { useToast } from '@/hooks/use-toast';
 
 // Component for rendering images with a fallback to picsum.photos
 interface ImageWithFallbackProps {
@@ -39,7 +40,7 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ src, alt, aiHint,
         setIsLoading(false);
         // Create a unique seed for picsum based on alt text to get different images
         const seed = alt.replace(/\s+/g, '-').toLowerCase().slice(0, 20);
-        setCurrentSrc(`https://picsum.photos/seed/${seed}/200/300`);
+        setCurrentSrc(`https://placehold.co/200x300.png`); // Using placehold.co as per guidelines
       }}
       onLoad={() => setIsLoading(false)}
       data-ai-hint={aiHint || alt.split(' ').slice(0, 2).join(' ').toLowerCase()}
@@ -139,14 +140,22 @@ const carouselImages = [
 
 export default function AnalyticsPage() {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [isMounted, setIsMounted] = React.useState(false);
   const autoplayPlugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
+  const [pageDescription, setPageDescription] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     setIsMounted(true);
-  }, []);
+    setPageDescription(t('analyticsPage.latestTrendDescription'));
+     toast({
+        title: t('analyticsPage.toast.eventAlertTitle'),
+        description: t('analyticsPage.toast.eventAlertDescription'),
+        action: <AlertTriangle className="h-5 w-5 text-yellow-500" />, // Example icon
+      });
+  }, [t, toast]);
 
   const silhouetteChartConfig = React.useMemo(() => ({
     aLine: { label: t('analyticsPage.silhouette.aLine'), color: "hsl(var(--chart-1))" },
@@ -216,7 +225,7 @@ export default function AnalyticsPage() {
             {t('analyticsPage.latestTrendTitle')}
           </CardTitle>
           <CardDescription>
-            {t('analyticsPage.latestTrendDescription')}
+             {pageDescription === null ? <>&nbsp;</> : pageDescription}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -264,7 +273,7 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <TrendingUp className="mr-2 h-5 w-5 text-primary" />
-              {t('analyticsPage.silhouettePopularityTitle')}
+              {t('analyticsPage.silhouettePopularityTitle')} - 2025
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -278,6 +287,7 @@ export default function AnalyticsPage() {
                   tickMargin={8} 
                   interval="preserveStartEnd"
                   minTickGap={20}
+                  tickFormatter={(value) => value.replace(' ', '-')}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
@@ -358,7 +368,7 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Layers className="mr-2 h-5 w-5 text-primary" />
-              {t('analyticsPage.patternTrendsTitle')}
+              {t('analyticsPage.patternTrendsTitle')} - 2025
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -372,6 +382,7 @@ export default function AnalyticsPage() {
                   tickMargin={8} 
                   interval="preserveStartEnd"
                   minTickGap={20}
+                  tickFormatter={(value) => value.replace(' ', '-')}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <RechartsTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />

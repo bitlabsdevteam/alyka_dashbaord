@@ -48,6 +48,10 @@ interface AnalyticsPageTranslations {
     abstract: string;
     animalPrints: string;
   };
+  toast: {
+    eventAlertTitle: string;
+    eventAlertDescription: string;
+  }
 }
 
 interface HeaderTranslations {
@@ -80,7 +84,7 @@ interface ForecastPageTranslations {
   currentStockLabel: string;
   forecastHorizonLabel: string;
   forecastHorizonValueDisplay: string;
-  groundVoiceLabel: string;
+  groundVoiceLabel: string; // Changed from yourVoiceCountLabel
   yourVoiceCountPlaceholder: string;
   yourVoiceCountDescription: string;
   generateButton: string;
@@ -141,10 +145,10 @@ interface PosSalesPageTranslations {
     sku: string;
     unitsSold: string;
     revenue: string;
-    po: string; // New translation
+    po: string; 
     posName: string;
   };
-  buttons: { // New button translations
+  buttons: { 
     createPo: string;
   };
   categories: {
@@ -381,10 +385,10 @@ export const translations: Record<Locale, Translations> = {
         paragraph2: 'Key takeaways include the resurgence of avant-garde tailoring, an emphasis on handcrafted details, and a notable shift towards gender-fluid designs. Metallic fabrics and ethereal sheers dominated, creating memorable moments that will undoubtedly influence upcoming B2B apparel collections.',
       },
       trendPopularityTitle: 'Key Trend Popularity Over Time',
-      colorTrendsTitle: 'Color Trends - 2025',
+      colorTrendsTitle: 'Color Trends',
       popularity: 'Popularity',
       colorPopularity: 'Popularity',
-      silhouettePopularityTitle: 'Silhouette Popularity Trends - 2025',
+      silhouettePopularityTitle: 'Silhouette Popularity Trends',
       silhouette: {
         aLine: 'A-Line',
         sheath: 'Sheath',
@@ -392,7 +396,7 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'Bodycon',
         asymmetrical: 'Asymmetrical',
       },
-      patternTrendsTitle: 'Pattern Popularity Trends - 2025',
+      patternTrendsTitle: 'Pattern Popularity Trends',
       color: {
         deepSapphire: 'Deep Sapphire',
         desertKhaki: 'Desert Khaki',
@@ -408,6 +412,10 @@ export const translations: Record<Locale, Translations> = {
         abstract: 'Abstract',
         animalPrints: 'Animal Prints',
       },
+      toast: {
+        eventAlertTitle: "Fashion Event Alert",
+        eventAlertDescription: "A particular trend might spike due to an upcoming fashion event in Tokyo."
+      }
     },
     forecastPage: {
       selectSkuTitle: 'SKU Stock Forecast',
@@ -683,10 +691,10 @@ export const translations: Record<Locale, Translations> = {
         paragraph2: '主なポイントとしては、アバンギャルドなテーラリングの再興、手作りのディテールへの重点、そしてジェンダーフルイドデザインへの顕著なシフトが挙げられます。メタリックな生地や優美なシアー素材が主流となり、記憶に残る瞬間を生み出し、今後のB2Bアパレルコレクションに間違いなく影響を与えるでしょう。',
       },
       trendPopularityTitle: '主要トレンドの人気推移',
-      colorTrendsTitle: 'カラートレンド - 2025',
+      colorTrendsTitle: 'カラートレンド',
       popularity: '人気度',
       colorPopularity: '人気度',
-      silhouettePopularityTitle: 'シルエット人気トレンド - 2025',
+      silhouettePopularityTitle: 'シルエット人気トレンド',
       silhouette: {
         aLine: 'Aライン',
         sheath: 'シース',
@@ -694,7 +702,7 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'ボディコン',
         asymmetrical: 'アシンメトリー',
       },
-      patternTrendsTitle: 'パターン人気トレンド - 2025',
+      patternTrendsTitle: 'パターン人気トレンド',
       color: {
         deepSapphire: 'ディープサファイア',
         desertKhaki: 'デザートカーキ',
@@ -710,6 +718,10 @@ export const translations: Record<Locale, Translations> = {
         abstract: '抽象柄',
         animalPrints: 'アニマルプリント',
       },
+      toast: {
+        eventAlertTitle: "ファッションイベント警告",
+        eventAlertDescription: "東京での今後のファッションイベントにより、特定のトレンドが急上昇する可能性があります。"
+      }
     },
     forecastPage: {
       selectSkuTitle: 'SKU在庫予測',
@@ -719,7 +731,7 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: '現在の在庫',
       forecastHorizonLabel: '予測期間',
       forecastHorizonValueDisplay: '今後 {{count}} か月',
-      groundVoiceLabel: '現場の声',
+      groundVoiceLabel: '現場の声', 
       yourVoiceCountPlaceholder: 'この予測に関するフィードバックや特定の洞察を入力してください（例：「最近の有名人の推薦により高い需要が見込まれる」、「来月、地元のイベントがこの商品の売上を押し上げる可能性がある」）。',
       yourVoiceCountDescription: 'あなたのフィードバックは、私たちがより良く学ぶのに役立ちます。',
       generateButton: '予測を生成',
