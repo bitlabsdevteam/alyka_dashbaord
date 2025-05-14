@@ -69,6 +69,7 @@ interface NavTranslations {
   posSales: string;
   tasksManager: string;
   reports: string;
+  dataInput: string;
 }
 
 interface ForecastPageTranslations {
@@ -79,7 +80,7 @@ interface ForecastPageTranslations {
   currentStockLabel: string;
   forecastHorizonLabel: string;
   forecastHorizonValueDisplay: string;
-  yourVoiceCountLabel: string;
+  groundVoiceLabel: string;
   yourVoiceCountPlaceholder: string;
   yourVoiceCountDescription: string;
   generateButton: string;
@@ -369,6 +370,7 @@ export const translations: Record<Locale, Translations> = {
       posSales: 'POS Sales',
       tasksManager: 'Tasks Manager',
       reports: 'Reports',
+      dataInput: 'Data Input',
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Fashion Buzz',
@@ -415,7 +417,7 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: 'Current Stock',
       forecastHorizonLabel: 'Forecast Horizon',
       forecastHorizonValueDisplay: 'Next {{count}} months',
-      yourVoiceCountLabel: 'Ground Voice',
+      groundVoiceLabel: 'Ground Voice',
       yourVoiceCountPlaceholder: 'Enter your feedback or specific insights for this forecast (e.g., "Expecting high demand due to recent celebrity endorsement", "Local event might boost sales for this item next month").',
       yourVoiceCountDescription: 'Your feedback will help us to learn better.',
       generateButton: 'Generate Forecast',
@@ -670,6 +672,7 @@ export const translations: Record<Locale, Translations> = {
       posSales: 'POS販売',
       tasksManager: 'タスク管理',
       reports: 'レポート',
+      dataInput: 'データ入力',
     },
     analyticsPage: {
       latestTrendTitle: '最新ファッショントレンド',
@@ -716,7 +719,7 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: '現在の在庫',
       forecastHorizonLabel: '予測期間',
       forecastHorizonValueDisplay: '今後 {{count}} か月',
-      yourVoiceCountLabel: '現場の声',
+      groundVoiceLabel: '現場の声',
       yourVoiceCountPlaceholder: 'この予測に関するフィードバックや特定の洞察を入力してください（例：「最近の有名人の推薦により高い需要が見込まれる」、「来月、地元のイベントがこの商品の売上を押し上げる可能性がある」）。',
       yourVoiceCountDescription: 'あなたのフィードバックは、私たちがより良く学ぶのに役立ちます。',
       generateButton: '予測を生成',

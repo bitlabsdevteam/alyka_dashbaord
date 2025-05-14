@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { LineChart, TrendingUp, ShoppingCart, ListChecks, FileText } from 'lucide-react'; 
+import { LineChart, TrendingUp, ShoppingCart, ListChecks, FileText, Database } from 'lucide-react'; 
 
 export interface NavItem {
   title: string;
@@ -35,5 +35,10 @@ export const navItems: NavItem[] = [
     icon: FileText, 
     disabled: false, 
   },
+  {
+    title: 'Data Input',
+    href: '/data-input',
+    icon: Database,
+    disabled: true,
+  },
 ];
-
