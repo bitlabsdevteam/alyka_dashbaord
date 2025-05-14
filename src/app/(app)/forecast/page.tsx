@@ -1,3 +1,4 @@
+
 // src/app/(app)/forecast/page.tsx
 'use client';
 
@@ -11,8 +12,9 @@ import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { forecastSales, type ForecastSalesOutput, type ForecastSalesInput } from '@/ai/flows/forecast-sales';
+import { generateSalesReport, type GenerateSalesReportOutput, type GenerateSalesReportInput } from '@/ai/flows/generate-sales-report-flow'; // New import
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb } from 'lucide-react';
+import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb, Download } from 'lucide-react';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
@@ -45,10 +47,10 @@ export default function ForecastPage() {
   const [currentStockLabelText, setCurrentStockLabelText] = useState<string | null>(null);
   const [periodLabelText, setPeriodLabelText] = useState<string | null>(null);
   const [sendButtonText, setSendButtonText] = useState<string | null>(null);
-  const [forecastingButtonText, setForecastingButtonText] = useState<string | null>(null);
+  const [processingButtonText, setProcessingButtonText] = useState<string | null>(null);
   const [aiProcessingTitle, setAiProcessingTitle] = useState<string | null>(null);
   const [aiProcessingDescription, setAiProcessingDescription] = useState<string | null>(null);
-
+  const [chatPlaceholderText, setChatPlaceholderText] = useState<string | null>(null);
 
   useEffect(() => {
     setSkuLabelText(t('forecastPage.skuLabel'));
@@ -56,62 +58,121 @@ export default function ForecastPage() {
     setCurrentStockLabelText(t('forecastPage.currentStockLabel'));
     setPeriodLabelText(t('forecastPage.periodLabel'));
     setSendButtonText(t('forecastPage.sendButton'));
-    setForecastingButtonText(t('forecastPage.forecastingButton'));
+    setProcessingButtonText(t('forecastPage.processingButton'));
     setAiProcessingTitle(t('forecastPage.aiProcessing.title'));
     setAiProcessingDescription(t('forecastPage.aiProcessing.description'));
+    setChatPlaceholderText(t('forecastPage.chatInputPlaceholder'));
   }, [t]);
 
-  const { mutate, data: salesForecast, isPending, error } = useMutation<ForecastSalesOutput, Error, ForecastSalesInput>({
+  const forecastMutation = useMutation<ForecastSalesOutput, Error, ForecastSalesInput>({
     mutationFn: forecastSales,
     onSuccess: (data) => {
       toast({
-        title: t('forecastPage.toast.successTitle'),
-        description: t('forecastPage.toast.successDescription', { skuName: data.skuName }),
+        title: t('forecastPage.toast.forecastSuccessTitle'),
+        description: t('forecastPage.toast.forecastSuccessDescription', { skuName: data.skuName }),
       });
     },
     onError: (err) => {
       toast({
-        title: t('forecastPage.toast.errorTitle'),
-        description: err.message || t('forecastPage.toast.errorDescription'),
+        title: t('forecastPage.toast.forecastErrorTitle'),
+        description: err.message || t('forecastPage.toast.forecastErrorDescription'),
         variant: 'destructive',
       });
     },
   });
 
-  const handleGenerateForecast = () => {
-    if (!selectedSkuValue) {
+  const reportMutation = useMutation<GenerateSalesReportOutput, Error, GenerateSalesReportInput>({
+    mutationFn: generateSalesReport,
+    onSuccess: (data) => {
+      if (data.csvData && data.fileName) {
+        const blob = new Blob([data.csvData], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        if (link.download !== undefined) {
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', data.fileName);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }
+        toast({
+          title: t('forecastPage.toast.reportSuccessTitle'),
+          description: t('forecastPage.toast.reportSuccessDescription', { fileName: data.fileName }),
+        });
+      } else {
+        toast({
+          title: t('forecastPage.toast.reportErrorTitle'),
+          description: t('forecastPage.toast.reportErrorNoData'),
+          variant: 'destructive',
+        });
+      }
+    },
+    onError: (err) => {
       toast({
-        title: t('forecastPage.toast.skuMissingTitle'),
-        description: t('forecastPage.toast.skuMissingDescription'),
+        title: t('forecastPage.toast.reportErrorTitle'),
+        description: err.message || t('forecastPage.toast.reportErrorDescription'),
         variant: 'destructive',
       });
-      return;
-    }
-    const skuDetails = mockSkus.find(s => s.value === selectedSkuValue);
-    if (skuDetails) {
-      mutate({
-        skuName: t(skuDetails.labelKey),
-        currentStock: skuDetails.currentStock,
-        forecastHorizon: `next ${forecastPeriodMonths} months`,
-        targetLanguage: language,
-        userPrompt: chatInputValue,
+    },
+  });
+
+  const handleSendMessage = () => {
+    const lowerCaseInput = chatInputValue.toLowerCase();
+
+    if (lowerCaseInput.includes('help me to forecast')) {
+      if (!selectedSkuValue) {
+        toast({
+          title: t('forecastPage.toast.skuMissingTitle'),
+          description: t('forecastPage.toast.skuMissingDescription'),
+          variant: 'destructive',
+        });
+        return;
+      }
+      const skuDetails = mockSkus.find(s => s.value === selectedSkuValue);
+      if (skuDetails) {
+        // Remove the command phrase from the user prompt if desired
+        const userPromptForForecast = chatInputValue.replace(/help me to forecast/gi, '').trim();
+        forecastMutation.mutate({
+          skuName: t(skuDetails.labelKey),
+          currentStock: skuDetails.currentStock,
+          forecastHorizon: `next ${forecastPeriodMonths} months`,
+          targetLanguage: language,
+          userPrompt: userPromptForForecast,
+        });
+      }
+    } else if (lowerCaseInput.includes('help me to generate reports') || lowerCaseInput.includes('help me to generate report')) {
+      reportMutation.mutate({
+        // Add any necessary input for report generation, e.g., date range
+        // For now, it takes no specific input beyond triggering the flow.
+        // reportType: 'sales_summary', 
+        // targetLanguage: language // If report content needs localization
+      });
+    } else {
+      toast({
+        title: t('forecastPage.toast.actionNotRecognizedTitle'),
+        description: t('forecastPage.toast.actionNotRecognizedDescription'),
+        variant: 'default',
       });
     }
   };
+  
+  const isProcessing = forecastMutation.isPending || reportMutation.isPending;
 
   const chartData = useMemo(() => {
-    if (!salesForecast || !salesForecast.forecastData || salesForecast.forecastData.length === 0) return [];
+    if (!forecastMutation.data || !forecastMutation.data.forecastData || forecastMutation.data.forecastData.length === 0) return [];
 
     const dataForChart = [];
-    let previousStock = salesForecast.currentStock;
+    let previousStock = forecastMutation.data.currentStock;
 
     dataForChart.push({
       period: t('forecastPage.chart.initialPeriodLabel'),
       sales: 0,
-      stock: salesForecast.currentStock,
+      stock: forecastMutation.data.currentStock,
     });
 
-    for (const dataPoint of salesForecast.forecastData) {
+    for (const dataPoint of forecastMutation.data.forecastData) {
       const salesForPeriod = Math.max(0, previousStock - dataPoint.forecastedStock);
       dataForChart.push({
         period: dataPoint.period,
@@ -121,7 +182,7 @@ export default function ForecastPage() {
       previousStock = dataPoint.forecastedStock;
     }
     return dataForChart;
-  }, [salesForecast, t]);
+  }, [forecastMutation.data, t]);
 
   const chartConfig: ChartConfig = {
     sales: {
@@ -150,7 +211,7 @@ export default function ForecastPage() {
         <CardContent className="space-y-4">
           <div>
             <Label htmlFor="skuSelect">{skuLabelText ?? translations[language].forecastPage.skuLabel}</Label>
-            <Select value={selectedSkuValue} onValueChange={setSelectedSkuValue}>
+            <Select value={selectedSkuValue} onValueChange={setSelectedSkuValue} disabled={isProcessing}>
               <SelectTrigger id="skuSelect" className="w-full text-base">
                 <SelectValue placeholder={selectSkuPlaceholderText ?? translations[language].forecastPage.selectSkuPlaceholder} />
               </SelectTrigger>
@@ -175,6 +236,7 @@ export default function ForecastPage() {
                 onValueChange={(value) => setForecastPeriodMonths(value[0])}
                 className="flex-grow"
                 aria-label={periodLabelText ?? translations[language].forecastPage.periodLabel}
+                disabled={isProcessing}
               />
               <span className="text-base w-32 text-right tabular-nums">
                 {t('forecastPage.forecastHorizonValueDisplay', { count: forecastPeriodMonths })}
@@ -186,17 +248,18 @@ export default function ForecastPage() {
               id="chatInput"
               value={chatInputValue}
               onChange={(e) => setChatInputValue(e.target.value)}
-              placeholder={t('forecastPage.chatInputPlaceholder')}
-              className="mt-1 h-24 resize-none" 
+              placeholder={chatPlaceholderText ?? translations[language].forecastPage.chatInputPlaceholder}
+              className="mt-1 h-24 resize-none"
+              disabled={isProcessing}
             />
           </div>
         </CardContent>
         <CardFooter>
-          <Button onClick={handleGenerateForecast} disabled={isPending || !selectedSkuValue} className="bg-accent hover:bg-accent/90 text-accent-foreground">
-            {isPending ? (
+          <Button onClick={handleSendMessage} disabled={isProcessing || !chatInputValue.trim()} className="bg-accent hover:bg-accent/90 text-accent-foreground">
+            {isProcessing ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {forecastingButtonText ?? translations[language].forecastPage.forecastingButton}
+                {processingButtonText ?? translations[language].forecastPage.processingButton}
               </>
             ) : (
               sendButtonText ?? translations[language].forecastPage.sendButton
@@ -205,7 +268,7 @@ export default function ForecastPage() {
         </CardFooter>
       </Card>
 
-      {isPending && !salesForecast && (
+      {isProcessing && !forecastMutation.data && !reportMutation.data && (
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center text-xl">
@@ -221,22 +284,28 @@ export default function ForecastPage() {
         </Card>
       )}
 
-      {error && (
+      {forecastMutation.error && (
         <Alert variant="destructive">
           <AlertTitle>{t('forecastPage.errorAlertTitle')}</AlertTitle>
-          <AlertDescription>{error.message}</AlertDescription>
+          <AlertDescription>{forecastMutation.error.message}</AlertDescription>
+        </Alert>
+      )}
+      {reportMutation.error && (
+         <Alert variant="destructive">
+          <AlertTitle>{t('forecastPage.toast.reportErrorTitle')}</AlertTitle>
+          <AlertDescription>{reportMutation.error.message}</AlertDescription>
         </Alert>
       )}
 
-      {salesForecast && !isPending && (
+      {forecastMutation.data && !forecastMutation.isPending && (
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center text-2xl">
               <TrendingUpIcon className="mr-2 h-6 w-6 text-primary" />
-              {t('forecastPage.forecastTitle', { skuName: salesForecast.skuName })}
+              {t('forecastPage.forecastTitle', { skuName: forecastMutation.data.skuName })}
             </CardTitle>
             <CardDescription>
-                {t('forecastPage.currentStockValueLabel')}: {salesForecast.currentStock}
+                {t('forecastPage.currentStockValueLabel')}: {forecastMutation.data.currentStock}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -276,11 +345,11 @@ export default function ForecastPage() {
             </div>
             <div>
               <h3 className="font-semibold text-lg flex items-center"><Info className="mr-2 h-5 w-5 text-muted-foreground" />{t('forecastPage.reasoningTitle')}</h3>
-              <p className="text-base whitespace-pre-wrap">{salesForecast.reasoning}</p>
+              <p className="text-base whitespace-pre-wrap">{forecastMutation.data.reasoning}</p>
             </div>
             <div>
               <h3 className="font-semibold text-lg flex items-center"><Lightbulb className="mr-2 h-5 w-5 text-muted-foreground" />{t('forecastPage.recommendationsTitle')}</h3>
-              <p className="text-base whitespace-pre-wrap">{salesForecast.recommendations}</p>
+              <p className="text-base whitespace-pre-wrap">{forecastMutation.data.recommendations}</p>
             </div>
           </CardContent>
         </Card>

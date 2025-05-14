@@ -78,8 +78,6 @@ interface NavTranslations {
   forecast: string;
   stores: string;
   tasksManager: string;
-  // reports: string; // Removed
-  // dataInput: string; // Removed
 }
 
 interface ForecastPageTranslations {
@@ -92,7 +90,7 @@ interface ForecastPageTranslations {
   forecastHorizonValueDisplay: string;
   chatInputPlaceholder: string;
   sendButton: string; 
-  forecastingButton: string; 
+  processingButton: string; 
   forecastTitle: string;
   currentStockValueLabel: string;
   chart: {
@@ -108,12 +106,19 @@ interface ForecastPageTranslations {
   recommendationsTitle: string;
   errorAlertTitle: string;
   toast: {
-    successTitle: string;
-    successDescription: string;
-    errorTitle: string;
-    errorDescription: string;
+    forecastSuccessTitle: string;
+    forecastSuccessDescription: string;
+    forecastErrorTitle: string;
+    forecastErrorDescription: string;
+    reportSuccessTitle: string;
+    reportSuccessDescription: string;
+    reportErrorTitle: string;
+    reportErrorDescription: string;
+    reportErrorNoData: string;
     skuMissingTitle: string;
     skuMissingDescription: string;
+    actionNotRecognizedTitle: string;
+    actionNotRecognizedDescription: string;
   };
   skus: {
     classicWhiteTShirt: string;
@@ -126,9 +131,6 @@ interface ForecastPageTranslations {
     title: string;
     description: string;
   };
-  // groundVoiceLabel: string; // Removed
-  // yourVoiceCountPlaceholder: string; // Removed
-  // yourVoiceCountDescription: string; // Removed
 }
 
 interface PosSalesPageTranslations {
@@ -393,8 +395,6 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       stores: 'Stores',
       tasksManager: 'Tasks Manager',
-      // reports: 'Reports', // Removed
-      // dataInput: 'Data Input', // Removed
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Trend Updates',
@@ -452,7 +452,7 @@ export const translations: Record<Locale, Translations> = {
       forecastHorizonValueDisplay: 'Next {{count}} months', 
       chatInputPlaceholder: 'Message Alyka agent...',
       sendButton: 'Send',
-      forecastingButton: 'Forecasting...', 
+      processingButton: 'Processing...', 
       forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
       currentStockValueLabel: 'Current Stock Level',
       chart: {
@@ -468,12 +468,19 @@ export const translations: Record<Locale, Translations> = {
       recommendationsTitle: 'Recommendations',
       errorAlertTitle: 'Forecast Generation Failed',
       toast: {
-        successTitle: 'Forecast Generated',
-        successDescription: 'AI stock forecast for {{skuName}} is ready.',
-        errorTitle: 'Forecast Error',
-        errorDescription: 'An unexpected error occurred while generating the forecast.',
+        forecastSuccessTitle: 'Forecast Generated',
+        forecastSuccessDescription: 'AI stock forecast for {{skuName}} is ready.',
+        forecastErrorTitle: 'Forecast Error',
+        forecastErrorDescription: 'An unexpected error occurred while generating the forecast.',
+        reportSuccessTitle: 'Report Generated',
+        reportSuccessDescription: 'Sales report "{{fileName}}" is ready for download.',
+        reportErrorTitle: 'Report Error',
+        reportErrorDescription: 'An unexpected error occurred while generating the report.',
+        reportErrorNoData: 'No data available for the report.',
         skuMissingTitle: 'SKU Not Selected',
         skuMissingDescription: 'Please select an SKU before generating a forecast.',
+        actionNotRecognizedTitle: 'Action Not Recognized',
+        actionNotRecognizedDescription: "I can help with 'forecast' or 'generate reports'. Please clarify.",
       },
       skus: {
         classicWhiteTShirt: "Men's Classic White T-Shirt",
@@ -486,9 +493,6 @@ export const translations: Record<Locale, Translations> = {
         title: "AI is Processing Your Request",
         description: "Our AI is analyzing trends and generating your forecast. This might take a few moments..."
       },
-      // groundVoiceLabel: "Ground Voice", // Removed
-      // yourVoiceCountPlaceholder: "Enter your feedback or specific requests here...", // Removed
-      // yourVoiceCountDescription: "Your feedback will help us to learn better.", // Removed
     },
     posSalesPage: {
       title: 'POS Sales Data Overview',
@@ -718,8 +722,6 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       stores: '店舗',
       tasksManager: 'タスク管理',
-      // reports: 'レポート', // Removed
-      // dataInput: 'データ入力', // Removed
     },
     analyticsPage: {
       latestTrendTitle: '最新トレンドアップデート',
@@ -777,7 +779,7 @@ export const translations: Record<Locale, Translations> = {
       forecastHorizonValueDisplay: '今後 {{count}} か月', 
       chatInputPlaceholder: 'Alykaエージェントにメッセージを送信...',
       sendButton: '送信',
-      forecastingButton: '予測中...',
+      processingButton: '処理中...',
       forecastTitle: '{{skuName}}の販売と在庫予測',
       currentStockValueLabel: '現在の在庫レベル',
       chart: {
@@ -793,12 +795,19 @@ export const translations: Record<Locale, Translations> = {
       recommendationsTitle: '推奨事項',
       errorAlertTitle: '予測生成失敗',
       toast: {
-        successTitle: '予測生成完了',
-        successDescription: '{{skuName}}のAI在庫予測が完了しました。',
-        errorTitle: '予測エラー',
-        errorDescription: '予測の生成中に予期せぬエラーが発生しました。',
+        forecastSuccessTitle: '予測生成完了',
+        forecastSuccessDescription: '{{skuName}}のAI在庫予測が完了しました。',
+        forecastErrorTitle: '予測エラー',
+        forecastErrorDescription: '予測の生成中に予期せぬエラーが発生しました。',
+        reportSuccessTitle: 'レポート生成完了',
+        reportSuccessDescription: '販売レポート「{{fileName}}」のダウンロード準備ができました。',
+        reportErrorTitle: 'レポートエラー',
+        reportErrorDescription: 'レポートの生成中に予期せぬエラーが発生しました。',
+        reportErrorNoData: 'レポート用のデータがありません。',
         skuMissingTitle: 'SKU未選択',
         skuMissingDescription: '予測を生成する前にSKUを選択してください。',
+        actionNotRecognizedTitle: 'アクション未認識',
+        actionNotRecognizedDescription: "「予測」または「レポート生成」のお手伝いができます。明確にしてください。",
       },
       skus: {
         classicWhiteTShirt: "メンズ クラシックホワイトTシャツ",
@@ -811,9 +820,6 @@ export const translations: Record<Locale, Translations> = {
         title: "AIがリクエストを処理中です",
         description: "AIがトレンドを分析し、予測を生成しています。少々お待ちください..."
       },
-      // groundVoiceLabel: "現場の声", // Removed
-      // yourVoiceCountPlaceholder: "フィードバックや具体的な要望をこちらに入力してください...", // Removed
-      // yourVoiceCountDescription: "あなたのフィードバックは、私たちがより良く学習するのに役立ちます。", // Removed
     },
     posSalesPage: {
       title: 'POS販売データ概要',
@@ -1016,4 +1022,3 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
-
