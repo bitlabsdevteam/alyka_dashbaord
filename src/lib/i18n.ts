@@ -8,7 +8,7 @@ interface CommonTranslations {
   japanese: string;
   profile: string;
   logout: string;
-  support: string; // Changed from chat
+  support: string;
   settings: string;
   saving: string;
 }
@@ -83,8 +83,8 @@ interface ForecastPageTranslations {
   groundVoiceLabel: string; 
   yourVoiceCountPlaceholder: string;
   yourVoiceCountDescription: string;
-  generateButton: string;
-  generatingButton: string;
+  forecastButton: string; // Renamed from generateButton
+  forecastingButton: string; // Renamed from generatingButton
   forecastTitle: string;
   currentStockValueLabel: string;
   chart: {
@@ -113,6 +113,10 @@ interface ForecastPageTranslations {
     oversizedHoodieBlack: string;
     stripedCottonPJs: string;
     luxurySilkScarfFloral: string;
+  };
+  aiProcessing: { // New section for loading simulation
+    title: string;
+    description: string;
   };
 }
 
@@ -357,7 +361,7 @@ export const translations: Record<Locale, Translations> = {
       japanese: '日本語 (Japanese)',
       profile: 'Profile',
       logout: 'Log out',
-      support: 'Support', // Changed from Chat
+      support: 'Support', 
       settings: 'Settings',
       saving: 'Saving...',
     },
@@ -383,7 +387,7 @@ export const translations: Record<Locale, Translations> = {
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Trend Updates',
-      latestTrendDescription: 'Insights from recent fashion events and runway shows.',
+      latestTrendDescription: 'Insights from the most recent MET GALA and runway shows.',
       galaArticle: {
         title: 'Tokyo Fashion Week: Spotlight on Emerging Trends',
         paragraph1: "This week's Tokyo Fashion Week is causing a stir, with several key trends poised to spike. Keep an eye on Deep Sapphire for its bold statements, Stripes making a resurgence in unexpected ways, and the continued dominance of Oversized silhouettes in contemporary designs.",
@@ -429,8 +433,8 @@ export const translations: Record<Locale, Translations> = {
       groundVoiceLabel: 'Ground Voice', 
       yourVoiceCountPlaceholder: 'Enter your feedback or specific insights for this forecast (e.g., "Expecting high demand due to recent celebrity endorsement", "Local event might boost sales for this item next month").',
       yourVoiceCountDescription: 'Your feedback will help us to learn better.',
-      generateButton: 'Generate Forecast',
-      generatingButton: 'Generating Forecast...',
+      forecastButton: 'Forecast',
+      forecastingButton: 'Forecasting...',
       forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
       currentStockValueLabel: 'Current Stock Level',
       chart: {
@@ -460,6 +464,10 @@ export const translations: Record<Locale, Translations> = {
         stripedCottonPJs: "Children's Striped Cotton PJs",
         luxurySilkScarfFloral: "Luxury Silk Scarf - Floral Print",
       },
+      aiProcessing: {
+        title: "AI is Processing Your Request",
+        description: "Our AI is analyzing trends and generating your forecast. This might take a few moments..."
+      }
     },
     posSalesPage: {
       title: 'POS Sales Data Overview',
@@ -495,7 +503,7 @@ export const translations: Record<Locale, Translations> = {
         storeLocation: 'Store Location',
         unitsSold: 'Units Sold',
         revenue: 'Revenue ($)',
-        po: 'PO',
+        po: 'PO', 
         posName: 'POS Name',
       },
       buttons: { 
@@ -668,7 +676,7 @@ export const translations: Record<Locale, Translations> = {
       japanese: '日本語',
       profile: 'プロフィール',
       logout: 'ログアウト',
-      support: 'サポート', // Changed from Chat
+      support: 'サポート', 
       settings: '設定',
       saving: '保存中...',
     },
@@ -694,11 +702,11 @@ export const translations: Record<Locale, Translations> = {
     },
     analyticsPage: {
       latestTrendTitle: '最新トレンドアップデート',
-      latestTrendDescription: '最近のファッションイベントやランウェイショーからの洞察。',
+      latestTrendDescription: '最近のMET GALAやランウェイショーからの洞察。',
       galaArticle: {
         title: '東京ファッションウィーク：注目トレンドスポットライト',
-        paragraph1: '今週の東京ファッションウィークは話題を呼んでおり、いくつかの主要トレンドが急上昇する見込みです。大胆な主張が際立つディープサファイア、予想外の方法で再登場するストライプ、そして現代デザインにおけるオーバーサイズシルエットの継続的な優位性に注目してください。',
-        paragraph2: '業界関係者は、東京発のこれらの新しいスタイルが、世界中の今後のB2Bアパレルコレクションにどのような影響を与えるかについて話題にしています。小売業者はこれらの動向を注意深く監視する必要があります。',
+        paragraph1: '今週の東京ファッションウィークでは、いくつかの主要トレンドが急上昇する見込みです。大胆な主張が際立つディープサファイア、予想外の方法で再注目されるストライプ、そして現代デザインにおけるオーバーサイズシルエットの継続的な人気に注目してください。',
+        paragraph2: '業界関係者は、これらの東京発の新しいスタイルが、世界中の今後のB2Bアパレルコレクションにどのような影響を与えるかについて話題にしています。小売業者はこれらの動向を注意深く監視する必要があります。',
       },
       trendPopularityTitle: '主要トレンドの人気推移',
       colorTrendsTitle: 'カラートレンド - 2025年',
@@ -740,8 +748,8 @@ export const translations: Record<Locale, Translations> = {
       groundVoiceLabel: '現場の声', 
       yourVoiceCountPlaceholder: 'この予測に関するフィードバックや特定の洞察を入力してください（例：「最近の有名人の推薦により高い需要が見込まれる」、「来月、地元のイベントがこの商品の売上を押し上げる可能性がある」）。',
       yourVoiceCountDescription: 'あなたのフィードバックは、私たちがより良く学ぶのに役立ちます。',
-      generateButton: '予測を生成',
-      generatingButton: '予測を生成中...',
+      forecastButton: '予測',
+      forecastingButton: '予測中...',
       forecastTitle: '{{skuName}}の販売と在庫予測',
       currentStockValueLabel: '現在の在庫レベル',
       chart: {
@@ -771,6 +779,10 @@ export const translations: Record<Locale, Translations> = {
         stripedCottonPJs: "子供用 ストライプコットンパジャマ",
         luxurySilkScarfFloral: "高級シルクスカーフ - フローラルプリント",
       },
+      aiProcessing: {
+        title: "AIがリクエストを処理中です",
+        description: "AIがトレンドを分析し、予測を生成しています。少々お待ちください..."
+      }
     },
     posSalesPage: {
       title: 'POS販売データ概要',

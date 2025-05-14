@@ -37,7 +37,7 @@ export default function ForecastPage() {
   const { t, language } = useLanguage();
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
   const [forecastMonths, setForecastMonths] = useState<number>(3);
-  const [groundVoiceInput, setGroundVoiceInput] = useState<string>(''); // Renamed from yourVoiceCount
+  const [groundVoiceInput, setGroundVoiceInput] = useState<string>('');
   const { toast } = useToast();
 
   const [groundVoiceLabelText, setGroundVoiceLabelText] = useState<string | null>(null);
@@ -45,8 +45,12 @@ export default function ForecastPage() {
   const [selectSkuPlaceholderText, setSelectSkuPlaceholderText] = useState<string | null>(null);
   const [currentStockLabelText, setCurrentStockLabelText] = useState<string | null>(null);
   const [forecastHorizonLabelText, setForecastHorizonLabelText] = useState<string | null>(null);
-  const [groundVoicePlaceholderText, setGroundVoicePlaceholderText] = useState<string | null>(null); // Renamed
-  const [groundVoiceDescriptionText, setGroundVoiceDescriptionText] = useState<string | null>(null); // Renamed
+  const [groundVoicePlaceholderText, setGroundVoicePlaceholderText] = useState<string | null>(null);
+  const [groundVoiceDescriptionText, setGroundVoiceDescriptionText] = useState<string | null>(null);
+  const [forecastButtonText, setForecastButtonText] = useState<string | null>(null);
+  const [forecastingButtonText, setForecastingButtonText] = useState<string | null>(null);
+  const [aiProcessingTitle, setAiProcessingTitle] = useState<string | null>(null);
+  const [aiProcessingDescription, setAiProcessingDescription] = useState<string | null>(null);
 
 
   useEffect(() => {
@@ -55,8 +59,12 @@ export default function ForecastPage() {
     setSelectSkuPlaceholderText(t('forecastPage.selectSkuPlaceholder'));
     setCurrentStockLabelText(t('forecastPage.currentStockLabel'));
     setForecastHorizonLabelText(t('forecastPage.forecastHorizonLabel'));
-    setGroundVoicePlaceholderText(t('forecastPage.yourVoiceCountPlaceholder')); // Key from i18n
-    setGroundVoiceDescriptionText(t('forecastPage.yourVoiceCountDescription')); // Key from i18n
+    setGroundVoicePlaceholderText(t('forecastPage.yourVoiceCountPlaceholder')); 
+    setGroundVoiceDescriptionText(t('forecastPage.yourVoiceCountDescription'));
+    setForecastButtonText(t('forecastPage.forecastButton'));
+    setForecastingButtonText(t('forecastPage.forecastingButton'));
+    setAiProcessingTitle(t('forecastPage.aiProcessing.title'));
+    setAiProcessingDescription(t('forecastPage.aiProcessing.description'));
   }, [t]);
 
   const { mutate, data: salesForecast, isPending, error } = useMutation<ForecastSalesOutput, Error, ForecastSalesInput>({
@@ -92,8 +100,6 @@ export default function ForecastPage() {
         currentStock: skuDetails.currentStock,
         forecastHorizon: `next ${forecastMonths} months`,
         targetLanguage: language,
-        // Add groundVoiceInput to the mutation if your AI flow expects it
-        // yourCustomField: groundVoiceInput, 
       });
     }
   };
@@ -148,22 +154,22 @@ export default function ForecastPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor="skuSelect">{skuLabelText !== null ? skuLabelText : translations[language].forecastPage.skuLabel}</Label>
+            <Label htmlFor="skuSelect">{skuLabelText ?? translations[language].forecastPage.skuLabel}</Label>
             <Select value={selectedSkuValue} onValueChange={setSelectedSkuValue}>
               <SelectTrigger id="skuSelect" className="w-full text-base">
-                <SelectValue placeholder={selectSkuPlaceholderText !== null ? selectSkuPlaceholderText : translations[language].forecastPage.selectSkuPlaceholder} />
+                <SelectValue placeholder={selectSkuPlaceholderText ?? translations[language].forecastPage.selectSkuPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {mockSkus.map(sku => (
                   <SelectItem key={sku.value} value={sku.value} className="text-base">
-                    {t(sku.labelKey)} ({currentStockLabelText !== null ? currentStockLabelText : translations[language].forecastPage.currentStockLabel}: {sku.currentStock})
+                    {t(sku.labelKey)} ({currentStockLabelText ?? translations[language].forecastPage.currentStockLabel}: {sku.currentStock})
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="forecastHorizonSlider">{forecastHorizonLabelText !== null ? forecastHorizonLabelText : translations[language].forecastPage.forecastHorizonLabel}</Label>
+            <Label htmlFor="forecastHorizonSlider">{forecastHorizonLabelText ?? translations[language].forecastPage.forecastHorizonLabel}</Label>
             <div className="flex items-center space-x-4 pt-2">
               <Slider
                 id="forecastHorizonSlider"
@@ -173,7 +179,7 @@ export default function ForecastPage() {
                 step={1}
                 onValueChange={(value) => setForecastMonths(value[0])}
                 className="flex-grow"
-                aria-label={forecastHorizonLabelText !== null ? forecastHorizonLabelText : translations[language].forecastPage.forecastHorizonLabel}
+                aria-label={forecastHorizonLabelText ?? translations[language].forecastPage.forecastHorizonLabel}
               />
               <span className="text-base w-32 text-right tabular-nums">
                 {t('forecastPage.forecastHorizonValueDisplay', { count: forecastMonths })}
@@ -182,18 +188,18 @@ export default function ForecastPage() {
           </div>
           <div>
             <Label htmlFor="groundVoiceTextarea">
-              {groundVoiceLabelText !== null ? groundVoiceLabelText : translations[language].forecastPage.groundVoiceLabel}
+              {groundVoiceLabelText ?? translations[language].forecastPage.groundVoiceLabel}
             </Label>
             <Textarea
               id="groundVoiceTextarea"
               value={groundVoiceInput}
               onChange={(e) => setGroundVoiceInput(e.target.value)}
-              placeholder={groundVoicePlaceholderText !== null ? groundVoicePlaceholderText : translations[language].forecastPage.yourVoiceCountPlaceholder}
+              placeholder={groundVoicePlaceholderText ?? translations[language].forecastPage.yourVoiceCountPlaceholder}
               className="w-full text-base mt-1 min-h-[80px] resize-y"
               rows={3}
             />
             <p className="text-sm text-muted-foreground mt-1">
-              {groundVoiceDescriptionText !== null ? groundVoiceDescriptionText : translations[language].forecastPage.yourVoiceCountDescription}
+              {groundVoiceDescriptionText ?? translations[language].forecastPage.yourVoiceCountDescription}
             </p>
           </div>
         </CardContent>
@@ -202,14 +208,30 @@ export default function ForecastPage() {
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t('forecastPage.generatingButton')}
+                {forecastingButtonText ?? translations[language].forecastPage.forecastingButton}
               </>
             ) : (
-              t('forecastPage.generateButton')
+              forecastButtonText ?? translations[language].forecastPage.forecastButton
             )}
           </Button>
         </CardFooter>
       </Card>
+
+      {isPending && !salesForecast && (
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center text-xl">
+              <Loader2 className="mr-3 h-6 w-6 text-primary animate-spin" />
+              {aiProcessingTitle ?? translations[language].forecastPage.aiProcessing.title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-base text-muted-foreground">
+              {aiProcessingDescription ?? translations[language].forecastPage.aiProcessing.description}
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       {error && (
         <Alert variant="destructive">
@@ -218,7 +240,7 @@ export default function ForecastPage() {
         </Alert>
       )}
 
-      {salesForecast && (
+      {salesForecast && !isPending && (
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center text-2xl">
