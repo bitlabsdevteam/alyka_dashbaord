@@ -37,6 +37,9 @@ export function SidebarNav() {
       case 'reports':
         translationKey = 'nav.reports';
         break;
+      case 'data input': // Added specific case for "Data Input"
+        translationKey = 'nav.dataInput';
+        break;
       // Removed Feedback case
       default:
         // Fallback for any new items, assuming a pattern like 'nav.title'
@@ -79,4 +82,3 @@ export function SidebarNav() {
     </div>
   );
 }
-
