@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { forecastSales, type ForecastSalesOutput, type ForecastSalesInput } from '@/ai/flows/forecast-sales';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb, MessageSquare } from 'lucide-react';
+import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb } from 'lucide-react';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
@@ -44,7 +44,6 @@ export default function ForecastPage() {
   const [selectSkuPlaceholderText, setSelectSkuPlaceholderText] = useState<string | null>(null);
   const [currentStockLabelText, setCurrentStockLabelText] = useState<string | null>(null);
   const [periodLabelText, setPeriodLabelText] = useState<string | null>(null);
-  const [chatInputLabelText, setChatInputLabelText] = useState<string | null>(null);
   const [sendButtonText, setSendButtonText] = useState<string | null>(null);
   const [forecastingButtonText, setForecastingButtonText] = useState<string | null>(null);
   const [aiProcessingTitle, setAiProcessingTitle] = useState<string | null>(null);
@@ -56,7 +55,6 @@ export default function ForecastPage() {
     setSelectSkuPlaceholderText(t('forecastPage.selectSkuPlaceholder'));
     setCurrentStockLabelText(t('forecastPage.currentStockLabel'));
     setPeriodLabelText(t('forecastPage.periodLabel'));
-    setChatInputLabelText(t('forecastPage.chatInputLabel'));
     setSendButtonText(t('forecastPage.sendButton'));
     setForecastingButtonText(t('forecastPage.forecastingButton'));
     setAiProcessingTitle(t('forecastPage.aiProcessing.title'));
@@ -184,7 +182,6 @@ export default function ForecastPage() {
             </div>
           </div>
           <div>
-            <Label htmlFor="chatInput">{chatInputLabelText ?? translations[language].forecastPage.chatInputLabel}</Label>
             <Textarea
               id="chatInput"
               value={chatInputValue}

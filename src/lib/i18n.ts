@@ -80,7 +80,6 @@ interface ForecastPageTranslations {
   currentStockLabel: string;
   periodLabel: string;
   forecastHorizonValueDisplay: string;
-  chatInputLabel: string;
   chatInputPlaceholder: string;
   sendButton: string; 
   forecastingButton: string; 
@@ -429,8 +428,7 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: 'Current Stock',
       periodLabel: 'Period',
       forecastHorizonValueDisplay: 'Next {{count}} months',
-      chatInputLabel: 'Your Insights/Context (Optional)',
-      chatInputPlaceholder: 'Enter any specific insights or context for this forecast...',
+      chatInputPlaceholder: 'Message Alyka agent...',
       sendButton: 'Send',
       forecastingButton: 'Forecasting...', 
       forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
@@ -743,8 +741,7 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: '現在の在庫',
       periodLabel: '期間',
       forecastHorizonValueDisplay: '今後 {{count}} か月',
-      chatInputLabel: 'あなたの洞察/コンテキスト（任意）',
-      chatInputPlaceholder: 'この予測に関する特定の洞察やコンテキストを入力してください...',
+      chatInputPlaceholder: 'Alykaエージェントにメッセージを送信...',
       sendButton: '送信',
       forecastingButton: '予測中...',
       forecastTitle: '{{skuName}}の販売と在庫予測',
@@ -880,7 +877,7 @@ export const translations: Record<Locale, Translations> = {
       title: 'Alykaチャットサポート',
       description: 'ファッショントレンド、販売データ、予測について何でも聞いてください！',
       greeting: 'こんにちは！私はあなたのAIファッションアシスタント、Alykaです。今日はどうしましたか？',
-      inputPlaceholder: '私はあなたのAIエージェント、Alykaです。お手伝いさせてください。',
+      inputPlaceholder: "私はあなたのAIエージェント、Alykaです。お手伝いさせてください。",
       sendButton: '送信',
       simulatedResponse: 'メッセージありがとうございます！リクエストを処理中です。今のところ、一般的なヒントです：サステナブルな生地に注目してください、成長しているトレンドです！',
     },
