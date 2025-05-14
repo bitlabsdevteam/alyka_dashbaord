@@ -5,7 +5,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
@@ -37,16 +36,12 @@ export default function ForecastPage() {
   const { t, language } = useLanguage();
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
   const [forecastMonths, setForecastMonths] = useState<number>(3);
-  const [groundVoiceInput, setGroundVoiceInput] = useState<string>('');
   const { toast } = useToast();
 
-  const [groundVoiceLabelText, setGroundVoiceLabelText] = useState<string | null>(null);
   const [skuLabelText, setSkuLabelText] = useState<string | null>(null);
   const [selectSkuPlaceholderText, setSelectSkuPlaceholderText] = useState<string | null>(null);
   const [currentStockLabelText, setCurrentStockLabelText] = useState<string | null>(null);
   const [forecastHorizonLabelText, setForecastHorizonLabelText] = useState<string | null>(null);
-  const [groundVoicePlaceholderText, setGroundVoicePlaceholderText] = useState<string | null>(null);
-  const [groundVoiceDescriptionText, setGroundVoiceDescriptionText] = useState<string | null>(null);
   const [forecastButtonText, setForecastButtonText] = useState<string | null>(null);
   const [forecastingButtonText, setForecastingButtonText] = useState<string | null>(null);
   const [aiProcessingTitle, setAiProcessingTitle] = useState<string | null>(null);
@@ -54,13 +49,10 @@ export default function ForecastPage() {
 
 
   useEffect(() => {
-    setGroundVoiceLabelText(t('forecastPage.groundVoiceLabel'));
     setSkuLabelText(t('forecastPage.skuLabel'));
     setSelectSkuPlaceholderText(t('forecastPage.selectSkuPlaceholder'));
     setCurrentStockLabelText(t('forecastPage.currentStockLabel'));
     setForecastHorizonLabelText(t('forecastPage.forecastHorizonLabel'));
-    setGroundVoicePlaceholderText(t('forecastPage.yourVoiceCountPlaceholder')); 
-    setGroundVoiceDescriptionText(t('forecastPage.yourVoiceCountDescription'));
     setForecastButtonText(t('forecastPage.forecastButton'));
     setForecastingButtonText(t('forecastPage.forecastingButton'));
     setAiProcessingTitle(t('forecastPage.aiProcessing.title'));
@@ -185,22 +177,6 @@ export default function ForecastPage() {
                 {t('forecastPage.forecastHorizonValueDisplay', { count: forecastMonths })}
               </span>
             </div>
-          </div>
-          <div>
-            <Label htmlFor="groundVoiceTextarea">
-              {groundVoiceLabelText ?? translations[language].forecastPage.groundVoiceLabel}
-            </Label>
-            <Textarea
-              id="groundVoiceTextarea"
-              value={groundVoiceInput}
-              onChange={(e) => setGroundVoiceInput(e.target.value)}
-              placeholder={groundVoicePlaceholderText ?? translations[language].forecastPage.yourVoiceCountPlaceholder}
-              className="w-full text-base mt-1 min-h-[80px] resize-y"
-              rows={3}
-            />
-            <p className="text-sm text-muted-foreground mt-1">
-              {groundVoiceDescriptionText ?? translations[language].forecastPage.yourVoiceCountDescription}
-            </p>
           </div>
         </CardContent>
         <CardFooter>

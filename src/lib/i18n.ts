@@ -66,7 +66,7 @@ interface HeaderTranslations {
 interface NavTranslations {
   analytics: string;
   forecast: string;
-  stores: string; 
+  stores: string;
   tasksManager: string;
   reports: string;
   dataInput: string;
@@ -80,11 +80,8 @@ interface ForecastPageTranslations {
   currentStockLabel: string;
   forecastHorizonLabel: string;
   forecastHorizonValueDisplay: string;
-  groundVoiceLabel: string; 
-  yourVoiceCountPlaceholder: string;
-  yourVoiceCountDescription: string;
-  forecastButton: string; // Renamed from generateButton
-  forecastingButton: string; // Renamed from generatingButton
+  forecastButton: string; 
+  forecastingButton: string; 
   forecastTitle: string;
   currentStockValueLabel: string;
   chart: {
@@ -114,7 +111,7 @@ interface ForecastPageTranslations {
     stripedCottonPJs: string;
     luxurySilkScarfFloral: string;
   };
-  aiProcessing: { // New section for loading simulation
+  aiProcessing: { 
     title: string;
     description: string;
   };
@@ -151,13 +148,13 @@ interface PosSalesPageTranslations {
     productName: string;
     category: string;
     sku: string;
-    storeLocation: string; 
+    storeLocation: string;
     unitsSold: string;
     revenue: string;
-    po: string; 
+    po: string;
     posName: string;
   };
-  buttons: { 
+  buttons: {
     createPo: string;
   };
   categories: {
@@ -361,7 +358,7 @@ export const translations: Record<Locale, Translations> = {
       japanese: '日本語 (Japanese)',
       profile: 'Profile',
       logout: 'Log out',
-      support: 'Support', 
+      support: 'Support',
       settings: 'Settings',
       saving: 'Saving...',
     },
@@ -380,7 +377,7 @@ export const translations: Record<Locale, Translations> = {
     nav: {
       analytics: 'Analytics',
       forecast: 'Forecast',
-      stores: 'Stores', 
+      stores: 'Stores',
       tasksManager: 'Tasks Manager',
       reports: 'Reports',
       dataInput: 'Data Input',
@@ -430,9 +427,6 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: 'Current Stock',
       forecastHorizonLabel: 'Forecast Horizon',
       forecastHorizonValueDisplay: 'Next {{count}} months',
-      groundVoiceLabel: 'Ground Voice', 
-      yourVoiceCountPlaceholder: 'Enter your feedback or specific insights for this forecast (e.g., "Expecting high demand due to recent celebrity endorsement", "Local event might boost sales for this item next month").',
-      yourVoiceCountDescription: 'Your feedback will help us to learn better.',
       forecastButton: 'Forecast',
       forecastingButton: 'Forecasting...',
       forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
@@ -503,10 +497,10 @@ export const translations: Record<Locale, Translations> = {
         storeLocation: 'Store Location',
         unitsSold: 'Units Sold',
         revenue: 'Revenue ($)',
-        po: 'PO', 
+        po: 'PO',
         posName: 'POS Name',
       },
-      buttons: { 
+      buttons: {
         createPo: 'Create PO',
       },
       categories: {
@@ -568,7 +562,7 @@ export const translations: Record<Locale, Translations> = {
       title: 'Alyka Chat Support',
       description: 'Ask me anything about fashion trends, sales data, or forecasts!',
       greeting: 'Hello! I am Alyka, your AI fashion assistant. How can I help you today?',
-      inputPlaceholder: 'Type your message...',
+      inputPlaceholder: "I'm your AI agent Alyka. Let me help you.",
       sendButton: 'Send',
       simulatedResponse: "Thanks for your message! I'm processing your request. For now, here's a general tip: Keep an eye on sustainable fabrics, as they are a growing trend!",
     },
@@ -676,7 +670,7 @@ export const translations: Record<Locale, Translations> = {
       japanese: '日本語',
       profile: 'プロフィール',
       logout: 'ログアウト',
-      support: 'サポート', 
+      support: 'サポート',
       settings: '設定',
       saving: '保存中...',
     },
@@ -695,7 +689,7 @@ export const translations: Record<Locale, Translations> = {
     nav: {
       analytics: '分析',
       forecast: '予測',
-      stores: '店舗', 
+      stores: '店舗',
       tasksManager: 'タスク管理',
       reports: 'レポート',
       dataInput: 'データ入力',
@@ -745,9 +739,6 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: '現在の在庫',
       forecastHorizonLabel: '予測期間',
       forecastHorizonValueDisplay: '今後 {{count}} か月',
-      groundVoiceLabel: '現場の声', 
-      yourVoiceCountPlaceholder: 'この予測に関するフィードバックや特定の洞察を入力してください（例：「最近の有名人の推薦により高い需要が見込まれる」、「来月、地元のイベントがこの商品の売上を押し上げる可能性がある」）。',
-      yourVoiceCountDescription: 'あなたのフィードバックは、私たちがより良く学ぶのに役立ちます。',
       forecastButton: '予測',
       forecastingButton: '予測中...',
       forecastTitle: '{{skuName}}の販売と在庫予測',
@@ -815,7 +806,7 @@ export const translations: Record<Locale, Translations> = {
         productName: '製品名',
         category: 'カテゴリ',
         sku: 'SKU',
-        storeLocation: '店舗の場所', 
+        storeLocation: '店舗の場所',
         unitsSold: '販売ユニット数',
         revenue: '収益 (¥)',
         po: '発注書',
@@ -883,7 +874,7 @@ export const translations: Record<Locale, Translations> = {
       title: 'Alykaチャットサポート',
       description: 'ファッショントレンド、販売データ、予測について何でも聞いてください！',
       greeting: 'こんにちは！私はあなたのAIファッションアシスタント、Alykaです。今日はどうしましたか？',
-      inputPlaceholder: 'メッセージを入力してください...',
+      inputPlaceholder: '私はあなたのAIエージェント、Alykaです。お手伝いさせてください。',
       sendButton: '送信',
       simulatedResponse: 'メッセージありがとうございます！リクエストを処理中です。今のところ、一般的なヒントです：サステナブルな生地に注目してください、成長しているトレンドです！',
     },
