@@ -50,7 +50,7 @@ export default function ForecastPage() {
 
 
   useEffect(() => {
-    setGroundVoiceLabelText(t('forecastPage.yourVoiceCountLabel'));
+    setGroundVoiceLabelText(t('forecastPage.groundVoiceLabel'));
     setSkuLabelText(t('forecastPage.skuLabel'));
     setSelectSkuPlaceholderText(t('forecastPage.selectSkuPlaceholder'));
     setCurrentStockLabelText(t('forecastPage.currentStockLabel'));
@@ -180,7 +180,7 @@ export default function ForecastPage() {
           </div>
           <div>
             <Label htmlFor="yourVoiceCount">
-              {groundVoiceLabelText !== null ? groundVoiceLabelText : translations[language].forecastPage.yourVoiceCountLabel}
+              {groundVoiceLabelText !== null ? groundVoiceLabelText : translations[language].forecastPage.groundVoiceLabel}
             </Label>
             <Textarea
               id="yourVoiceCount"
