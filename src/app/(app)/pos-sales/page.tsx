@@ -9,6 +9,7 @@ import { ShoppingCart, DollarSign, Package, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { format, subMonths, startOfMonth } from 'date-fns';
 import type { Translations } from '@/lib/i18n';
+import { Button } from '@/components/ui/button';
 
 interface DetailedPosEntry {
   id: string;
@@ -289,6 +290,7 @@ export default function PosSalesPage() {
                   <TableHead className="hidden md:table-cell">{t('posSalesPage.tableHeaders.sku')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.unitsSold')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.revenue')}</TableHead>
+                  <TableHead>{t('posSalesPage.tableHeaders.po')}</TableHead>
                   <TableHead className="hidden lg:table-cell">{t('posSalesPage.tableHeaders.posName')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -301,6 +303,9 @@ export default function PosSalesPage() {
                     <TableCell className="hidden md:table-cell">{item.sku}</TableCell>
                     <TableCell className="text-right">{item.unitsSold.toLocaleString()}</TableCell>
                     <TableCell className="text-right">${item.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</TableCell>
+                    <TableCell>
+                      <Button variant="outline" size="sm">{t('posSalesPage.buttons.createPo')}</Button>
+                    </TableCell>
                     <TableCell className="hidden lg:table-cell">{item.posName}</TableCell>
                   </TableRow>
                 ))}
@@ -314,4 +319,3 @@ export default function PosSalesPage() {
     </div>
   );
 }
-

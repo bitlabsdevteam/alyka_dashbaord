@@ -140,7 +140,11 @@ interface PosSalesPageTranslations {
     sku: string;
     unitsSold: string;
     revenue: string;
+    po: string; // New translation
     posName: string;
+  };
+  buttons: { // New button translations
+    createPo: string;
   };
   categories: {
     outerwear: string;
@@ -375,10 +379,10 @@ export const translations: Record<Locale, Translations> = {
         paragraph2: 'Key takeaways include the resurgence of avant-garde tailoring, an emphasis on handcrafted details, and a notable shift towards gender-fluid designs. Metallic fabrics and ethereal sheers dominated, creating memorable moments that will undoubtedly influence upcoming B2B apparel collections.',
       },
       trendPopularityTitle: 'Key Trend Popularity Over Time',
-      colorTrendsTitle: 'Color Trends',
+      colorTrendsTitle: 'Color Trends - 2025',
       popularity: 'Popularity',
       colorPopularity: 'Popularity',
-      silhouettePopularityTitle: 'Silhouette Popularity Trends',
+      silhouettePopularityTitle: 'Silhouette Popularity Trends - 2025',
       silhouette: {
         aLine: 'A-Line',
         sheath: 'Sheath',
@@ -386,7 +390,7 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'Bodycon',
         asymmetrical: 'Asymmetrical',
       },
-      patternTrendsTitle: 'Pattern Popularity Trends',
+      patternTrendsTitle: 'Pattern Popularity Trends - 2025',
       color: {
         deepSapphire: 'Deep Sapphire',
         desertKhaki: 'Desert Khaki',
@@ -471,7 +475,11 @@ export const translations: Record<Locale, Translations> = {
         sku: 'SKU',
         unitsSold: 'Units Sold',
         revenue: 'Revenue ($)',
+        po: 'PO',
         posName: 'POS Name',
+      },
+      buttons: {
+        createPo: 'Create PO',
       },
       categories: {
         outerwear: 'Outerwear',
@@ -672,10 +680,10 @@ export const translations: Record<Locale, Translations> = {
         paragraph2: '主なポイントとしては、アバンギャルドなテーラリングの再興、手作りのディテールへの重点、そしてジェンダーフルイドデザインへの顕著なシフトが挙げられます。メタリックな生地や優美なシアー素材が主流となり、記憶に残る瞬間を生み出し、今後のB2Bアパレルコレクションに間違いなく影響を与えるでしょう。',
       },
       trendPopularityTitle: '主要トレンドの人気推移',
-      colorTrendsTitle: 'カラートレンド',
+      colorTrendsTitle: 'カラートレンド - 2025',
       popularity: '人気度',
       colorPopularity: '人気度',
-      silhouettePopularityTitle: 'シルエット人気トレンド',
+      silhouettePopularityTitle: 'シルエット人気トレンド - 2025',
       silhouette: {
         aLine: 'Aライン',
         sheath: 'シース',
@@ -683,7 +691,7 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'ボディコン',
         asymmetrical: 'アシンメトリー',
       },
-      patternTrendsTitle: 'パターン人気トレンド',
+      patternTrendsTitle: 'パターン人気トレンド - 2025',
       color: {
         deepSapphire: 'ディープサファイア',
         desertKhaki: 'デザートカーキ',
@@ -768,7 +776,11 @@ export const translations: Record<Locale, Translations> = {
         sku: 'SKU',
         unitsSold: '販売ユニット数',
         revenue: '収益 (¥)',
+        po: '発注書',
         posName: 'POS名',
+      },
+      buttons: {
+        createPo: '発注書作成',
       },
       categories: {
         outerwear: 'アウターウェア',
