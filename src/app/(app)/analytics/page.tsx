@@ -4,16 +4,15 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Palette, Newspaper, TrendingUp, Layers, AlertTriangle } from 'lucide-react'; 
+import { Palette, Newspaper, TrendingUp, Layers } from 'lucide-react'; 
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import type { TranslationKey } from '@/lib/i18n';
-import { useToast } from '@/hooks/use-toast';
 
-// Component for rendering images with a fallback to picsum.photos
+// Component for rendering images with a fallback to placehold.co
 interface ImageWithFallbackProps {
   src: string;
   alt: string;
@@ -38,9 +37,8 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ src, alt, aiHint,
       className={`object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       onError={() => {
         setIsLoading(false);
-        // Create a unique seed for picsum based on alt text to get different images
-        const seed = alt.replace(/\s+/g, '-').toLowerCase().slice(0, 20);
-        setCurrentSrc(`https://placehold.co/200x300.png`); // Using placehold.co as per guidelines
+        // Create a unique seed for placehold.co based on alt text to get different images
+        setCurrentSrc(`https://placehold.co/200x300.png`); 
       }}
       onLoad={() => setIsLoading(false)}
       data-ai-hint={aiHint || alt.split(' ').slice(0, 2).join(' ').toLowerCase()}
@@ -76,10 +74,10 @@ const mockSilhouetteData = [
   { monthYear: 'Oct 2024', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
   { monthYear: 'Nov 2024', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
   { monthYear: 'Dec 2024', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
-  { monthYear: 'Jan 2025', aLine: 38, sheath: 48, oversized: 102, bodycon: 62, asymmetrical: 82 },
-  { monthYear: 'Feb 2025', aLine: 35, sheath: 50, oversized: 105, bodycon: 65, asymmetrical: 85 },
-  { monthYear: 'Mar 2025', aLine: 32, sheath: 52, oversized: 108, bodycon: 68, asymmetrical: 88 },
-  { monthYear: 'Apr 2025', aLine: 30, sheath: 55, oversized: 110, bodycon: 70, asymmetrical: 90 },
+  { monthYear: 'Jan-2025', aLine: 38, sheath: 48, oversized: 102, bodycon: 62, asymmetrical: 82 },
+  { monthYear: 'Feb-2025', aLine: 35, sheath: 50, oversized: 105, bodycon: 65, asymmetrical: 85 },
+  { monthYear: 'Mar-2025', aLine: 32, sheath: 52, oversized: 108, bodycon: 68, asymmetrical: 88 },
+  { monthYear: 'Apr-2025', aLine: 30, sheath: 55, oversized: 110, bodycon: 70, asymmetrical: 90 },
 ];
 
 const mockColorData = [
@@ -90,7 +88,7 @@ const mockColorData = [
   { name: 'Warm Terracotta', value: 180, translationKey: 'analyticsPage.color.warmTerracotta' as TranslationKey },
 ];
 
-const COLORS = ['#1E3A8A', '#BEB7A4', '#831843', '#166534', '#E2725B']; 
+const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
 
 const mockPatternLineData = [
   { monthYear: 'Jan 2023', floral: 20, geometric: 15, stripes: 25, animalPrints: 10, abstract: 18 },
@@ -113,14 +111,14 @@ const mockPatternLineData = [
   { monthYear: 'Jun 2024', floral: 75, geometric: 68, stripes: 83, animalPrints: 68, abstract: 75 },
   { monthYear: 'Jul 2024', floral: 78, geometric: 72, stripes: 86, animalPrints: 71, abstract: 78 },
   { monthYear: 'Aug 2024', floral: 80, geometric: 75, stripes: 89, animalPrints: 74, abstract: 80 },
-  { monthYear: 'Sep 2024', floral: 78, geometric: 78, stripes: 92, animalPrints: 77, abstract: 78 }, 
-  { monthYear: 'Oct 2024', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 }, 
-  { monthYear: 'Nov 2024', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
-  { monthYear: 'Dec 2024', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
-  { monthYear: 'Jan 2025', floral: 64, geometric: 92, stripes: 102, animalPrints: 89, abstract: 64 }, 
-  { monthYear: 'Feb 2025', floral: 60, geometric: 95, stripes: 105, animalPrints: 92, abstract: 60 },
-  { monthYear: 'Mar 2025', floral: 55, geometric: 98, stripes: 108, animalPrints: 95, abstract: 55 },
-  { monthYear: 'Apr 2025', floral: 50, geometric: 100, stripes: 110, animalPrints: 98, abstract: 50 },
+  { monthYear: 'Sep-2024', floral: 78, geometric: 78, stripes: 92, animalPrints: 77, abstract: 78 }, 
+  { monthYear: 'Oct-2024', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 }, 
+  { monthYear: 'Nov-2024', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
+  { monthYear: 'Dec-2024', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
+  { monthYear: 'Jan-2025', floral: 64, geometric: 92, stripes: 102, animalPrints: 89, abstract: 64 }, 
+  { monthYear: 'Feb-2025', floral: 60, geometric: 95, stripes: 105, animalPrints: 92, abstract: 60 },
+  { monthYear: 'Mar-2025', floral: 55, geometric: 98, stripes: 108, animalPrints: 95, abstract: 55 },
+  { monthYear: 'Apr-2025', floral: 50, geometric: 100, stripes: 110, animalPrints: 98, abstract: 50 },
 ];
 
 const chartConfigColorFn = (t: (key: string) => string): ChartConfig => ({
@@ -140,7 +138,6 @@ const carouselImages = [
 
 export default function AnalyticsPage() {
   const { t } = useLanguage();
-  const { toast } = useToast();
   const [isMounted, setIsMounted] = React.useState(false);
   const autoplayPlugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
@@ -150,12 +147,7 @@ export default function AnalyticsPage() {
   React.useEffect(() => {
     setIsMounted(true);
     setPageDescription(t('analyticsPage.latestTrendDescription'));
-     toast({
-        title: t('analyticsPage.toast.eventAlertTitle'),
-        description: t('analyticsPage.toast.eventAlertDescription'),
-        action: <AlertTriangle className="h-5 w-5 text-yellow-500" />, // Example icon
-      });
-  }, [t, toast]);
+  }, [t]);
 
   const silhouetteChartConfig = React.useMemo(() => ({
     aLine: { label: t('analyticsPage.silhouette.aLine'), color: "hsl(var(--chart-1))" },

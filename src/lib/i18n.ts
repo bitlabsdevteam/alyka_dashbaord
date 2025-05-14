@@ -48,10 +48,6 @@ interface AnalyticsPageTranslations {
     abstract: string;
     animalPrints: string;
   };
-  toast: {
-    eventAlertTitle: string;
-    eventAlertDescription: string;
-  }
 }
 
 interface HeaderTranslations {
@@ -84,7 +80,7 @@ interface ForecastPageTranslations {
   currentStockLabel: string;
   forecastHorizonLabel: string;
   forecastHorizonValueDisplay: string;
-  groundVoiceLabel: string; // Changed from yourVoiceCountLabel
+  groundVoiceLabel: string; 
   yourVoiceCountPlaceholder: string;
   yourVoiceCountDescription: string;
   generateButton: string;
@@ -377,12 +373,12 @@ export const translations: Record<Locale, Translations> = {
       dataInput: 'Data Input',
     },
     analyticsPage: {
-      latestTrendTitle: 'Latest Fashion Buzz',
-      latestTrendDescription: 'Insights from the most recent MET GALA and runway shows.',
+      latestTrendTitle: 'Latest Trend Updates',
+      latestTrendDescription: 'Insights from recent fashion events and runway shows.',
       galaArticle: {
-        title: 'MET GALA 2025: A Night of Spectacular Fashion',
-        paragraph1: 'The MET GALA 2025 red carpet was a breathtaking display of creativity and glamour. Designers pushed boundaries with innovative silhouettes, sustainable materials, and bold color choices. Themes of nature and technology intertwined, offering a glimpse into future fashion narratives.',
-        paragraph2: 'Key takeaways include the resurgence of avant-garde tailoring, an emphasis on handcrafted details, and a notable shift towards gender-fluid designs. Metallic fabrics and ethereal sheers dominated, creating memorable moments that will undoubtedly influence upcoming B2B apparel collections.',
+        title: 'Tokyo Fashion Week: Spotlight on Emerging Trends',
+        paragraph1: "This week's Tokyo Fashion Week is causing a stir, with several key trends poised to spike. Keep an eye on Deep Sapphire for its bold statements, Stripes making a resurgence in unexpected ways, and the continued dominance of Oversized silhouettes in contemporary designs.",
+        paragraph2: 'Industry insiders are buzzing about how these emerging styles from Tokyo will influence upcoming B2B apparel collections globally. Retailers should monitor these developments closely.',
       },
       trendPopularityTitle: 'Key Trend Popularity Over Time',
       colorTrendsTitle: 'Color Trends',
@@ -412,10 +408,6 @@ export const translations: Record<Locale, Translations> = {
         abstract: 'Abstract',
         animalPrints: 'Animal Prints',
       },
-      toast: {
-        eventAlertTitle: "Fashion Event Alert",
-        eventAlertDescription: "A particular trend might spike due to an upcoming fashion event in Tokyo."
-      }
     },
     forecastPage: {
       selectSkuTitle: 'SKU Stock Forecast',
@@ -683,12 +675,12 @@ export const translations: Record<Locale, Translations> = {
       dataInput: 'データ入力',
     },
     analyticsPage: {
-      latestTrendTitle: '最新ファッショントレンド',
-      latestTrendDescription: '最新のMET GALAやランウェイショーからの洞察。',
+      latestTrendTitle: '最新トレンドアップデート',
+      latestTrendDescription: '最近のファッションイベントやランウェイショーからの洞察。',
       galaArticle: {
-        title: 'MET GALA 2025：壮観なファッションの夜',
-        paragraph1: 'MET GALA 2025のレッドカーペットは、創造性と魅力の見事なディスプレイでした。デザイナーたちは革新的なシルエット、持続可能な素材、大胆な色の選択で境界を押し広げました。自然とテクノロジーのテーマが絡み合い、未来のファッションの物語を垣間見せました。',
-        paragraph2: '主なポイントとしては、アバンギャルドなテーラリングの再興、手作りのディテールへの重点、そしてジェンダーフルイドデザインへの顕著なシフトが挙げられます。メタリックな生地や優美なシアー素材が主流となり、記憶に残る瞬間を生み出し、今後のB2Bアパレルコレクションに間違いなく影響を与えるでしょう。',
+        title: '東京ファッションウィーク：注目トレンドスポットライト',
+        paragraph1: '今週の東京ファッションウィークは話題を呼んでおり、いくつかの主要トレンドが急上昇する見込みです。大胆な主張が際立つディープサファイア、予想外の方法で再登場するストライプ、そして現代デザインにおけるオーバーサイズシルエットの継続的な優位性に注目してください。',
+        paragraph2: '業界関係者は、東京発のこれらの新しいスタイルが、世界中の今後のB2Bアパレルコレクションにどのような影響を与えるかについて話題にしています。小売業者はこれらの動向を注意深く監視する必要があります。',
       },
       trendPopularityTitle: '主要トレンドの人気推移',
       colorTrendsTitle: 'カラートレンド',
@@ -718,10 +710,6 @@ export const translations: Record<Locale, Translations> = {
         abstract: '抽象柄',
         animalPrints: 'アニマルプリント',
       },
-      toast: {
-        eventAlertTitle: "ファッションイベント警告",
-        eventAlertDescription: "東京での今後のファッションイベントにより、特定のトレンドが急上昇する可能性があります。"
-      }
     },
     forecastPage: {
       selectSkuTitle: 'SKU在庫予測',
@@ -958,3 +946,4 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
+
