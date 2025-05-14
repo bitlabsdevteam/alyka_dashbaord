@@ -52,7 +52,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
             onClick={() => setIsChatbotOpen(true)}
           >
             <MessageSquare className="mr-2 h-5 w-5" />
-            <span>{t('common.chat')}</span>
+            <span>{t('common.support')}</span>
           </Button>
           <Button 
             variant="ghost" 

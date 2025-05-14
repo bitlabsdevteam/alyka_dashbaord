@@ -8,7 +8,7 @@ interface CommonTranslations {
   japanese: string;
   profile: string;
   logout: string;
-  chat: string;
+  support: string; // Changed from chat
   settings: string;
   saving: string;
 }
@@ -147,7 +147,7 @@ interface PosSalesPageTranslations {
     productName: string;
     category: string;
     sku: string;
-    storeLocation: string; // New table header
+    storeLocation: string; 
     unitsSold: string;
     revenue: string;
     po: string; 
@@ -357,7 +357,7 @@ export const translations: Record<Locale, Translations> = {
       japanese: '日本語 (Japanese)',
       profile: 'Profile',
       logout: 'Log out',
-      chat: 'Chat',
+      support: 'Support', // Changed from Chat
       settings: 'Settings',
       saving: 'Saving...',
     },
@@ -668,7 +668,7 @@ export const translations: Record<Locale, Translations> = {
       japanese: '日本語',
       profile: 'プロフィール',
       logout: 'ログアウト',
-      chat: 'チャット',
+      support: 'サポート', // Changed from Chat
       settings: '設定',
       saving: '保存中...',
     },
@@ -803,7 +803,7 @@ export const translations: Record<Locale, Translations> = {
         productName: '製品名',
         category: 'カテゴリ',
         sku: 'SKU',
-        storeLocation: '店舗の場所', // New table header - Japanese
+        storeLocation: '店舗の場所', 
         unitsSold: '販売ユニット数',
         revenue: '収益 (¥)',
         po: '発注書',
