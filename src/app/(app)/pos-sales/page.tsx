@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
-import { ShoppingCart, DollarSign, Package, Store as StoreIcon } from 'lucide-react';
+import { DollarSign, Package, Store as StoreIcon } from 'lucide-react'; // Removed ShoppingCart as it's not used
 import { useLanguage } from '@/context/language-context';
 import { format, subMonths, startOfMonth } from 'date-fns';
 import type { Translations, TranslationKey } from '@/lib/i18n';
@@ -340,10 +340,10 @@ export default function PosSalesPage() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>{t('posSalesPage.tableHeaders.sku')}</TableHead>
                   <TableHead>{t('posSalesPage.tableHeaders.monthYear')}</TableHead>
                   <TableHead>{t('posSalesPage.tableHeaders.productName')}</TableHead>
                   <TableHead className="hidden sm:table-cell">{t('posSalesPage.tableHeaders.category')}</TableHead>
-                  <TableHead className="hidden md:table-cell">{t('posSalesPage.tableHeaders.sku')}</TableHead>
                   <TableHead>{t('posSalesPage.tableHeaders.storeLocation')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.unitsSold')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.revenue')}</TableHead>
@@ -354,10 +354,10 @@ export default function PosSalesPage() {
               <TableBody>
                 {recentDetailedData.map((item) => (
                   <TableRow key={item.id}>
+                    <TableCell className="font-medium">{item.sku}</TableCell>
                     <TableCell>{item.monthYear}</TableCell>
-                    <TableCell className="font-medium">{t(`posSalesPage.products.${item.productNameKey}` as any)}</TableCell>
+                    <TableCell>{t(`posSalesPage.products.${item.productNameKey}` as any)}</TableCell>
                     <TableCell className="hidden sm:table-cell">{t(`posSalesPage.categories.${item.categoryKey}` as any)}</TableCell>
-                    <TableCell className="hidden md:table-cell">{item.sku}</TableCell>
                     <TableCell>{item.storeLocation}</TableCell>
                     <TableCell className="text-right">{item.unitsSold.toLocaleString()}</TableCell>
                     <TableCell className="text-right">${item.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</TableCell>
@@ -377,3 +377,4 @@ export default function PosSalesPage() {
     </div>
   );
 }
+
