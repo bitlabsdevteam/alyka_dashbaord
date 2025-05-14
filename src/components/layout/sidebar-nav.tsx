@@ -28,8 +28,8 @@ export function SidebarNav() {
       case 'forecast':
         translationKey = 'nav.forecast';
         break;
-      case 'pos sales':
-        translationKey = 'nav.posSales';
+      case 'stores': // Changed from 'pos sales'
+        translationKey = 'nav.stores'; // Changed from 'nav.posSales'
         break;
       case 'tasks manager':
         translationKey = 'nav.tasksManager';
@@ -37,12 +37,10 @@ export function SidebarNav() {
       case 'reports':
         translationKey = 'nav.reports';
         break;
-      case 'data input': // Added specific case for "Data Input"
+      case 'data input': 
         translationKey = 'nav.dataInput';
         break;
-      // Removed Feedback case
       default:
-        // Fallback for any new items, assuming a pattern like 'nav.title'
         translationKey = `nav.${item.title.toLowerCase().replace(/\s+/g, '')}` as TranslationKey;
     }
     return {

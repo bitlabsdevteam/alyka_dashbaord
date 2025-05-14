@@ -48,6 +48,10 @@ interface AnalyticsPageTranslations {
     abstract: string;
     animalPrints: string;
   };
+  toast: {
+    tokyoEventTitle: string;
+    tokyoEventDescription: string;
+  };
 }
 
 interface HeaderTranslations {
@@ -66,7 +70,7 @@ interface HeaderTranslations {
 interface NavTranslations {
   analytics: string;
   forecast: string;
-  posSales: string;
+  stores: string; // Changed from posSales
   tasksManager: string;
   reports: string;
   dataInput: string;
@@ -367,7 +371,7 @@ export const translations: Record<Locale, Translations> = {
     nav: {
       analytics: 'Analytics',
       forecast: 'Forecast',
-      posSales: 'POS Sales',
+      stores: 'Stores', // Changed from POS Sales
       tasksManager: 'Tasks Manager',
       reports: 'Reports',
       dataInput: 'Data Input',
@@ -408,6 +412,10 @@ export const translations: Record<Locale, Translations> = {
         abstract: 'Abstract',
         animalPrints: 'Animal Prints',
       },
+      toast: {
+        tokyoEventTitle: "Tokyo Fashion Week Alert",
+        tokyoEventDescription: "Certain trends like Oversized Silhouettes, Stripes, and Deep Sapphire may spike due to the current fashion event in Tokyo.",
+      }
     },
     forecastPage: {
       selectSkuTitle: 'SKU Stock Forecast',
@@ -669,7 +677,7 @@ export const translations: Record<Locale, Translations> = {
     nav: {
       analytics: '分析',
       forecast: '予測',
-      posSales: 'POS販売',
+      stores: '店舗', // Changed from POS販売
       tasksManager: 'タスク管理',
       reports: 'レポート',
       dataInput: 'データ入力',
@@ -710,6 +718,10 @@ export const translations: Record<Locale, Translations> = {
         abstract: '抽象柄',
         animalPrints: 'アニマルプリント',
       },
+       toast: {
+        tokyoEventTitle: "東京ファッションウィーク注意報",
+        tokyoEventDescription: "現在の東京でのファッションイベントにより、オーバーサイズシルエット、ストライプ、ディープサファイアなどの特定のトレンドが急上昇する可能性があります。",
+      }
     },
     forecastPage: {
       selectSkuTitle: 'SKU在庫予測',
@@ -946,4 +958,3 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
-

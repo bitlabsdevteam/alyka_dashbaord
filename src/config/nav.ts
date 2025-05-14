@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { LineChart, TrendingUp, ShoppingCart, ListChecks, FileText, Database } from 'lucide-react'; 
+import { LineChart, TrendingUp, Store, ListChecks, FileText, Database } from 'lucide-react'; 
 
 export interface NavItem {
   title: string;
@@ -20,9 +20,9 @@ export const navItems: NavItem[] = [
     icon: TrendingUp,
   },
   {
-    title: 'POS Sales', 
+    title: 'Stores', 
     href: '/pos-sales',
-    icon: ShoppingCart,
+    icon: Store,
   },
   {
     title: 'Tasks Manager', 
