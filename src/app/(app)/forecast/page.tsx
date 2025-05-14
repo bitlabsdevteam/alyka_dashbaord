@@ -37,7 +37,7 @@ export default function ForecastPage() {
   const { t, language } = useLanguage();
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
   const [forecastMonths, setForecastMonths] = useState<number>(3);
-  const [yourVoiceCount, setYourVoiceCount] = useState<string>('');
+  const [groundVoiceInput, setGroundVoiceInput] = useState<string>(''); // Renamed from yourVoiceCount
   const { toast } = useToast();
 
   const [groundVoiceLabelText, setGroundVoiceLabelText] = useState<string | null>(null);
@@ -45,8 +45,8 @@ export default function ForecastPage() {
   const [selectSkuPlaceholderText, setSelectSkuPlaceholderText] = useState<string | null>(null);
   const [currentStockLabelText, setCurrentStockLabelText] = useState<string | null>(null);
   const [forecastHorizonLabelText, setForecastHorizonLabelText] = useState<string | null>(null);
-  const [yourVoiceCountPlaceholderText, setYourVoiceCountPlaceholderText] = useState<string | null>(null);
-  const [yourVoiceCountDescriptionText, setYourVoiceCountDescriptionText] = useState<string | null>(null);
+  const [groundVoicePlaceholderText, setGroundVoicePlaceholderText] = useState<string | null>(null); // Renamed
+  const [groundVoiceDescriptionText, setGroundVoiceDescriptionText] = useState<string | null>(null); // Renamed
 
 
   useEffect(() => {
@@ -55,8 +55,8 @@ export default function ForecastPage() {
     setSelectSkuPlaceholderText(t('forecastPage.selectSkuPlaceholder'));
     setCurrentStockLabelText(t('forecastPage.currentStockLabel'));
     setForecastHorizonLabelText(t('forecastPage.forecastHorizonLabel'));
-    setYourVoiceCountPlaceholderText(t('forecastPage.yourVoiceCountPlaceholder'));
-    setYourVoiceCountDescriptionText(t('forecastPage.yourVoiceCountDescription'));
+    setGroundVoicePlaceholderText(t('forecastPage.yourVoiceCountPlaceholder')); // Key from i18n
+    setGroundVoiceDescriptionText(t('forecastPage.yourVoiceCountDescription')); // Key from i18n
   }, [t]);
 
   const { mutate, data: salesForecast, isPending, error } = useMutation<ForecastSalesOutput, Error, ForecastSalesInput>({
@@ -92,6 +92,8 @@ export default function ForecastPage() {
         currentStock: skuDetails.currentStock,
         forecastHorizon: `next ${forecastMonths} months`,
         targetLanguage: language,
+        // Add groundVoiceInput to the mutation if your AI flow expects it
+        // yourCustomField: groundVoiceInput, 
       });
     }
   };
@@ -179,19 +181,19 @@ export default function ForecastPage() {
             </div>
           </div>
           <div>
-            <Label htmlFor="yourVoiceCount">
+            <Label htmlFor="groundVoiceTextarea">
               {groundVoiceLabelText !== null ? groundVoiceLabelText : translations[language].forecastPage.groundVoiceLabel}
             </Label>
             <Textarea
-              id="yourVoiceCount"
-              value={yourVoiceCount}
-              onChange={(e) => setYourVoiceCount(e.target.value)}
-              placeholder={yourVoiceCountPlaceholderText !== null ? yourVoiceCountPlaceholderText : translations[language].forecastPage.yourVoiceCountPlaceholder}
+              id="groundVoiceTextarea"
+              value={groundVoiceInput}
+              onChange={(e) => setGroundVoiceInput(e.target.value)}
+              placeholder={groundVoicePlaceholderText !== null ? groundVoicePlaceholderText : translations[language].forecastPage.yourVoiceCountPlaceholder}
               className="w-full text-base mt-1 min-h-[80px] resize-y"
               rows={3}
             />
             <p className="text-sm text-muted-foreground mt-1">
-              {yourVoiceCountDescriptionText !== null ? yourVoiceCountDescriptionText : translations[language].forecastPage.yourVoiceCountDescription}
+              {groundVoiceDescriptionText !== null ? groundVoiceDescriptionText : translations[language].forecastPage.yourVoiceCountDescription}
             </p>
           </div>
         </CardContent>
