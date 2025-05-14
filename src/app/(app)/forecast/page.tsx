@@ -8,10 +8,11 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { forecastSales, type ForecastSalesOutput, type ForecastSalesInput } from '@/ai/flows/forecast-sales';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb } from 'lucide-react';
+import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb, MessageSquare } from 'lucide-react';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
@@ -35,14 +36,16 @@ const mockSkus: SkuItem[] = [
 export default function ForecastPage() {
   const { t, language } = useLanguage();
   const [selectedSkuValue, setSelectedSkuValue] = useState<string | undefined>(undefined);
-  const [forecastMonths, setForecastMonths] = useState<number>(3);
+  const [forecastPeriodMonths, setForecastPeriodMonths] = useState<number>(3);
+  const [chatInputValue, setChatInputValue] = useState<string>('');
   const { toast } = useToast();
 
   const [skuLabelText, setSkuLabelText] = useState<string | null>(null);
   const [selectSkuPlaceholderText, setSelectSkuPlaceholderText] = useState<string | null>(null);
   const [currentStockLabelText, setCurrentStockLabelText] = useState<string | null>(null);
-  const [forecastHorizonLabelText, setForecastHorizonLabelText] = useState<string | null>(null);
-  const [forecastButtonText, setForecastButtonText] = useState<string | null>(null);
+  const [periodLabelText, setPeriodLabelText] = useState<string | null>(null);
+  const [chatInputLabelText, setChatInputLabelText] = useState<string | null>(null);
+  const [sendButtonText, setSendButtonText] = useState<string | null>(null);
   const [forecastingButtonText, setForecastingButtonText] = useState<string | null>(null);
   const [aiProcessingTitle, setAiProcessingTitle] = useState<string | null>(null);
   const [aiProcessingDescription, setAiProcessingDescription] = useState<string | null>(null);
@@ -52,8 +55,9 @@ export default function ForecastPage() {
     setSkuLabelText(t('forecastPage.skuLabel'));
     setSelectSkuPlaceholderText(t('forecastPage.selectSkuPlaceholder'));
     setCurrentStockLabelText(t('forecastPage.currentStockLabel'));
-    setForecastHorizonLabelText(t('forecastPage.forecastHorizonLabel'));
-    setForecastButtonText(t('forecastPage.forecastButton'));
+    setPeriodLabelText(t('forecastPage.periodLabel'));
+    setChatInputLabelText(t('forecastPage.chatInputLabel'));
+    setSendButtonText(t('forecastPage.sendButton'));
     setForecastingButtonText(t('forecastPage.forecastingButton'));
     setAiProcessingTitle(t('forecastPage.aiProcessing.title'));
     setAiProcessingDescription(t('forecastPage.aiProcessing.description'));
@@ -90,8 +94,9 @@ export default function ForecastPage() {
       mutate({
         skuName: t(skuDetails.labelKey),
         currentStock: skuDetails.currentStock,
-        forecastHorizon: `next ${forecastMonths} months`,
+        forecastHorizon: `next ${forecastPeriodMonths} months`,
         targetLanguage: language,
+        userPrompt: chatInputValue,
       });
     }
   };
@@ -161,22 +166,32 @@ export default function ForecastPage() {
             </Select>
           </div>
           <div>
-            <Label htmlFor="forecastHorizonSlider">{forecastHorizonLabelText ?? translations[language].forecastPage.forecastHorizonLabel}</Label>
+            <Label htmlFor="periodSlider">{periodLabelText ?? translations[language].forecastPage.periodLabel}</Label>
             <div className="flex items-center space-x-4 pt-2">
               <Slider
-                id="forecastHorizonSlider"
-                defaultValue={[forecastMonths]}
+                id="periodSlider"
+                defaultValue={[forecastPeriodMonths]}
                 min={3}
                 max={12}
                 step={1}
-                onValueChange={(value) => setForecastMonths(value[0])}
+                onValueChange={(value) => setForecastPeriodMonths(value[0])}
                 className="flex-grow"
-                aria-label={forecastHorizonLabelText ?? translations[language].forecastPage.forecastHorizonLabel}
+                aria-label={periodLabelText ?? translations[language].forecastPage.periodLabel}
               />
               <span className="text-base w-32 text-right tabular-nums">
-                {t('forecastPage.forecastHorizonValueDisplay', { count: forecastMonths })}
+                {t('forecastPage.forecastHorizonValueDisplay', { count: forecastPeriodMonths })}
               </span>
             </div>
+          </div>
+          <div>
+            <Label htmlFor="chatInput">{chatInputLabelText ?? translations[language].forecastPage.chatInputLabel}</Label>
+            <Textarea
+              id="chatInput"
+              value={chatInputValue}
+              onChange={(e) => setChatInputValue(e.target.value)}
+              placeholder={t('forecastPage.chatInputPlaceholder')}
+              className="mt-1 h-24 resize-none" 
+            />
           </div>
         </CardContent>
         <CardFooter>
@@ -187,7 +202,7 @@ export default function ForecastPage() {
                 {forecastingButtonText ?? translations[language].forecastPage.forecastingButton}
               </>
             ) : (
-              forecastButtonText ?? translations[language].forecastPage.forecastButton
+              sendButtonText ?? translations[language].forecastPage.sendButton
             )}
           </Button>
         </CardFooter>

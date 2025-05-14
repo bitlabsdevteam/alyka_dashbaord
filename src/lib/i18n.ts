@@ -78,9 +78,11 @@ interface ForecastPageTranslations {
   skuLabel: string;
   selectSkuPlaceholder: string;
   currentStockLabel: string;
-  forecastHorizonLabel: string;
+  periodLabel: string;
   forecastHorizonValueDisplay: string;
-  forecastButton: string; 
+  chatInputLabel: string;
+  chatInputPlaceholder: string;
+  sendButton: string; 
   forecastingButton: string; 
   forecastTitle: string;
   currentStockValueLabel: string;
@@ -421,14 +423,16 @@ export const translations: Record<Locale, Translations> = {
     },
     forecastPage: {
       selectSkuTitle: 'SKU Stock Forecast',
-      selectSkuDescription: 'Select an SKU and set a forecast horizon to generate its stock forecast.',
+      selectSkuDescription: 'Select an SKU and set a period to generate its stock forecast.',
       skuLabel: 'Stock Keeping Unit (SKU)',
       selectSkuPlaceholder: 'Select an SKU',
       currentStockLabel: 'Current Stock',
-      forecastHorizonLabel: 'Forecast Horizon',
+      periodLabel: 'Period',
       forecastHorizonValueDisplay: 'Next {{count}} months',
-      forecastButton: 'Forecast',
-      forecastingButton: 'Forecasting...',
+      chatInputLabel: 'Your Insights/Context (Optional)',
+      chatInputPlaceholder: 'Enter any specific insights or context for this forecast...',
+      sendButton: 'Send',
+      forecastingButton: 'Forecasting...', 
       forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
       currentStockValueLabel: 'Current Stock Level',
       chart: {
@@ -458,7 +462,7 @@ export const translations: Record<Locale, Translations> = {
         stripedCottonPJs: "Children's Striped Cotton PJs",
         luxurySilkScarfFloral: "Luxury Silk Scarf - Floral Print",
       },
-      aiProcessing: {
+      aiProcessing: { 
         title: "AI is Processing Your Request",
         description: "Our AI is analyzing trends and generating your forecast. This might take a few moments..."
       }
@@ -733,13 +737,15 @@ export const translations: Record<Locale, Translations> = {
     },
     forecastPage: {
       selectSkuTitle: 'SKU在庫予測',
-      selectSkuDescription: 'SKUを選択し、予測期間を設定して在庫予測を生成します。',
+      selectSkuDescription: 'SKUを選択し、期間を設定して在庫予測を生成します。',
       skuLabel: 'SKU (最小管理単位)',
       selectSkuPlaceholder: 'SKUを選択してください',
       currentStockLabel: '現在の在庫',
-      forecastHorizonLabel: '予測期間',
+      periodLabel: '期間',
       forecastHorizonValueDisplay: '今後 {{count}} か月',
-      forecastButton: '予測',
+      chatInputLabel: 'あなたの洞察/コンテキスト（任意）',
+      chatInputPlaceholder: 'この予測に関する特定の洞察やコンテキストを入力してください...',
+      sendButton: '送信',
       forecastingButton: '予測中...',
       forecastTitle: '{{skuName}}の販売と在庫予測',
       currentStockValueLabel: '現在の在庫レベル',

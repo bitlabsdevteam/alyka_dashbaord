@@ -18,6 +18,7 @@ const ForecastSalesInputSchema = z.object({
   forecastHorizon: z.string().describe("The desired forecast horizon, e.g., 'next 4 weeks', 'next 3 months'. Default to 'next 3 months' if not specified."),
   targetLanguage: z.enum(['en', 'ja']).optional().describe('The target language for the generated forecast reasoning and recommendations. Defaults to English if not provided.'),
   isTargetLanguageJa: z.boolean().optional().describe('Internal flag: true if the target language is Japanese. This is set by the flow.'),
+  userPrompt: z.string().optional().describe('Additional context or specific requests from the user for the forecast.'),
 });
 export type ForecastSalesInput = z.infer<typeof ForecastSalesInputSchema>;
 
@@ -57,6 +58,11 @@ SKU Details:
 - Name: {{{skuName}}}
 - Current Stock: {{{currentStock}}}
 - Forecast Horizon: {{{forecastHorizon}}}
+
+{{#if userPrompt}}
+User Provided Context:
+{{{userPrompt}}}
+{{/if}}
 
 Instructions:
 1.  Generate an *optimistic* time-series forecast of *sales demand* for the specified 'Forecast Horizon', indicating a clear *upward trend* in sales. Based on this strong demand, calculate the 'forecastedStock' levels assuming no replenishment within the forecast horizon. This means 'forecastedStock' will show a *significant decreasing trend* from the 'currentStock' as units are sold at an accelerated rate. Break this horizon down into logical periods (e.g., weekly for shorter horizons, monthly for longer ones).
