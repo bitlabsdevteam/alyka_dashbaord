@@ -48,10 +48,6 @@ interface AnalyticsPageTranslations {
     abstract: string;
     animalPrints: string;
   };
-  toast: {
-    tokyoEventTitle: string;
-    tokyoEventDescription: string;
-  };
 }
 
 interface HeaderTranslations {
@@ -70,7 +66,7 @@ interface HeaderTranslations {
 interface NavTranslations {
   analytics: string;
   forecast: string;
-  stores: string; // Changed from posSales
+  stores: string; 
   tasksManager: string;
   reports: string;
   dataInput: string;
@@ -123,6 +119,14 @@ interface ForecastPageTranslations {
 interface PosSalesPageTranslations {
   title: string;
   description: string;
+  storeSelectLabel: string;
+  storeSelectPlaceholder: string;
+  stores: {
+    all: string;
+    tokyo: string;
+    osaka: string;
+    hiroshima: string;
+  };
   totalRevenue: string;
   totalUnitsSold: string;
   averageOrderValue: string;
@@ -143,6 +147,7 @@ interface PosSalesPageTranslations {
     productName: string;
     category: string;
     sku: string;
+    storeLocation: string; // New table header
     unitsSold: string;
     revenue: string;
     po: string; 
@@ -371,7 +376,7 @@ export const translations: Record<Locale, Translations> = {
     nav: {
       analytics: 'Analytics',
       forecast: 'Forecast',
-      stores: 'Stores', // Changed from POS Sales
+      stores: 'Stores', 
       tasksManager: 'Tasks Manager',
       reports: 'Reports',
       dataInput: 'Data Input',
@@ -385,10 +390,10 @@ export const translations: Record<Locale, Translations> = {
         paragraph2: 'Industry insiders are buzzing about how these emerging styles from Tokyo will influence upcoming B2B apparel collections globally. Retailers should monitor these developments closely.',
       },
       trendPopularityTitle: 'Key Trend Popularity Over Time',
-      colorTrendsTitle: 'Color Trends',
+      colorTrendsTitle: 'Color Trends - 2025',
       popularity: 'Popularity',
       colorPopularity: 'Popularity',
-      silhouettePopularityTitle: 'Silhouette Popularity Trends',
+      silhouettePopularityTitle: 'Silhouette Popularity Trends - 2025',
       silhouette: {
         aLine: 'A-Line',
         sheath: 'Sheath',
@@ -396,7 +401,7 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'Bodycon',
         asymmetrical: 'Asymmetrical',
       },
-      patternTrendsTitle: 'Pattern Popularity Trends',
+      patternTrendsTitle: 'Pattern Popularity Trends - 2025',
       color: {
         deepSapphire: 'Deep Sapphire',
         desertKhaki: 'Desert Khaki',
@@ -412,10 +417,6 @@ export const translations: Record<Locale, Translations> = {
         abstract: 'Abstract',
         animalPrints: 'Animal Prints',
       },
-      toast: {
-        tokyoEventTitle: "Tokyo Fashion Week Alert",
-        tokyoEventDescription: "Certain trends like Oversized Silhouettes, Stripes, and Deep Sapphire may spike due to the current fashion event in Tokyo.",
-      }
     },
     forecastPage: {
       selectSkuTitle: 'SKU Stock Forecast',
@@ -425,7 +426,7 @@ export const translations: Record<Locale, Translations> = {
       currentStockLabel: 'Current Stock',
       forecastHorizonLabel: 'Forecast Horizon',
       forecastHorizonValueDisplay: 'Next {{count}} months',
-      groundVoiceLabel: 'Ground Voice',
+      groundVoiceLabel: 'Ground Voice', 
       yourVoiceCountPlaceholder: 'Enter your feedback or specific insights for this forecast (e.g., "Expecting high demand due to recent celebrity endorsement", "Local event might boost sales for this item next month").',
       yourVoiceCountDescription: 'Your feedback will help us to learn better.',
       generateButton: 'Generate Forecast',
@@ -463,6 +464,14 @@ export const translations: Record<Locale, Translations> = {
     posSalesPage: {
       title: 'POS Sales Data Overview',
       description: 'Visualize your Point of Sale data to understand performance and identify trends.',
+      storeSelectLabel: 'Select Store',
+      storeSelectPlaceholder: 'All Stores',
+      stores: {
+        all: 'All Stores',
+        tokyo: 'Tokyo',
+        osaka: 'Osaka',
+        hiroshima: 'Hiroshima',
+      },
       totalRevenue: 'Total Revenue',
       totalUnitsSold: 'Total Units Sold',
       averageOrderValue: 'Average Order Value',
@@ -483,12 +492,13 @@ export const translations: Record<Locale, Translations> = {
         productName: 'Product Name',
         category: 'Category',
         sku: 'SKU',
+        storeLocation: 'Store Location',
         unitsSold: 'Units Sold',
         revenue: 'Revenue ($)',
         po: 'PO',
         posName: 'POS Name',
       },
-      buttons: {
+      buttons: { 
         createPo: 'Create PO',
       },
       categories: {
@@ -507,7 +517,7 @@ export const translations: Record<Locale, Translations> = {
         leatherBag: "Leather Shoulder Bag",
         sneakers: "Limited Edition Sneakers",
       },
-      noData: 'No POS data available.',
+      noData: 'No POS data available for the selected store.',
     },
     tasksPage: {
       title: 'Tasks Manager',
@@ -677,7 +687,7 @@ export const translations: Record<Locale, Translations> = {
     nav: {
       analytics: '分析',
       forecast: '予測',
-      stores: '店舗', // Changed from POS販売
+      stores: '店舗', 
       tasksManager: 'タスク管理',
       reports: 'レポート',
       dataInput: 'データ入力',
@@ -691,10 +701,10 @@ export const translations: Record<Locale, Translations> = {
         paragraph2: '業界関係者は、東京発のこれらの新しいスタイルが、世界中の今後のB2Bアパレルコレクションにどのような影響を与えるかについて話題にしています。小売業者はこれらの動向を注意深く監視する必要があります。',
       },
       trendPopularityTitle: '主要トレンドの人気推移',
-      colorTrendsTitle: 'カラートレンド',
+      colorTrendsTitle: 'カラートレンド - 2025年',
       popularity: '人気度',
       colorPopularity: '人気度',
-      silhouettePopularityTitle: 'シルエット人気トレンド',
+      silhouettePopularityTitle: 'シルエット人気トレンド - 2025年',
       silhouette: {
         aLine: 'Aライン',
         sheath: 'シース',
@@ -702,7 +712,7 @@ export const translations: Record<Locale, Translations> = {
         bodycon: 'ボディコン',
         asymmetrical: 'アシンメトリー',
       },
-      patternTrendsTitle: 'パターン人気トレンド',
+      patternTrendsTitle: 'パターン人気トレンド - 2025年',
       color: {
         deepSapphire: 'ディープサファイア',
         desertKhaki: 'デザートカーキ',
@@ -718,10 +728,6 @@ export const translations: Record<Locale, Translations> = {
         abstract: '抽象柄',
         animalPrints: 'アニマルプリント',
       },
-       toast: {
-        tokyoEventTitle: "東京ファッションウィーク注意報",
-        tokyoEventDescription: "現在の東京でのファッションイベントにより、オーバーサイズシルエット、ストライプ、ディープサファイアなどの特定のトレンドが急上昇する可能性があります。",
-      }
     },
     forecastPage: {
       selectSkuTitle: 'SKU在庫予測',
@@ -769,6 +775,14 @@ export const translations: Record<Locale, Translations> = {
     posSalesPage: {
       title: 'POS販売データ概要',
       description: 'POSデータを視覚化し、パフォーマンスを理解し、トレンドを特定します。',
+      storeSelectLabel: '店舗を選択',
+      storeSelectPlaceholder: 'すべての店舗',
+      stores: {
+        all: 'すべての店舗',
+        tokyo: '東京',
+        osaka: '大阪',
+        hiroshima: '広島',
+      },
       totalRevenue: '総収益',
       totalUnitsSold: '総販売ユニット数',
       averageOrderValue: '平均注文額',
@@ -789,6 +803,7 @@ export const translations: Record<Locale, Translations> = {
         productName: '製品名',
         category: 'カテゴリ',
         sku: 'SKU',
+        storeLocation: '店舗の場所', // New table header - Japanese
         unitsSold: '販売ユニット数',
         revenue: '収益 (¥)',
         po: '発注書',
@@ -813,7 +828,7 @@ export const translations: Record<Locale, Translations> = {
         leatherBag: "レザーショルダーバッグ",
         sneakers: "限定版スニーカー",
       },
-      noData: 'POSデータがありません。',
+      noData: '選択された店舗のPOSデータがありません。',
     },
     tasksPage: {
       title: 'タスク管理',

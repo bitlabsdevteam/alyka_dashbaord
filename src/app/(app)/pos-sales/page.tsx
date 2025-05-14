@@ -1,3 +1,4 @@
+// src/app/(app)/pos-sales/page.tsx
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
@@ -5,11 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
-import { ShoppingCart, DollarSign, Package, Loader2 } from 'lucide-react';
+import { ShoppingCart, DollarSign, Package, Store as StoreIcon } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { format, subMonths, startOfMonth } from 'date-fns';
-import type { Translations } from '@/lib/i18n';
+import type { Translations, TranslationKey } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+
+
+const storeLocations = ['Tokyo', 'Osaka', 'Hiroshima'] as const;
+type StoreLocation = typeof storeLocations[number];
 
 interface DetailedPosEntry {
   id: string;
@@ -19,6 +26,7 @@ interface DetailedPosEntry {
   sku: string;
   unitsSold: number;
   revenue: number;
+  storeLocation: StoreLocation;
   posName: 'Smartregi';
 }
 
@@ -53,6 +61,7 @@ const generateMockPosData = (): DetailedPosEntry[] => {
       const unitsSold = Math.floor(Math.random() * (50 - 10 + 1)) + 10; // 10-50 units
       const pricePerUnit = Math.floor(Math.random() * (200 - 50 + 1)) + 50; // $50-$200
       const revenue = unitsSold * pricePerUnit;
+      const randomStoreLocation = storeLocations[Math.floor(Math.random() * storeLocations.length)];
       
       data.push({
         id: `pos-${idCounter++}`,
@@ -62,6 +71,7 @@ const generateMockPosData = (): DetailedPosEntry[] => {
         sku: productSkuMap[productNameKey],
         unitsSold: unitsSold,
         revenue: revenue,
+        storeLocation: randomStoreLocation,
         posName: 'Smartregi',
       });
     }
@@ -70,18 +80,35 @@ const generateMockPosData = (): DetailedPosEntry[] => {
   return data;
 };
 
+const storeOptions: Array<{ value: string; labelKey: TranslationKey }> = [
+  { value: 'all', labelKey: 'posSalesPage.stores.all' },
+  { value: 'Tokyo', labelKey: 'posSalesPage.stores.tokyo' },
+  { value: 'Osaka', labelKey: 'posSalesPage.stores.osaka' },
+  { value: 'Hiroshima', labelKey: 'posSalesPage.stores.hiroshima' },
+];
+
+
 export default function PosSalesPage() {
   const { t } = useLanguage();
   const [allDetailedPosData, setAllDetailedPosData] = useState<DetailedPosEntry[]>([]);
   const [isMounted, setIsMounted] = useState(false);
+  const [selectedStore, setSelectedStore] = useState<string>('all');
 
   useEffect(() => {
     setAllDetailedPosData(generateMockPosData());
     setIsMounted(true);
   }, []);
 
+  const filteredData = useMemo(() => {
+    if (selectedStore === 'all') {
+      return allDetailedPosData;
+    }
+    return allDetailedPosData.filter(item => item.storeLocation === selectedStore);
+  }, [allDetailedPosData, selectedStore]);
+
   const summaryStats = useMemo(() => {
-    if (allDetailedPosData.length === 0) {
+    const dataToSummarize = filteredData;
+    if (dataToSummarize.length === 0) {
         return {
             totalRevenue: 0,
             totalUnitsSold: 0,
@@ -90,35 +117,38 @@ export default function PosSalesPage() {
             aovChange: 0,
         };
     }
-    const totalRevenue = allDetailedPosData.reduce((sum, item) => sum + item.revenue, 0);
-    const totalUnitsSold = allDetailedPosData.reduce((sum, item) => sum + item.unitsSold, 0);
+    const totalRevenue = dataToSummarize.reduce((sum, item) => sum + item.revenue, 0);
+    const totalUnitsSold = dataToSummarize.reduce((sum, item) => sum + item.unitsSold, 0);
     
+    // For change calculation, we use all data to determine current and previous month regardless of store selection
+    // to reflect overall company performance, not just selected store.
+    // If store-specific change is needed, this logic should use 'dataToSummarize' for these filters too.
     const currentMonthStr = format(new Date(2025, 4, 1), 'MMM yyyy'); 
     const prevMonthStr = format(subMonths(new Date(2025, 4, 1), 1), 'MMM yyyy');
 
-    const currentMonthRevenue = allDetailedPosData
+    const currentMonthRevenueAll = allDetailedPosData
       .filter(item => item.monthYear === currentMonthStr)
       .reduce((sum, item) => sum + item.revenue, 0);
-    const prevMonthRevenue = allDetailedPosData
+    const prevMonthRevenueAll = allDetailedPosData
       .filter(item => item.monthYear === prevMonthStr)
       .reduce((sum, item) => sum + item.revenue, 0);
     
-    const revenueChange = prevMonthRevenue > 0 
-      ? ((currentMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100 
-      : (currentMonthRevenue > 0 ? 100 : 0);
+    const revenueChange = prevMonthRevenueAll > 0 
+      ? ((currentMonthRevenueAll - prevMonthRevenueAll) / prevMonthRevenueAll) * 100 
+      : (currentMonthRevenueAll > 0 ? 100 : 0);
 
     const averageOrderValue = totalUnitsSold > 0 ? totalRevenue / totalUnitsSold : 0;
 
-     const currentMonthUnits = allDetailedPosData
+     const currentMonthUnitsAll = allDetailedPosData
       .filter(item => item.monthYear === currentMonthStr)
       .reduce((sum, item) => sum + item.unitsSold, 0);
-    const prevMonthUnits = allDetailedPosData
+    const prevMonthUnitsAll = allDetailedPosData
       .filter(item => item.monthYear === prevMonthStr)
       .reduce((sum, item) => sum + item.unitsSold, 0);
 
-    const currentMonthAOV = currentMonthUnits > 0 ? currentMonthRevenue / currentMonthUnits : 0;
-    const prevMonthAOV = prevMonthUnits > 0 ? prevMonthRevenue / prevMonthUnits : 0;
-    const aovChange = prevMonthAOV > 0 ? ((currentMonthAOV - prevMonthAOV) / prevMonthAOV) * 100 : (currentMonthAOV > 0 ? 100 : 0);
+    const currentMonthAOVAll = currentMonthUnitsAll > 0 ? currentMonthRevenueAll / currentMonthUnitsAll : 0;
+    const prevMonthAOVAll = prevMonthUnitsAll > 0 ? prevMonthRevenueAll / prevMonthUnitsAll : 0;
+    const aovChange = prevMonthAOVAll > 0 ? ((currentMonthAOVAll - prevMonthAOVAll) / prevMonthAOVAll) * 100 : (currentMonthAOVAll > 0 ? 100 : 0);
 
     return {
       totalRevenue,
@@ -127,12 +157,13 @@ export default function PosSalesPage() {
       averageOrderValue,
       aovChange,
     };
-  }, [allDetailedPosData]);
+  }, [filteredData, allDetailedPosData]);
 
   const monthlySalesChartData = useMemo(() => {
-    if (allDetailedPosData.length === 0) return [];
+    const dataForChart = filteredData;
+    if (dataForChart.length === 0) return [];
     const salesByMonth: { [monthYear: string]: { sales: number; units: number } } = {};
-    allDetailedPosData.forEach(item => {
+    dataForChart.forEach(item => {
       if (!salesByMonth[item.monthYear]) {
         salesByMonth[item.monthYear] = { sales: 0, units: 0 };
       }
@@ -142,7 +173,7 @@ export default function PosSalesPage() {
     return Object.entries(salesByMonth)
       .map(([monthYear, data]) => ({ monthYear, ...data }))
       .sort((a,b) => new Date(a.monthYear).getTime() - new Date(b.monthYear).getTime());
-  }, [allDetailedPosData, t]);
+  }, [filteredData]);
 
   const chartConfigSales: ChartConfig = useMemo(() => ({
     sales: { label: t('posSalesPage.chart.salesLabel'), color: "hsl(var(--primary))" },
@@ -150,9 +181,11 @@ export default function PosSalesPage() {
   }), [t]);
 
   const recentDetailedData = useMemo(() => {
-    if (allDetailedPosData.length === 0) return [];
-    return allDetailedPosData.slice(-60).reverse();
-  }, [allDetailedPosData]);
+    if (filteredData.length === 0) return [];
+    // Show more items if filtered
+    const itemsToShow = selectedStore === 'all' ? 60 : filteredData.length;
+    return filteredData.slice(-itemsToShow).reverse();
+  }, [filteredData, selectedStore]);
 
   if (!isMounted) {
     return (
@@ -160,13 +193,18 @@ export default function PosSalesPage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center text-2xl">
-              <ShoppingCart className="mr-2 h-6 w-6 text-primary" />
+              <StoreIcon className="mr-2 h-6 w-6 text-primary" />
               {t('posSalesPage.title')}
             </CardTitle>
             <CardDescription>
               {t('posSalesPage.description')}
             </CardDescription>
           </CardHeader>
+        </Card>
+        <Card className="shadow-lg">
+          <CardContent className="pt-6">
+            <div className="h-10 bg-muted rounded w-1/3 animate-pulse"></div>
+          </CardContent>
         </Card>
         <div className="grid gap-6 md:grid-cols-3">
           {[...Array(3)].map((_, i) => (
@@ -207,13 +245,31 @@ export default function PosSalesPage() {
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center text-2xl">
-            <ShoppingCart className="mr-2 h-6 w-6 text-primary" />
+            <StoreIcon className="mr-2 h-6 w-6 text-primary" />
             {t('posSalesPage.title')}
           </CardTitle>
           <CardDescription>
             {t('posSalesPage.description')}
           </CardDescription>
         </CardHeader>
+      </Card>
+
+      <Card className="shadow-lg">
+        <CardContent className="pt-6">
+          <Label htmlFor="storeSelect">{t('posSalesPage.storeSelectLabel')}</Label>
+          <Select value={selectedStore} onValueChange={setSelectedStore}>
+            <SelectTrigger id="storeSelect" className="w-full md:w-1/3 text-base mt-1">
+              <SelectValue placeholder={t('posSalesPage.storeSelectPlaceholder')} />
+            </SelectTrigger>
+            <SelectContent>
+              {storeOptions.map(option => (
+                <SelectItem key={option.value} value={option.value} className="text-base">
+                  {t(option.labelKey)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardContent>
       </Card>
 
       <div className="grid gap-6 md:grid-cols-3">
@@ -237,7 +293,7 @@ export default function PosSalesPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{summaryStats.totalUnitsSold.toLocaleString()}</div>
-             <p className="text-xs text-muted-foreground">{t('posSalesPage.comparison.increasePrefix')}15.5% {t('posSalesPage.comparison.fromLastMonth')}</p>
+             <p className="text-xs text-muted-foreground">{t('posSalesPage.comparison.increasePrefix')}15.5% {t('posSalesPage.comparison.fromLastMonth')}</p> {/* This percentage is static, consider making it dynamic */}
           </CardContent>
         </Card>
         <Card className="shadow-md">
@@ -288,6 +344,7 @@ export default function PosSalesPage() {
                   <TableHead>{t('posSalesPage.tableHeaders.productName')}</TableHead>
                   <TableHead className="hidden sm:table-cell">{t('posSalesPage.tableHeaders.category')}</TableHead>
                   <TableHead className="hidden md:table-cell">{t('posSalesPage.tableHeaders.sku')}</TableHead>
+                  <TableHead>{t('posSalesPage.tableHeaders.storeLocation')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.unitsSold')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.revenue')}</TableHead>
                   <TableHead>{t('posSalesPage.tableHeaders.po')}</TableHead>
@@ -301,6 +358,7 @@ export default function PosSalesPage() {
                     <TableCell className="font-medium">{t(`posSalesPage.products.${item.productNameKey}` as any)}</TableCell>
                     <TableCell className="hidden sm:table-cell">{t(`posSalesPage.categories.${item.categoryKey}` as any)}</TableCell>
                     <TableCell className="hidden md:table-cell">{item.sku}</TableCell>
+                    <TableCell>{item.storeLocation}</TableCell>
                     <TableCell className="text-right">{item.unitsSold.toLocaleString()}</TableCell>
                     <TableCell className="text-right">${item.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</TableCell>
                     <TableCell>
@@ -312,7 +370,7 @@ export default function PosSalesPage() {
               </TableBody>
             </Table>
           ) : (
-            <p>{t('posSalesPage.noData')}</p>
+            <p className="p-4 text-center">{t('posSalesPage.noData')}</p>
           )}
         </CardContent>
       </Card>
