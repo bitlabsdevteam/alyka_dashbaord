@@ -1,9 +1,10 @@
+
 // src/components/layout/header.tsx
 'use client';
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'; // Removed AvatarImage
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,8 +61,10 @@ export function Header() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="https://picsum.photos/100/100" alt={t('header.userMenu.avatarAlt')} data-ai-hint="person face" />
-                  <AvatarFallback>{userName ? userName.charAt(0).toUpperCase() : 'A'}</AvatarFallback>
+                  {/* AvatarImage removed */}
+                  <AvatarFallback>
+                    <User className="h-5 w-5" />
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -103,3 +106,4 @@ export function Header() {
     </header>
   );
 }
+
