@@ -78,6 +78,7 @@ interface NavTranslations {
   forecast: string;
   stores: string;
   tasksManager: string;
+  reports: string; // New key
 }
 
 interface ForecastPageTranslations {
@@ -338,6 +339,15 @@ interface SettingsPageTranslations {
   };
 }
 
+interface ReportsPageTranslations { // New interface
+  title: string;
+  description: string;
+  noReports: string;
+  salesReportSectionTitle: string;
+  trendReportSectionTitle: string;
+}
+
+
 // This defines the structure of your translations
 export interface Translations {
   common: CommonTranslations;
@@ -351,6 +361,7 @@ export interface Translations {
   loginPage: LoginPageTranslations;
   registerPage: RegisterPageTranslations;
   settingsPage: SettingsPageTranslations;
+  reportsPage: ReportsPageTranslations; // New entry
 }
 
 // Helper type for deep key access
@@ -395,6 +406,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       stores: 'Stores',
       tasksManager: 'Tasks Manager',
+      reports: 'Reports',
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Trend Updates',
@@ -693,6 +705,13 @@ export const translations: Record<Locale, Translations> = {
         },
       },
     },
+    reportsPage: { // New translations
+      title: 'Generated Reports',
+      description: 'Access your generated sales and trend analysis reports here. Reports will be listed once they are created via the Forecast page.',
+      noReports: 'No reports have been generated yet.',
+      salesReportSectionTitle: 'Sales Reports',
+      trendReportSectionTitle: 'Trend Analysis Reports',
+    },
   },
   ja: {
     common: {
@@ -722,6 +741,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       stores: '店舗',
       tasksManager: 'タスク管理',
+      reports: 'レポート', // New translation
     },
     analyticsPage: {
       latestTrendTitle: '最新トレンドアップデート',
@@ -1020,5 +1040,13 @@ export const translations: Record<Locale, Translations> = {
         },
       },
     },
+     reportsPage: { // New translations
+      title: '生成されたレポート',
+      description: '生成された販売レポートとトレンド分析レポートにここでアクセスします。レポートは予測ページ経由で作成されると一覧表示されます。',
+      noReports: 'まだレポートは生成されていません。',
+      salesReportSectionTitle: '販売レポート',
+      trendReportSectionTitle: 'トレンド分析レポート',
+    },
   },
 };
+

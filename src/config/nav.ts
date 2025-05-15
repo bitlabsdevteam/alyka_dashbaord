@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { LineChart, TrendingUp, Store, ListChecks } from 'lucide-react'; 
+import { LineChart, TrendingUp, Store, ListChecks, FileText } from 'lucide-react'; 
 
 export interface NavItem {
   title: string;
@@ -28,6 +28,11 @@ export const navItems: NavItem[] = [
     title: 'Tasks Manager', 
     href: '/tasks',
     icon: ListChecks,
+  },
+  {
+    title: 'Reports',
+    href: '/reports',
+    icon: FileText,
   },
 ];
 
