@@ -12,14 +12,15 @@ import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { forecastSales, type ForecastSalesOutput, type ForecastSalesInput } from '@/ai/flows/forecast-sales';
-import { generateSalesReport, type GenerateSalesReportOutput, type GenerateSalesReportInput } from '@/ai/flows/generate-sales-report-flow'; // New import
+import { generateSalesReport, type GenerateSalesReportOutput, type GenerateSalesReportInput } from '@/ai/flows/generate-sales-report-flow';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb, Download } from 'lucide-react';
+import { Loader2, TrendingUpIcon, PackageSearch, Info, Lightbulb } from 'lucide-react';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
 import type { TranslationKey, Translations } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
+import type { StoredReport } from '@/types';
 
 interface SkuItem {
   value: string;
@@ -34,6 +35,8 @@ const mockSkus: SkuItem[] = [
   { value: 'SKU004', labelKey: 'forecastPage.skus.stripedCottonPJs', currentStock: 2000 },
   { value: 'SKU005', labelKey: 'forecastPage.skus.luxurySilkScarfFloral', currentStock: 500 },
 ];
+
+const REPORTS_STORAGE_KEY = 'alyka-generated-reports';
 
 export default function ForecastPage() {
   const { t, language } = useLanguage();
@@ -85,22 +88,32 @@ export default function ForecastPage() {
     mutationFn: generateSalesReport,
     onSuccess: (data) => {
       if (data.csvData && data.fileName) {
-        const blob = new Blob([data.csvData], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        if (link.download !== undefined) {
-          const url = URL.createObjectURL(blob);
-          link.setAttribute('href', url);
-          link.setAttribute('download', data.fileName);
-          link.style.visibility = 'hidden';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
+        const newReport: StoredReport = {
+          id: `report-${Date.now()}`,
+          name: data.fileName,
+          type: data.reportType,
+          dateGenerated: data.generatedAt,
+          csvData: data.csvData,
+        };
+
+        try {
+          const existingReportsRaw = localStorage.getItem(REPORTS_STORAGE_KEY);
+          const existingReports: StoredReport[] = existingReportsRaw ? JSON.parse(existingReportsRaw) : [];
+          existingReports.unshift(newReport); // Add to the beginning
+          localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(existingReports.slice(0, 20))); // Keep last 20 reports
+          
+          toast({
+            title: t('forecastPage.toast.reportGeneratedSuccessTitle'),
+            description: t('forecastPage.toast.reportGeneratedSuccessDescription', { fileName: data.fileName }),
+          });
+        } catch (e) {
+          console.error("Error saving report to localStorage:", e);
+          toast({
+            title: t('forecastPage.toast.reportStorageErrorTitle'),
+            description: t('forecastPage.toast.reportStorageErrorDescription'),
+            variant: 'destructive',
+          });
         }
-        toast({
-          title: t('forecastPage.toast.reportSuccessTitle'),
-          description: t('forecastPage.toast.reportSuccessDescription', { fileName: data.fileName }),
-        });
       } else {
         toast({
           title: t('forecastPage.toast.reportErrorTitle'),
@@ -132,7 +145,6 @@ export default function ForecastPage() {
       }
       const skuDetails = mockSkus.find(s => s.value === selectedSkuValue);
       if (skuDetails) {
-        // Remove the command phrase from the user prompt if desired
         const userPromptForForecast = chatInputValue.replace(/help me to forecast/gi, '').trim();
         forecastMutation.mutate({
           skuName: t(skuDetails.labelKey),
@@ -143,12 +155,7 @@ export default function ForecastPage() {
         });
       }
     } else if (lowerCaseInput.includes('help me to generate reports') || lowerCaseInput.includes('help me to generate report')) {
-      reportMutation.mutate({
-        // Add any necessary input for report generation, e.g., date range
-        // For now, it takes no specific input beyond triggering the flow.
-        // reportType: 'sales_summary', 
-        // targetLanguage: language // If report content needs localization
-      });
+      reportMutation.mutate({});
     } else {
       toast({
         title: t('forecastPage.toast.actionNotRecognizedTitle'),

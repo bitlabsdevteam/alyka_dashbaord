@@ -1,32 +1,70 @@
+
 // src/app/(app)/reports/page.tsx
 'use client';
 
 import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, BarChartHorizontalBig, AlertCircle } from 'lucide-react'; // Added BarChartHorizontalBig and AlertCircle
+import { FileText, BarChartHorizontalBig, Download } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
-// Placeholder for future: import { Button } from '@/components/ui/button';
-// Placeholder for future: import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import type { StoredReport } from '@/types';
+import { format } from 'date-fns';
 
-// Placeholder type for report items - this would be more defined if reports were stored
-interface ReportListItem {
-  id: string;
-  name: string;
-  type: 'Sales' | 'Trend Analysis';
-  dateGenerated: Date;
-  actions?: React.ReactNode; // For download/view buttons
-}
+const REPORTS_STORAGE_KEY = 'alyka-generated-reports';
 
 export default function ReportsPage() {
   const { t } = useLanguage();
-  const [generatedReports, setGeneratedReports] = React.useState<ReportListItem[]>([]);
+  const [generatedReports, setGeneratedReports] = React.useState<StoredReport[]>([]);
+  const [isMounted, setIsMounted] = React.useState(false);
 
-  // In a real application, you would fetch these from a backend or state management
   React.useEffect(() => {
-    // Mock data for demonstration - this list would be populated by actual report generation events
-    // For now, it will be empty as per the current implementation where reports are downloaded directly.
-    setGeneratedReports([]); 
+    setIsMounted(true);
+    try {
+      const storedReportsRaw = localStorage.getItem(REPORTS_STORAGE_KEY);
+      if (storedReportsRaw) {
+        setGeneratedReports(JSON.parse(storedReportsRaw));
+      }
+    } catch (error) {
+      console.error("Error reading reports from localStorage:", error);
+      // Optionally clear corrupted data or notify user
+      // localStorage.removeItem(REPORTS_STORAGE_KEY); 
+    }
   }, []);
+
+  const handleDownload = (report: StoredReport) => {
+    if (report.csvData && report.name) {
+      const blob = new Blob([report.csvData], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', report.name);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    }
+  };
+
+  if (!isMounted) {
+     return (
+        <div className="space-y-6">
+            <Card className="shadow-lg">
+                <CardHeader>
+                    <div className="h-8 w-1/2 animate-pulse rounded bg-muted mb-2"></div>
+                    <div className="h-4 w-3/4 animate-pulse rounded bg-muted"></div>
+                </CardHeader>
+                <CardContent>
+                    <div className="h-40 animate-pulse rounded bg-muted"></div>
+                </CardContent>
+            </Card>
+        </div>
+     );
+  }
+
 
   return (
     <div className="space-y-6">
@@ -48,54 +86,38 @@ export default function ReportsPage() {
                 {t('reportsPage.noReports')}
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                {/* You can generate Sales Reports from the Forecast page. */}
+                {t('reportsPage.generateInstruction')}
               </p>
             </div>
           ) : (
             <div className="space-y-4">
-              {/* This section would render a list or table of reports if they were stored */}
-              {/* 
-              Example for future:
-              <h3 className="text-xl font-semibold">{t('reportsPage.salesReportSectionTitle')}</h3>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Date Generated</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead>{t('reportsPage.tableHeaders.name')}</TableHead>
+                    <TableHead>{t('reportsPage.tableHeaders.type')}</TableHead>
+                    <TableHead>{t('reportsPage.tableHeaders.dateGenerated')}</TableHead>
+                    <TableHead className="text-right">{t('reportsPage.tableHeaders.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {generatedReports.filter(r => r.type === 'Sales').map(report => (
+                  {generatedReports.map(report => (
                     <TableRow key={report.id}>
-                      <TableCell>{report.name}</TableCell>
-                      <TableCell>{report.dateGenerated.toLocaleDateString()}</TableCell>
-                      <TableCell><Button size="sm">Download</Button></TableCell>
+                      <TableCell className="font-medium">{report.name}</TableCell>
+                      <TableCell>{report.type === 'Sales Report' ? t('reportsPage.reportTypes.sales') : t('reportsPage.reportTypes.trend')}</TableCell>
+                      <TableCell>{format(new Date(report.dateGenerated), 'PPpp')}</TableCell>
+                      <TableCell className="text-right">
+                        <Button size="sm" variant="outline" onClick={() => handleDownload(report)}>
+                          <Download className="mr-2 h-4 w-4" />
+                          {t('reportsPage.buttons.downloadCsv')}
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
-              </Table> 
-              */}
+              </Table>
             </div>
           )}
-        </CardContent>
-      </Card>
-
-      {/* Informational Card about report generation process */}
-      <Card className="shadow-md border-l-4 border-blue-500">
-        <CardHeader className="pb-2">
-            <CardTitle className="text-lg flex items-center">
-                <AlertCircle className="h-5 w-5 mr-2 text-blue-600"/>
-                How to Generate Reports
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-sm text-muted-foreground">
-                Currently, Sales Reports (as CSV files) can be generated and downloaded directly from the <strong>Forecast</strong> page using the chat interface by typing <code className="bg-muted px-1 py-0.5 rounded text-xs">help me to generate reports</code>.
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-                Future enhancements will allow Trend Analysis reports to be generated and listed here as well.
-            </p>
         </CardContent>
       </Card>
     </div>

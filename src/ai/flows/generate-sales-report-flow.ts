@@ -11,6 +11,8 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { format, subMonths, startOfMonth } from 'date-fns'; // For mock data generation
+import type { ReportType } from '@/types';
+
 
 // Define mock data structure (similar to POS sales page)
 interface ReportablePosEntry {
@@ -49,7 +51,6 @@ const storeLocations = ['Tokyo', 'Osaka', 'Hiroshima'];
 
 const generateMockReportData = (): ReportablePosEntry[] => {
   const data: ReportablePosEntry[] = [];
-  let idCounter = 1;
   const endDate = startOfMonth(new Date(2025, 4, 1)); // May 2025
   let currentDate = startOfMonth(new Date(2023, 0, 1)); // Jan 2023
 
@@ -78,7 +79,6 @@ const generateMockReportData = (): ReportablePosEntry[] => {
 
 
 const GenerateSalesReportInputSchema = z.object({
-  // Placeholder for future input, e.g., date range, specific SKUs
   // reportType: z.string().optional().describe("Type of report, e.g., 'sales_summary', 'detailed_transactions'"),
   // targetLanguage: z.enum(['en', 'ja']).optional().describe('Language for report headers if applicable'),
 });
@@ -87,17 +87,14 @@ export type GenerateSalesReportInput = z.infer<typeof GenerateSalesReportInputSc
 const GenerateSalesReportOutputSchema = z.object({
   csvData: z.string().describe('The sales report data formatted as a CSV string.'),
   fileName: z.string().describe('Suggested filename for the downloaded report (e.g., sales_report_YYYY-MM-DD.csv).'),
+  reportType: z.literal('Sales Report').describe('The type of the generated report.'),
+  generatedAt: z.string().datetime().describe('The ISO timestamp when the report was generated.'),
 });
 export type GenerateSalesReportOutput = z.infer<typeof GenerateSalesReportOutputSchema>;
 
 export async function generateSalesReport(input: GenerateSalesReportInput): Promise<GenerateSalesReportOutput> {
   return generateSalesReportFlow(input);
 }
-
-// This flow doesn't use an LLM prompt directly to generate the CSV.
-// It uses TypeScript logic to format data.
-// An LLM could be used to decide *what* data goes into the report or to summarize it,
-// but the CSV generation itself is programmatic.
 
 const generateSalesReportFlow = ai.defineFlow(
   {
@@ -106,13 +103,17 @@ const generateSalesReportFlow = ai.defineFlow(
     outputSchema: GenerateSalesReportOutputSchema,
   },
   async (input: GenerateSalesReportInput): Promise<GenerateSalesReportOutput> => {
-    const salesData = generateMockReportData(); // Using mock data generator
+    const salesData = generateMockReportData(); 
 
     if (!salesData || salesData.length === 0) {
-      return { csvData: '', fileName: `empty_sales_report_${new Date().toISOString().split('T')[0]}.csv` };
+      return { 
+        csvData: '', 
+        fileName: `empty_sales_report_${new Date().toISOString().split('T')[0]}.csv`,
+        reportType: 'Sales Report',
+        generatedAt: new Date().toISOString(),
+      };
     }
 
-    // Define CSV headers
     const headers = [
       'Month/Year',
       'Product Name',
@@ -124,10 +125,9 @@ const generateSalesReportFlow = ai.defineFlow(
       'POS Name'
     ];
     
-    // Convert data to CSV rows
     const csvRows = salesData.map(item => [
       item.monthYear,
-      `"${item.productName.replace(/"/g, '""')}"`, // Escape double quotes
+      `"${item.productName.replace(/"/g, '""')}"`, 
       `"${item.category.replace(/"/g, '""')}"`,
       item.sku,
       item.unitsSold,
@@ -137,12 +137,14 @@ const generateSalesReportFlow = ai.defineFlow(
     ].join(','));
 
     const csvString = [headers.join(','), ...csvRows].join('\n');
-    
-    const fileName = `sales_report_${new Date().toISOString().split('T')[0]}.csv`;
+    const currentDateStr = new Date().toISOString().split('T')[0];
+    const fileName = `sales_report_${currentDateStr}_${Date.now()}.csv`; // Add timestamp for uniqueness
 
     return {
       csvData: csvString,
       fileName: fileName,
+      reportType: 'Sales Report',
+      generatedAt: new Date().toISOString(),
     };
   }
 );

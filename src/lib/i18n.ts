@@ -45,7 +45,7 @@ interface AnalyticsPageTranslations {
     floral: string;
     geometric: string;
     stripes: string;
-    polkaDots: string;
+    polkaDots: string; // This one seems unused in current charts, might be for future or remove
     abstract: string;
     animalPrints: string;
   };
@@ -78,7 +78,7 @@ interface NavTranslations {
   forecast: string;
   stores: string;
   tasksManager: string;
-  reports: string; // New key
+  reports: string;
 }
 
 interface ForecastPageTranslations {
@@ -88,11 +88,11 @@ interface ForecastPageTranslations {
   selectSkuPlaceholder: string;
   currentStockLabel: string;
   periodLabel: string;
-  forecastHorizonValueDisplay: string;
+  forecastHorizonValueDisplay: string; // e.g., "Next {{count}} months"
   chatInputPlaceholder: string;
   sendButton: string; 
   processingButton: string; 
-  forecastTitle: string;
+  forecastTitle: string; // e.g., "Sales & Stock Forecast for {{skuName}}"
   currentStockValueLabel: string;
   chart: {
     demandTitle: string;
@@ -108,11 +108,13 @@ interface ForecastPageTranslations {
   errorAlertTitle: string;
   toast: {
     forecastSuccessTitle: string;
-    forecastSuccessDescription: string;
+    forecastSuccessDescription: string; // e.g., "AI stock forecast for {{skuName}} is ready."
     forecastErrorTitle: string;
     forecastErrorDescription: string;
-    reportSuccessTitle: string;
-    reportSuccessDescription: string;
+    reportGeneratedSuccessTitle: string;
+    reportGeneratedSuccessDescription: string; // e.g., "Sales report '{{fileName}}' generated. View it on the Reports page."
+    reportStorageErrorTitle: string;
+    reportStorageErrorDescription: string;
     reportErrorTitle: string;
     reportErrorDescription: string;
     reportErrorNoData: string;
@@ -153,7 +155,7 @@ interface PosSalesPageTranslations {
     increasePrefix: string;
   };
   monthlySalesPerformance: string;
-  salesByCategory: string;
+  salesByCategory: string; // Though this section was removed, key might be used elsewhere or for future.
   detailedSalesData: string;
   chart: {
     salesLabel: string;
@@ -209,7 +211,7 @@ interface TasksPageTranslations {
     completed: string;
     failed: string;
   };
-  tasks: {
+  tasks: { // These are examples, actual tasks might be dynamic or from a different source
     q3TrendReport: {
       name: string;
       description: string;
@@ -243,8 +245,8 @@ interface ChatbotTranslations {
 interface LoginPageTranslations {
   title: string;
   description: string;
-  usernameLabel: string;
-  usernamePlaceholder: string;
+  usernameLabel: string; // Legacy, consider removing if email is primary
+  usernamePlaceholder: string; // Legacy
   emailLabel: string;
   emailPlaceholder: string;
   emailInvalid: string;
@@ -309,7 +311,7 @@ interface SettingsPageTranslations {
       saveErrorDescription: string;
     }
   };
-   posIntegration: {
+   posIntegration: { // Kept for consistency, though UI elements might not be fully active
     title: string;
     description: string;
     enableIntegrationLabel: string;
@@ -339,12 +341,24 @@ interface SettingsPageTranslations {
   };
 }
 
-interface ReportsPageTranslations { // New interface
+interface ReportsPageTranslations {
   title: string;
   description: string;
   noReports: string;
-  salesReportSectionTitle: string;
-  trendReportSectionTitle: string;
+  generateInstruction: string;
+  tableHeaders: {
+    name: string;
+    type: string;
+    dateGenerated: string;
+    actions: string;
+  };
+  reportTypes: {
+    sales: string;
+    trend: string; // For future trend analysis reports
+  };
+  buttons: {
+    downloadCsv: string;
+  };
 }
 
 
@@ -361,7 +375,7 @@ export interface Translations {
   loginPage: LoginPageTranslations;
   registerPage: RegisterPageTranslations;
   settingsPage: SettingsPageTranslations;
-  reportsPage: ReportsPageTranslations; // New entry
+  reportsPage: ReportsPageTranslations;
 }
 
 // Helper type for deep key access
@@ -484,8 +498,10 @@ export const translations: Record<Locale, Translations> = {
         forecastSuccessDescription: 'AI stock forecast for {{skuName}} is ready.',
         forecastErrorTitle: 'Forecast Error',
         forecastErrorDescription: 'An unexpected error occurred while generating the forecast.',
-        reportSuccessTitle: 'Report Generated',
-        reportSuccessDescription: 'Sales report "{{fileName}}" is ready for download.',
+        reportGeneratedSuccessTitle: 'Report Generated',
+        reportGeneratedSuccessDescription: "Sales report '{{fileName}}' created. View it on the Reports page.",
+        reportStorageErrorTitle: 'Report Storage Error',
+        reportStorageErrorDescription: 'Could not save the report locally. Please try again.',
         reportErrorTitle: 'Report Error',
         reportErrorDescription: 'An unexpected error occurred while generating the report.',
         reportErrorNoData: 'No data available for the report.',
@@ -705,12 +721,24 @@ export const translations: Record<Locale, Translations> = {
         },
       },
     },
-    reportsPage: { // New translations
+    reportsPage: {
       title: 'Generated Reports',
-      description: 'Access your generated sales and trend analysis reports here. Reports will be listed once they are created via the Forecast page.',
+      description: 'Access your generated sales and trend analysis reports. Reports are listed here once created via the Forecast page chat command.',
       noReports: 'No reports have been generated yet.',
-      salesReportSectionTitle: 'Sales Reports',
-      trendReportSectionTitle: 'Trend Analysis Reports',
+      generateInstruction: "Sales reports can be generated using the chat command 'help me to generate reports' on the Forecast page.",
+      tableHeaders: {
+        name: 'Report Name',
+        type: 'Type',
+        dateGenerated: 'Date Generated',
+        actions: 'Actions',
+      },
+      reportTypes: {
+        sales: 'Sales Report',
+        trend: 'Trend Analysis',
+      },
+      buttons: {
+        downloadCsv: 'Download CSV',
+      },
     },
   },
   ja: {
@@ -741,7 +769,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       stores: '店舗',
       tasksManager: 'タスク管理',
-      reports: 'レポート', // New translation
+      reports: 'レポート',
     },
     analyticsPage: {
       latestTrendTitle: '最新トレンドアップデート',
@@ -819,8 +847,10 @@ export const translations: Record<Locale, Translations> = {
         forecastSuccessDescription: '{{skuName}}のAI在庫予測が完了しました。',
         forecastErrorTitle: '予測エラー',
         forecastErrorDescription: '予測の生成中に予期せぬエラーが発生しました。',
-        reportSuccessTitle: 'レポート生成完了',
-        reportSuccessDescription: '販売レポート「{{fileName}}」のダウンロード準備ができました。',
+        reportGeneratedSuccessTitle: 'レポート生成完了',
+        reportGeneratedSuccessDescription: "販売レポート「{{fileName}}」が作成されました。レポートページで確認できます。",
+        reportStorageErrorTitle: 'レポート保存エラー',
+        reportStorageErrorDescription: 'レポートをローカルに保存できませんでした。もう一度お試しください。',
         reportErrorTitle: 'レポートエラー',
         reportErrorDescription: 'レポートの生成中に予期せぬエラーが発生しました。',
         reportErrorNoData: 'レポート用のデータがありません。',
@@ -1040,13 +1070,24 @@ export const translations: Record<Locale, Translations> = {
         },
       },
     },
-     reportsPage: { // New translations
+    reportsPage: {
       title: '生成されたレポート',
-      description: '生成された販売レポートとトレンド分析レポートにここでアクセスします。レポートは予測ページ経由で作成されると一覧表示されます。',
+      description: '生成された販売およびトレンド分析レポートにここでアクセスします。レポートは予測ページのチャットコマンド経由で作成されると、ここに一覧表示されます。',
       noReports: 'まだレポートは生成されていません。',
-      salesReportSectionTitle: '販売レポート',
-      trendReportSectionTitle: 'トレンド分析レポート',
+      generateInstruction: '販売レポートは、予測ページのチャットコマンド「レポート生成を手伝って」を使用して生成できます。',
+      tableHeaders: {
+        name: 'レポート名',
+        type: '種類',
+        dateGenerated: '生成日',
+        actions: 'アクション',
+      },
+      reportTypes: {
+        sales: '販売レポート',
+        trend: 'トレンド分析',
+      },
+      buttons: {
+        downloadCsv: 'CSVダウンロード',
+      },
     },
   },
 };
-
