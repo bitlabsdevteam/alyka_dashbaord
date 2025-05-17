@@ -46,24 +46,32 @@ const generateColorTrendImageFlow = ai.defineFlow(
         prompt: promptText,
         config: {
           responseModalities: ['TEXT', 'IMAGE'],
-           safetySettings: [ // Add safety settings to reduce potential for blocking
+           safetySettings: [
             { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
             { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
-            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' }, // Relaxed
+            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' }, // Relaxed
           ],
         },
       });
 
+      const revisedPromptText = text ? (typeof text === 'function' ? text() : text) : undefined;
+
       if (media && media.url) {
-        return { imageDataUri: media.url, revisedPrompt: text() };
+        return { imageDataUri: media.url, revisedPrompt: revisedPromptText };
       } else {
-        console.error('Image generation did not return media.url. Text response:', text());
+        console.error('Image generation did not return media.url. Text response:', revisedPromptText);
+        // Log the full media object if it exists, to understand why media.url might be missing
+        if (media) {
+          console.error('Full media object:', JSON.stringify(media));
+        }
         throw new Error('AI image generation failed to produce an image URL.');
       }
     } catch (error) {
-      console.error('Error in generateColorTrendImageFlow:', error);
+      console.error('Error in generateColorTrendImageFlow:', error); // This will log the original error from Genkit/Gemini
+      // It's helpful to check the server-side console (where genkit:dev is running) for this detailed error.
       throw new Error(`Failed to generate image for ${input.colorName}.`);
     }
   }
 );
+
