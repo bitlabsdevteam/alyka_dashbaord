@@ -45,7 +45,7 @@ interface AnalyticsPageTranslations {
     floral: string;
     geometric: string;
     stripes: string;
-    polkaDots: string; // This one seems unused in current charts, might be for future or remove
+    polkaDots: string; 
     abstract: string;
     animalPrints: string;
   };
@@ -57,6 +57,16 @@ interface AnalyticsPageTranslations {
     monthly: string;
     weekly: string;
     placeholder: string;
+  };
+  colorDetailDialog: {
+    title: string;
+  };
+  colorDescriptions: {
+    deepSapphire: string;
+    desertKhaki: string;
+    richBurgundy: string;
+    forestGreen: string;
+    warmTerracotta: string;
   };
 }
 
@@ -88,11 +98,11 @@ interface ForecastPageTranslations {
   selectSkuPlaceholder: string;
   currentStockLabel: string;
   periodLabel: string;
-  forecastHorizonValueDisplay: string; // e.g., "Next {{count}} months"
+  forecastHorizonValueDisplay: string; 
   chatInputPlaceholder: string;
   sendButton: string; 
   processingButton: string; 
-  forecastTitle: string; // e.g., "Sales & Stock Forecast for {{skuName}}"
+  forecastTitle: string; 
   currentStockValueLabel: string;
   chart: {
     demandTitle: string;
@@ -108,11 +118,11 @@ interface ForecastPageTranslations {
   errorAlertTitle: string;
   toast: {
     forecastSuccessTitle: string;
-    forecastSuccessDescription: string; // e.g., "AI stock forecast for {{skuName}} is ready."
+    forecastSuccessDescription: string; 
     forecastErrorTitle: string;
     forecastErrorDescription: string;
     reportGeneratedSuccessTitle: string;
-    reportGeneratedSuccessDescription: string; // e.g., "Sales report '{{fileName}}' generated. View it on the Reports page."
+    reportGeneratedSuccessDescription: string; 
     reportStorageErrorTitle: string;
     reportStorageErrorDescription: string;
     reportErrorTitle: string;
@@ -155,7 +165,7 @@ interface PosSalesPageTranslations {
     increasePrefix: string;
   };
   monthlySalesPerformance: string;
-  salesByCategory: string; // Though this section was removed, key might be used elsewhere or for future.
+  salesByCategory: string; 
   detailedSalesData: string;
   chart: {
     salesLabel: string;
@@ -211,7 +221,7 @@ interface TasksPageTranslations {
     completed: string;
     failed: string;
   };
-  tasks: { // These are examples, actual tasks might be dynamic or from a different source
+  tasks: { 
     q3TrendReport: {
       name: string;
       description: string;
@@ -245,8 +255,8 @@ interface ChatbotTranslations {
 interface LoginPageTranslations {
   title: string;
   description: string;
-  usernameLabel: string; // Legacy, consider removing if email is primary
-  usernamePlaceholder: string; // Legacy
+  usernameLabel: string; 
+  usernamePlaceholder: string; 
   emailLabel: string;
   emailPlaceholder: string;
   emailInvalid: string;
@@ -311,7 +321,7 @@ interface SettingsPageTranslations {
       saveErrorDescription: string;
     }
   };
-   posIntegration: { // Kept for consistency, though UI elements might not be fully active
+   posIntegration: { 
     title: string;
     description: string;
     enableIntegrationLabel: string;
@@ -354,7 +364,7 @@ interface ReportsPageTranslations {
   };
   reportTypes: {
     sales: string;
-    trend: string; // For future trend analysis reports
+    trend: string; 
   };
   buttons: {
     downloadCsv: string;
@@ -467,6 +477,16 @@ export const translations: Record<Locale, Translations> = {
         weekly: 'Weekly',
         placeholder: 'Select granularity',
       },
+      colorDetailDialog: {
+        title: 'Color Trend Details',
+      },
+      colorDescriptions: {
+        deepSapphire: 'Deep Sapphire is a timeless and luxurious color, often associated with elegance and sophistication. It is expected to be prominent in evening wear and statement pieces.',
+        desertKhaki: 'Desert Khaki offers a versatile and grounded palette. This earthy tone is perfect for utilitarian-inspired garments and everyday essentials, reflecting a shift towards natural and sustainable aesthetics.',
+        richBurgundy: 'Rich Burgundy exudes opulence and warmth. This deep, wine-like shade will likely feature in autumn/winter collections, particularly in textured fabrics like velvet and leather.',
+        forestGreen: 'Forest Green connects with nature and tranquility. Expect to see this color in outerwear, knitwear, and as an accent, bringing a sense of calm and groundedness to collections.',
+        warmTerracotta: 'Warm Terracotta brings an earthy, rustic charm. This sun-baked hue is suitable for transitional pieces and adds a touch of artisanal craftsmanship to apparel.',
+      },
     },
     forecastPage: {
       selectSkuTitle: 'SKU Stock Forecast',
@@ -498,8 +518,8 @@ export const translations: Record<Locale, Translations> = {
         forecastSuccessDescription: 'AI stock forecast for {{skuName}} is ready.',
         forecastErrorTitle: 'Forecast Error',
         forecastErrorDescription: 'An unexpected error occurred while generating the forecast.',
-        reportGeneratedSuccessTitle: 'Report Generated',
-        reportGeneratedSuccessDescription: "Sales report '{{fileName}}' created. View it on the Reports page.",
+        reportGeneratedSuccessTitle: 'Report Ready',
+        reportGeneratedSuccessDescription: "Sales report '{{fileName}}' is now available on the Reports page.",
         reportStorageErrorTitle: 'Report Storage Error',
         reportStorageErrorDescription: 'Could not save the report locally. Please try again.',
         reportErrorTitle: 'Report Error',
@@ -596,7 +616,7 @@ export const translations: Record<Locale, Translations> = {
         completed: 'Completed',
         failed: 'Failed',
       },
-      tasks: {
+      tasks: { 
         q3TrendReport: {
           name: 'Generate Q3 Trend Report',
           description: 'Analyze menswear trends for Fall/Winter 2024 focusing on European market.',
@@ -628,8 +648,8 @@ export const translations: Record<Locale, Translations> = {
     loginPage: {
       title: 'Login',
       description: 'Access your AI-powered fashion analytics dashboard.',
-      usernameLabel: 'Username (Legacy)',
-      usernamePlaceholder: 'Enter your username (Legacy)',
+      usernameLabel: 'Username (Legacy)', 
+      usernamePlaceholder: 'Enter your username (Legacy)', 
       emailLabel: 'Email',
       emailPlaceholder: 'Enter your email',
       emailInvalid: 'Please enter a valid email address.',
@@ -692,7 +712,7 @@ export const translations: Record<Locale, Translations> = {
           saveErrorDescription: 'Could not save MCP server settings.',
         }
       },
-      posIntegration: {
+      posIntegration: { 
         title: 'POS Integration',
         description: 'Connect your Point of Sale system to automatically import sales data.',
         enableIntegrationLabel: 'Enable POS Integration',
@@ -734,7 +754,7 @@ export const translations: Record<Locale, Translations> = {
       },
       reportTypes: {
         sales: 'Sales Report',
-        trend: 'Trend Analysis',
+        trend: 'Trend Analysis', 
       },
       buttons: {
         downloadCsv: 'Download CSV',
@@ -816,6 +836,16 @@ export const translations: Record<Locale, Translations> = {
         weekly: '週単位',
         placeholder: '表示単位を選択',
       },
+      colorDetailDialog: {
+        title: 'カラートレンド詳細',
+      },
+      colorDescriptions: {
+        deepSapphire: 'ディープサファイアは時代を超えた豪華な色で、優雅さと洗練さを象徴します。イブニングウェアやステートメントピースで際立つと予想されます。',
+        desertKhaki: 'デザートカーキは、多用途で落ち着いたパレットを提供します。このアーストーンは、実用的な衣類や日常の必需品に最適で、自然で持続可能な美学への移行を反映しています。',
+        richBurgundy: 'リッチバーガンディは、豊かさと暖かさを醸し出します。この深みのあるワインのような色合いは、特にベルベットやレザーなどの質感のある生地で、秋冬コレクションに登場するでしょう。',
+        forestGreen: 'フォレストグリーンは、自然と静けさにつながります。この色はアウターウェア、ニットウェア、アクセントとして見られ、コレクションに落ち着きと安定感をもたらすでしょう。',
+        warmTerracotta: 'ウォームテラコッタは、素朴でラスティックな魅力をもたらします。この日焼けしたような色合いは、季節の変わり目のアイテムに適しており、アパレルに職人的なタッチを加えます。',
+      },
     },
     forecastPage: {
       selectSkuTitle: 'SKU在庫予測',
@@ -847,8 +877,8 @@ export const translations: Record<Locale, Translations> = {
         forecastSuccessDescription: '{{skuName}}のAI在庫予測が完了しました。',
         forecastErrorTitle: '予測エラー',
         forecastErrorDescription: '予測の生成中に予期せぬエラーが発生しました。',
-        reportGeneratedSuccessTitle: 'レポート生成完了',
-        reportGeneratedSuccessDescription: "販売レポート「{{fileName}}」が作成されました。レポートページで確認できます。",
+        reportGeneratedSuccessTitle: 'レポート準備完了',
+        reportGeneratedSuccessDescription: "販売レポート「{{fileName}}」がレポートページで利用可能になりました。",
         reportStorageErrorTitle: 'レポート保存エラー',
         reportStorageErrorDescription: 'レポートをローカルに保存できませんでした。もう一度お試しください。',
         reportErrorTitle: 'レポートエラー',
@@ -1091,3 +1121,4 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
+

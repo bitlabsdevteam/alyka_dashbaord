@@ -14,6 +14,7 @@ import Autoplay from "embla-carousel-autoplay";
 import type { TranslationKey } from '@/lib/i18n';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 // Component for rendering images with a fallback to placehold.co
 interface ImageWithFallbackProps {
@@ -21,57 +22,77 @@ interface ImageWithFallbackProps {
   alt: string;
   aiHint?: string;
   priority?: boolean;
+  width?: number;
+  height?: number;
+  fill?: boolean;
+  className?: string;
+  sizes?: string;
 }
 
-const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ src, alt, aiHint, priority = false }) => {
+const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ 
+  src, 
+  alt, 
+  aiHint, 
+  priority = false, 
+  width, 
+  height, 
+  fill = false, 
+  className = "object-cover",
+  sizes
+}) => {
   const [currentSrc, setCurrentSrc] = React.useState(src);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setCurrentSrc(src); // Reset src if the prop changes
+    setCurrentSrc(src); 
     setIsLoading(true);
   }, [src]);
+
+  const placeholderBaseWidth = fill ? 600 : (width || 200);
+  const placeholderBaseHeight = fill ? 400 : (height || 300);
 
   return (
     <Image
       src={currentSrc}
       alt={alt}
-      fill
-      className={`object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+      width={fill ? undefined : width}
+      height={fill ? undefined : height}
+      fill={fill}
+      className={`${className} transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       onError={() => {
         setIsLoading(false);
-        setCurrentSrc(`https://placehold.co/200x300.png`); 
+        setCurrentSrc(`https://placehold.co/${placeholderBaseWidth}x${placeholderBaseHeight}.png`); 
       }}
       onLoad={() => setIsLoading(false)}
       data-ai-hint={aiHint || alt.split(' ').slice(0, 2).join(' ').toLowerCase()}
       priority={priority}
-      sizes="200px"
+      sizes={sizes || (fill ? "100vw" : `${width}px`)}
     />
   );
 };
 
 
 const mockSilhouetteData = [
-  { monthYear: 'Jan 2023', aLine: 30, sheath: 40, oversized: 20, bodycon: 35, asymmetrical: 15 },
-  { monthYear: 'Feb 2023', aLine: 32, sheath: 42, oversized: 25, bodycon: 30, asymmetrical: 18 },
-  { monthYear: 'Mar 2023', aLine: 35, sheath: 38, oversized: 30, bodycon: 28, asymmetrical: 22 },
-  { monthYear: 'Apr 2023', aLine: 38, sheath: 35, oversized: 35, bodycon: 30, asymmetrical: 25 },
-  { monthYear: 'May 2023', aLine: 42, sheath: 32, oversized: 40, bodycon: 32, asymmetrical: 28 },
-  { monthYear: 'Jun 2023', aLine: 45, sheath: 30, oversized: 45, bodycon: 35, asymmetrical: 30 },
-  { monthYear: 'Jul 2023', aLine: 48, sheath: 28, oversized: 50, bodycon: 38, asymmetrical: 33 },
-  { monthYear: 'Aug 2023', aLine: 50, sheath: 25, oversized: 55, bodycon: 40, asymmetrical: 35 },
-  { monthYear: 'Sep 2023', aLine: 52, sheath: 22, oversized: 60, bodycon: 42, asymmetrical: 40 },
-  { monthYear: 'Oct 2023', aLine: 55, sheath: 20, oversized: 65, bodycon: 45, asymmetrical: 45 },
-  { monthYear: 'Nov 2023', aLine: 58, sheath: 18, oversized: 68, bodycon: 42, asymmetrical: 48 },
-  { monthYear: 'Dec 2023', aLine: 60, sheath: 15, oversized: 70, bodycon: 40, asymmetrical: 50 },
-  { monthYear: 'Jan 2024', aLine: 62, sheath: 18, oversized: 72, bodycon: 38, asymmetrical: 52 },
-  { monthYear: 'Feb 2024', aLine: 65, sheath: 20, oversized: 75, bodycon: 35, asymmetrical: 55 },
-  { monthYear: 'Mar 2024', aLine: 62, sheath: 22, oversized: 78, bodycon: 38, asymmetrical: 58 },
-  { monthYear: 'Apr 2024', aLine: 60, sheath: 25, oversized: 80, bodycon: 40, asymmetrical: 60 },
-  { monthYear: 'May 2024', aLine: 58, sheath: 28, oversized: 82, bodycon: 42, asymmetrical: 62 },
-  { monthYear: 'Jun 2024', aLine: 55, sheath: 30, oversized: 85, bodycon: 45, asymmetrical: 65 },
-  { monthYear: 'Jul 2024', aLine: 52, sheath: 32, oversized: 88, bodycon: 48, asymmetrical: 68 },
-  { monthYear: 'Aug 2024', aLine: 50, sheath: 35, oversized: 90, bodycon: 50, asymmetrical: 70 },
+  { monthYear: 'Jan-2023', aLine: 30, sheath: 40, oversized: 20, bodycon: 35, asymmetrical: 15 },
+  { monthYear: 'Feb-2023', aLine: 32, sheath: 42, oversized: 25, bodycon: 30, asymmetrical: 18 },
+  { monthYear: 'Mar-2023', aLine: 35, sheath: 38, oversized: 30, bodycon: 28, asymmetrical: 22 },
+  { monthYear: 'Apr-2023', aLine: 38, sheath: 35, oversized: 35, bodycon: 30, asymmetrical: 25 },
+  { monthYear: 'May-2023', aLine: 42, sheath: 32, oversized: 40, bodycon: 32, asymmetrical: 28 },
+  { monthYear: 'Jun-2023', aLine: 45, sheath: 30, oversized: 45, bodycon: 35, asymmetrical: 30 },
+  { monthYear: 'Jul-2023', aLine: 48, sheath: 28, oversized: 50, bodycon: 38, asymmetrical: 33 },
+  { monthYear: 'Aug-2023', aLine: 50, sheath: 25, oversized: 55, bodycon: 40, asymmetrical: 35 },
+  { monthYear: 'Sep-2023', aLine: 52, sheath: 22, oversized: 60, bodycon: 42, asymmetrical: 40 },
+  { monthYear: 'Oct-2023', aLine: 55, sheath: 20, oversized: 65, bodycon: 45, asymmetrical: 45 },
+  { monthYear: 'Nov-2023', aLine: 58, sheath: 18, oversized: 68, bodycon: 42, asymmetrical: 48 },
+  { monthYear: 'Dec-2023', aLine: 60, sheath: 15, oversized: 70, bodycon: 40, asymmetrical: 50 },
+  { monthYear: 'Jan-2024', aLine: 62, sheath: 18, oversized: 72, bodycon: 38, asymmetrical: 52 },
+  { monthYear: 'Feb-2024', aLine: 65, sheath: 20, oversized: 75, bodycon: 35, asymmetrical: 55 },
+  { monthYear: 'Mar-2024', aLine: 62, sheath: 22, oversized: 78, bodycon: 38, asymmetrical: 58 },
+  { monthYear: 'Apr-2024', aLine: 60, sheath: 25, oversized: 80, bodycon: 40, asymmetrical: 60 },
+  { monthYear: 'May-2024', aLine: 58, sheath: 28, oversized: 82, bodycon: 42, asymmetrical: 62 },
+  { monthYear: 'Jun-2024', aLine: 55, sheath: 30, oversized: 85, bodycon: 45, asymmetrical: 65 },
+  { monthYear: 'Jul-2024', aLine: 52, sheath: 32, oversized: 88, bodycon: 48, asymmetrical: 68 },
+  { monthYear: 'Aug-2024', aLine: 50, sheath: 35, oversized: 90, bodycon: 50, asymmetrical: 70 },
   { monthYear: 'Sep-2024', aLine: 48, sheath: 38, oversized: 92, bodycon: 52, asymmetrical: 72 },
   { monthYear: 'Oct-2024', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
   { monthYear: 'Nov-2024', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
@@ -84,80 +105,89 @@ const mockSilhouetteData = [
 
 const mockWeeklySilhouetteData = [
   // Oct 2024
-  { weekLabel: 'W1 Oct-24', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
-  { weekLabel: 'W2 Oct-24', aLine: 44, sheath: 41, oversized: 96, bodycon: 56, asymmetrical: 76 },
-  { weekLabel: 'W3 Oct-24', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
-  { weekLabel: 'W4 Oct-24', aLine: 43, sheath: 42, oversized: 97, bodycon: 57, asymmetrical: 77 },
+  { weekLabel: 'W1 Oct-2024', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
+  { weekLabel: 'W2 Oct-2024', aLine: 44, sheath: 41, oversized: 96, bodycon: 56, asymmetrical: 76 },
+  { weekLabel: 'W3 Oct-2024', aLine: 45, sheath: 40, oversized: 95, bodycon: 55, asymmetrical: 75 },
+  { weekLabel: 'W4 Oct-2024', aLine: 43, sheath: 42, oversized: 97, bodycon: 57, asymmetrical: 77 },
   // Nov 2024
-  { weekLabel: 'W1 Nov-24', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
-  { weekLabel: 'W2 Nov-24', aLine: 41, sheath: 43, oversized: 99, bodycon: 59, asymmetrical: 79 },
-  { weekLabel: 'W3 Nov-24', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
-  { weekLabel: 'W4 Nov-24', aLine: 40, sheath: 44, oversized: 100, bodycon: 60, asymmetrical: 80 },
+  { weekLabel: 'W1 Nov-2024', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
+  { weekLabel: 'W2 Nov-2024', aLine: 41, sheath: 43, oversized: 99, bodycon: 59, asymmetrical: 79 },
+  { weekLabel: 'W3 Nov-2024', aLine: 42, sheath: 42, oversized: 98, bodycon: 58, asymmetrical: 78 },
+  { weekLabel: 'W4 Nov-2024', aLine: 40, sheath: 44, oversized: 100, bodycon: 60, asymmetrical: 80 },
   // Dec 2024
-  { weekLabel: 'W1 Dec-24', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
-  { weekLabel: 'W2 Dec-24', aLine: 39, sheath: 46, oversized: 101, bodycon: 61, asymmetrical: 81 },
-  { weekLabel: 'W3 Dec-24', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
-  { weekLabel: 'W4 Dec-24', aLine: 38, sheath: 47, oversized: 102, bodycon: 62, asymmetrical: 82 },
+  { weekLabel: 'W1 Dec-2024', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
+  { weekLabel: 'W2 Dec-2024', aLine: 39, sheath: 46, oversized: 101, bodycon: 61, asymmetrical: 81 },
+  { weekLabel: 'W3 Dec-2024', aLine: 40, sheath: 45, oversized: 100, bodycon: 60, asymmetrical: 80 },
+  { weekLabel: 'W4 Dec-2024', aLine: 38, sheath: 47, oversized: 102, bodycon: 62, asymmetrical: 82 },
 ];
 
+interface MockColorEntry {
+  name: string; 
+  value: number;
+  translationKey: TranslationKey;
+  descriptionKey: TranslationKey; 
+  imagePlaceholderText: string; 
+  aiHint: string; 
+}
 
-const mockColorData = [
-  { name: 'Deep Sapphire', value: 400, translationKey: 'analyticsPage.color.deepSapphire' as TranslationKey },
-  { name: 'Desert Khaki', value: 300, translationKey: 'analyticsPage.color.desertKhaki' as TranslationKey },
-  { name: 'Rich Burgundy', value: 280, translationKey: 'analyticsPage.color.richBurgundy' as TranslationKey },
-  { name: 'Forest Green', value: 220, translationKey: 'analyticsPage.color.forestGreen' as TranslationKey },
-  { name: 'Warm Terracotta', value: 180, translationKey: 'analyticsPage.color.warmTerracotta' as TranslationKey },
+const mockColorData: MockColorEntry[] = [
+  { name: 'Deep Sapphire', value: 400, translationKey: 'analyticsPage.color.deepSapphire' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.deepSapphire' as TranslationKey, imagePlaceholderText: 'Deep+Sapphire', aiHint: 'sapphire fashion' },
+  { name: 'Desert Khaki', value: 300, translationKey: 'analyticsPage.color.desertKhaki' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.desertKhaki' as TranslationKey, imagePlaceholderText: 'Desert+Khaki', aiHint: 'khaki clothing' },
+  { name: 'Rich Burgundy', value: 280, translationKey: 'analyticsPage.color.richBurgundy' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.richBurgundy' as TranslationKey, imagePlaceholderText: 'Rich+Burgundy', aiHint: 'burgundy dress' },
+  { name: 'Forest Green', value: 220, translationKey: 'analyticsPage.color.forestGreen' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.forestGreen' as TranslationKey, imagePlaceholderText: 'Forest+Green', aiHint: 'green sweater' },
+  { name: 'Warm Terracotta', value: 180, translationKey: 'analyticsPage.color.warmTerracotta' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.warmTerracotta' as TranslationKey, imagePlaceholderText: 'Warm+Terracotta', aiHint: 'terracotta outfit' },
 ];
+
 
 const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
 
 const mockPatternLineData = [
-  { monthYear: 'Jan 2023', floral: 20, geometric: 15, stripes: 25, animalPrints: 10, abstract: 18 },
-  { monthYear: 'Feb 2023', floral: 22, geometric: 17, stripes: 28, animalPrints: 12, abstract: 20 },
-  { monthYear: 'Mar 2023', floral: 25, geometric: 20, stripes: 32, animalPrints: 15, abstract: 23 },
-  { monthYear: 'Apr 2023', floral: 28, geometric: 22, stripes: 35, animalPrints: 18, abstract: 27 },
-  { monthYear: 'May 2023', floral: 32, geometric: 25, stripes: 39, animalPrints: 22, abstract: 30 },
-  { monthYear: 'Jun 2023', floral: 35, geometric: 28, stripes: 42, animalPrints: 25, abstract: 34 },
-  { monthYear: 'Jul 2023', floral: 39, geometric: 32, stripes: 46, animalPrints: 29, abstract: 38 },
-  { monthYear: 'Aug 2023', floral: 42, geometric: 35, stripes: 49, animalPrints: 33, abstract: 41 },
-  { monthYear: 'Sep 2023', floral: 46, geometric: 38, stripes: 53, animalPrints: 37, abstract: 45 },
-  { monthYear: 'Oct 2023', floral: 50, geometric: 42, stripes: 57, animalPrints: 41, abstract: 49 },
-  { monthYear: 'Nov 2023', floral: 53, geometric: 45, stripes: 60, animalPrints: 45, abstract: 52 },
-  { monthYear: 'Dec 2023', floral: 57, geometric: 48, stripes: 64, animalPrints: 48, abstract: 56 },
-  { monthYear: 'Jan 2024', floral: 60, geometric: 52, stripes: 68, animalPrints: 52, abstract: 60 },
-  { monthYear: 'Feb 2024', floral: 63, geometric: 55, stripes: 71, animalPrints: 55, abstract: 63 },
-  { monthYear: 'Mar 2024', floral: 67, geometric: 59, stripes: 75, animalPrints: 59, abstract: 67 },
-  { monthYear: 'Apr 2024', floral: 70, geometric: 62, stripes: 78, animalPrints: 63, abstract: 70 },
-  { monthYear: 'May 2024', floral: 72, geometric: 65, stripes: 80, animalPrints: 65, abstract: 72 },
-  { monthYear: 'Jun 2024', floral: 75, geometric: 68, stripes: 83, animalPrints: 68, abstract: 75 },
-  { monthYear: 'Jul 2024', floral: 78, geometric: 72, stripes: 86, animalPrints: 71, abstract: 78 },
-  { monthYear: 'Aug 2024', floral: 80, geometric: 75, stripes: 89, animalPrints: 74, abstract: 80 },
-  { monthYear: 'Sep-2024', floral: 78, geometric: 78, stripes: 92, animalPrints: 77, abstract: 78 }, 
-  { monthYear: 'Oct-2024', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 }, 
-  { monthYear: 'Nov-2024', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
-  { monthYear: 'Dec-2024', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
-  { monthYear: 'Jan-2025', floral: 64, geometric: 92, stripes: 102, animalPrints: 89, abstract: 64 }, 
-  { monthYear: 'Feb-2025', floral: 60, geometric: 95, stripes: 105, animalPrints: 92, abstract: 60 },
-  { monthYear: 'Mar-2025', floral: 55, geometric: 98, stripes: 108, animalPrints: 95, abstract: 55 },
-  { monthYear: 'Apr-2025', floral: 50, geometric: 100, stripes: 110, animalPrints: 98, abstract: 50 },
+  { monthYear: 'Jan-2023', floral: 20, geometric: 15, stripes: 25, animalPrints: 10, abstract: 18 },
+  { monthYear: 'Feb-2023', floral: 22, geometric: 17, stripes: 28, animalPrints: 12, abstract: 20 },
+  { monthYear: 'Mar-2023', floral: 25, geometric: 20, stripes: 32, animalPrints: 15, abstract: 23 },
+  { monthYear: 'Apr-2023', floral: 28, geometric: 22, stripes: 35, animalPrints: 18, abstract: 27 },
+  { monthYear: 'May-2023', floral: 32, geometric: 25, stripes: 39, animalPrints: 22, abstract: 30 },
+  { monthYear: 'Jun-2023', floral: 35, geometric: 28, stripes: 42, animalPrints: 25, abstract: 34 },
+  { monthYear: 'Jul-2023', floral: 39, geometric: 32, stripes: 46, animalPrints: 29, abstract: 38 },
+  { monthYear: 'Aug-2023', floral: 42, geometric: 35, stripes: 49, animalPrints: 33, abstract: 41 },
+  { monthYear: 'Sep-2023', floral: 46, geometric: 38, stripes: 53, animalPrints: 37, abstract: 45 },
+  { monthYear: 'Oct-2023', floral: 50, geometric: 42, stripes: 57, animalPrints: 41, abstract: 49 },
+  { monthYear: 'Nov-2023', floral: 53, geometric: 45, stripes: 60, animalPrints: 45, abstract: 52 },
+  { monthYear: 'Dec-2023', floral: 57, geometric: 48, stripes: 64, animalPrints: 48, abstract: 56 },
+  { monthYear: 'Jan-2024', floral: 55, geometric: 52, stripes: 68, animalPrints: 52, abstract: 53 }, // Floral down
+  { monthYear: 'Feb-2024', floral: 52, geometric: 55, stripes: 71, animalPrints: 55, abstract: 50 }, // Floral down
+  { monthYear: 'Mar-2024', floral: 48, geometric: 59, stripes: 75, animalPrints: 59, abstract: 46 }, // Floral down
+  { monthYear: 'Apr-2024', floral: 45, geometric: 62, stripes: 78, animalPrints: 63, abstract: 42 }, // Floral down
+  { monthYear: 'May-2024', floral: 42, geometric: 65, stripes: 80, animalPrints: 65, abstract: 38 }, // Floral down
+  { monthYear: 'Jun-2024', floral: 40, geometric: 68, stripes: 83, animalPrints: 68, abstract: 35 }, // Floral down
+  { monthYear: 'Jul-2024', floral: 38, geometric: 72, stripes: 86, animalPrints: 71, abstract: 32 }, // Floral down
+  { monthYear: 'Aug-2024', floral: 35, geometric: 75, stripes: 89, animalPrints: 74, abstract: 30 }, // Floral down
+  { monthYear: 'Sep-2024', floral: 32, geometric: 78, stripes: 92, animalPrints: 77, abstract: 28 }, 
+  { monthYear: 'Oct-2024', floral: 30, geometric: 82, stripes: 95, animalPrints: 80, abstract: 25 }, 
+  { monthYear: 'Nov-2024', floral: 28, geometric: 85, stripes: 98, animalPrints: 83, abstract: 22 },
+  { monthYear: 'Dec-2024', floral: 25, geometric: 88, stripes: 100, animalPrints: 86, abstract: 20 },
+  { monthYear: 'Jan-2025', floral: 22, geometric: 92, stripes: 102, animalPrints: 89, abstract: 18 }, 
+  { monthYear: 'Feb-2025', floral: 20, geometric: 95, stripes: 105, animalPrints: 92, abstract: 15 },
+  { monthYear: 'Mar-2025', floral: 18, geometric: 98, stripes: 108, animalPrints: 95, abstract: 12 },
+  { monthYear: 'Apr-2025', floral: 15, geometric: 100, stripes: 110, animalPrints: 98, abstract: 10 },
 ];
 
 const mockWeeklyPatternLineData = [
   // Oct 2024
-  { weekLabel: 'W1 Oct-24', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 },
-  { weekLabel: 'W2 Oct-24', floral: 74, geometric: 83, stripes: 96, animalPrints: 81, abstract: 74 },
-  { weekLabel: 'W3 Oct-24', floral: 75, geometric: 82, stripes: 95, animalPrints: 80, abstract: 75 },
-  { weekLabel: 'W4 Oct-24', floral: 73, geometric: 84, stripes: 97, animalPrints: 82, abstract: 73 },
+  { weekLabel: 'W1 Oct-2024', floral: 30, geometric: 82, stripes: 95, animalPrints: 80, abstract: 25 },
+  { weekLabel: 'W2 Oct-2024', floral: 29, geometric: 83, stripes: 96, animalPrints: 81, abstract: 24 },
+  { weekLabel: 'W3 Oct-2024', floral: 30, geometric: 82, stripes: 95, animalPrints: 80, abstract: 25 },
+  { weekLabel: 'W4 Oct-2024', floral: 28, geometric: 84, stripes: 97, animalPrints: 82, abstract: 23 },
   // Nov 2024
-  { weekLabel: 'W1 Nov-24', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
-  { weekLabel: 'W2 Nov-24', floral: 71, geometric: 86, stripes: 99, animalPrints: 84, abstract: 71 },
-  { weekLabel: 'W3 Nov-24', floral: 72, geometric: 85, stripes: 98, animalPrints: 83, abstract: 72 },
-  { weekLabel: 'W4 Nov-24', floral: 70, geometric: 87, stripes: 100, animalPrints: 85, abstract: 70 },
+  { weekLabel: 'W1 Nov-2024', floral: 28, geometric: 85, stripes: 98, animalPrints: 83, abstract: 22 },
+  { weekLabel: 'W2 Nov-2024', floral: 27, geometric: 86, stripes: 99, animalPrints: 84, abstract: 21 },
+  { weekLabel: 'W3 Nov-2024', floral: 28, geometric: 85, stripes: 98, animalPrints: 83, abstract: 22 },
+  { weekLabel: 'W4 Nov-2024', floral: 26, geometric: 87, stripes: 100, animalPrints: 85, abstract: 20 },
   // Dec 2024
-  { weekLabel: 'W1 Dec-24', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
-  { weekLabel: 'W2 Dec-24', floral: 67, geometric: 89, stripes: 101, animalPrints: 87, abstract: 67 },
-  { weekLabel: 'W3 Dec-24', floral: 68, geometric: 88, stripes: 100, animalPrints: 86, abstract: 68 },
-  { weekLabel: 'W4 Dec-24', floral: 66, geometric: 90, stripes: 102, animalPrints: 88, abstract: 66 },
+  { weekLabel: 'W1 Dec-2024', floral: 25, geometric: 88, stripes: 100, animalPrints: 86, abstract: 20 },
+  { weekLabel: 'W2 Dec-2024', floral: 24, geometric: 89, stripes: 101, animalPrints: 87, abstract: 19 },
+  { weekLabel: 'W3 Dec-2024', floral: 25, geometric: 88, stripes: 100, animalPrints: 86, abstract: 20 },
+  { weekLabel: 'W4 Dec-2024', floral: 23, geometric: 90, stripes: 102, animalPrints: 88, abstract: 18 },
 ];
 
 
@@ -165,8 +195,8 @@ const chartConfigColorFn = (t: (key: string) => string): ChartConfig => ({
   value: {
     label: t('analyticsPage.popularity'), 
   },
-  ...mockColorData.reduce((acc, item, index) => {
-    acc[item.name] = { label: t(item.translationKey as any), color: COLORS[index % COLORS.length] };
+  ...mockColorData.reduce((acc, item) => {
+    acc[item.name] = { label: t(item.translationKey as any), color: COLORS[mockColorData.indexOf(item) % COLORS.length] };
     return acc;
   }, {} as any)
 });
@@ -184,6 +214,10 @@ export default function AnalyticsPage() {
   );
   const [pageDescription, setPageDescription] = React.useState<string | null>(null);
   const [timeGranularity, setTimeGranularity] = React.useState<'monthly' | 'weekly'>('monthly');
+  
+  const [isColorDetailDialogOpen, setIsColorDetailDialogOpen] = React.useState(false);
+  const [selectedColorData, setSelectedColorData] = React.useState<MockColorEntry | null>(null);
+
 
   React.useEffect(() => {
     setIsMounted(true);
@@ -201,11 +235,11 @@ export default function AnalyticsPage() {
   const currentChartConfigColor = React.useMemo(() => chartConfigColorFn(t), [t]);
 
   const patternChartConfig = React.useMemo(() => ({
-    floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-6))" },
-    geometric: { label: t('analyticsPage.pattern.geometric'), color: "hsl(var(--chart-7))" },
-    stripes: { label: t('analyticsPage.pattern.stripes'), color: "hsl(var(--chart-8))" },
-    animalPrints: { label: t('analyticsPage.pattern.animalPrints'), color: "hsl(var(--chart-9))" },
-    abstract: { label: t('analyticsPage.pattern.abstract'), color: "hsl(var(--chart-10))" },
+    floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-6))" }, // Purple
+    geometric: { label: t('analyticsPage.pattern.geometric'), color: "hsl(var(--chart-7))" }, // Orange
+    stripes: { label: t('analyticsPage.pattern.stripes'), color: "hsl(var(--chart-8))" }, // Seafoam Green
+    animalPrints: { label: t('analyticsPage.pattern.animalPrints'), color: "hsl(var(--chart-9))" }, // Coral Red
+    abstract: { label: t('analyticsPage.pattern.abstract'), color: "hsl(var(--chart-10))" }, // Gold/Yellow
   }), [t]);
   
   const translatedMockColorData = React.useMemo(() => {
@@ -222,6 +256,16 @@ export default function AnalyticsPage() {
   const patternChartDataToDisplay = React.useMemo(() => {
     return timeGranularity === 'weekly' ? mockWeeklyPatternLineData : mockPatternLineData;
   }, [timeGranularity]);
+
+  const handleColorPieClick = (eventData: any) => {
+    const originalEntry = mockColorData.find(
+      (color) => t(color.translationKey as any) === eventData.name
+    );
+    if (originalEntry) {
+      setSelectedColorData(originalEntry);
+      setIsColorDetailDialogOpen(true);
+    }
+  };
 
 
   if (!isMounted) {
@@ -293,6 +337,9 @@ export default function AnalyticsPage() {
                         alt={image.alt}
                         aiHint={image['data-ai-hint']}
                         priority={index === 0}
+                        width={200}
+                        height={300}
+                        sizes="200px"
                       />
                     </div>
                   </div>
@@ -358,8 +405,8 @@ export default function AnalyticsPage() {
                   interval="preserveStartEnd"
                   minTickGap={timeGranularity === 'weekly' ? 10 : 20}
                   tickFormatter={(value) => {
-                    if (timeGranularity === 'weekly') return value;
-                    return value.replace(' ', '-');
+                    if (timeGranularity === 'weekly') return value.replace('-2024', '');
+                    return value.replace('-2023', '').replace('-2024', '').replace('-2025', '');
                   }}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
@@ -427,9 +474,18 @@ export default function AnalyticsPage() {
               <PieChart accessibilityLayer>
                 <RechartsTooltip cursor={false} content={<ChartTooltipContent />} />
                 <Legend />
-                <Pie data={translatedMockColorData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
+                <Pie 
+                  data={translatedMockColorData} 
+                  dataKey="value" 
+                  nameKey="name" 
+                  cx="50%" 
+                  cy="50%" 
+                  outerRadius={100} 
+                  label
+                  onClick={handleColorPieClick}
+                >
                   {translatedMockColorData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} className="cursor-pointer"/>
                   ))}
                 </Pie>
               </PieChart>
@@ -456,8 +512,8 @@ export default function AnalyticsPage() {
                   interval="preserveStartEnd"
                   minTickGap={timeGranularity === 'weekly' ? 10 : 20}
                   tickFormatter={(value) => {
-                    if (timeGranularity === 'weekly') return value;
-                    return value.replace(' ', '-');
+                     if (timeGranularity === 'weekly') return value.replace('-2024', '');
+                    return value.replace('-2023', '').replace('-2024', '').replace('-2025', '');
                   }}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
@@ -513,6 +569,33 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={isColorDetailDialogOpen} onOpenChange={setIsColorDetailDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              {t('analyticsPage.colorDetailDialog.title')} - {selectedColorData ? t(selectedColorData.translationKey as any) : ''}
+            </DialogTitle>
+          </DialogHeader>
+          {selectedColorData && (
+            <div className="space-y-4 py-4">
+              <div className="relative w-full aspect-[3/2] rounded-md overflow-hidden bg-muted">
+                <ImageWithFallback
+                  src={`https://placehold.co/600x400.png?text=${selectedColorData.imagePlaceholderText.replace(/\s+/g, '+')}`}
+                  alt={t(selectedColorData.translationKey as any)}
+                  aiHint={selectedColorData.aiHint}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {t(selectedColorData.descriptionKey as any)}
+              </p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
