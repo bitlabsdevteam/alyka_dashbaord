@@ -5,7 +5,7 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Palette, Newspaper, TrendingUp, Layers, Settings } from 'lucide-react'; 
+import { Palette, Newspaper, TrendingUp, Layers, Settings, Image as ImageIcon, Loader2 } from 'lucide-react'; 
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
@@ -14,7 +14,9 @@ import Autoplay from "embla-carousel-autoplay";
 import type { TranslationKey } from '@/lib/i18n';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { generateColorTrendImage, type GenerateColorTrendImageOutput } from '@/ai/flows/generate-color-trend-image-flow';
+import { useToast } from '@/hooks/use-toast';
 
 // Component for rendering images with a fallback to placehold.co
 interface ImageWithFallbackProps {
@@ -27,6 +29,7 @@ interface ImageWithFallbackProps {
   fill?: boolean;
   className?: string;
   sizes?: string;
+  onImageError?: () => void;
 }
 
 const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ 
@@ -38,7 +41,8 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   height, 
   fill = false, 
   className = "object-cover",
-  sizes
+  sizes,
+  onImageError
 }) => {
   const [currentSrc, setCurrentSrc] = React.useState(src);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -50,10 +54,11 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
 
   const placeholderBaseWidth = fill ? 600 : (width || 200);
   const placeholderBaseHeight = fill ? 400 : (height || 300);
+  const fallbackSrc = `https://placehold.co/${placeholderBaseWidth}x${placeholderBaseHeight}.png`;
 
   return (
     <Image
-      src={currentSrc}
+      src={currentSrc || fallbackSrc} // Ensure there's always a src
       alt={alt}
       width={fill ? undefined : width}
       height={fill ? undefined : height}
@@ -61,7 +66,10 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
       className={`${className} transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       onError={() => {
         setIsLoading(false);
-        setCurrentSrc(`https://placehold.co/${placeholderBaseWidth}x${placeholderBaseHeight}.png`); 
+        if (currentSrc !== fallbackSrc) { // Avoid infinite loop if fallback itself fails
+            setCurrentSrc(fallbackSrc);
+        }
+        if (onImageError) onImageError();
       }}
       onLoad={() => setIsLoading(false)}
       data-ai-hint={aiHint || alt.split(' ').slice(0, 2).join(' ').toLowerCase()}
@@ -131,11 +139,11 @@ interface MockColorEntry {
 }
 
 const mockColorData: MockColorEntry[] = [
-  { name: 'Deep Sapphire', value: 400, translationKey: 'analyticsPage.color.deepSapphire' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.deepSapphire' as TranslationKey, imagePlaceholderText: 'Deep+Sapphire', aiHint: 'sapphire fashion' },
-  { name: 'Desert Khaki', value: 300, translationKey: 'analyticsPage.color.desertKhaki' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.desertKhaki' as TranslationKey, imagePlaceholderText: 'Desert+Khaki', aiHint: 'khaki clothing' },
-  { name: 'Rich Burgundy', value: 280, translationKey: 'analyticsPage.color.richBurgundy' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.richBurgundy' as TranslationKey, imagePlaceholderText: 'Rich+Burgundy', aiHint: 'burgundy dress' },
-  { name: 'Forest Green', value: 220, translationKey: 'analyticsPage.color.forestGreen' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.forestGreen' as TranslationKey, imagePlaceholderText: 'Forest+Green', aiHint: 'green sweater' },
-  { name: 'Warm Terracotta', value: 180, translationKey: 'analyticsPage.color.warmTerracotta' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.warmTerracotta' as TranslationKey, imagePlaceholderText: 'Warm+Terracotta', aiHint: 'terracotta outfit' },
+  { name: 'Deep Sapphire', value: 400, translationKey: 'analyticsPage.color.deepSapphire' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.deepSapphire' as TranslationKey, imagePlaceholderText: 'Deep+Sapphire+fashion', aiHint: 'sapphire fashion' },
+  { name: 'Desert Khaki', value: 300, translationKey: 'analyticsPage.color.desertKhaki' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.desertKhaki' as TranslationKey, imagePlaceholderText: 'Desert+Khaki+clothing', aiHint: 'khaki clothing' },
+  { name: 'Rich Burgundy', value: 280, translationKey: 'analyticsPage.color.richBurgundy' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.richBurgundy' as TranslationKey, imagePlaceholderText: 'Rich+Burgundy+dress', aiHint: 'burgundy dress' },
+  { name: 'Forest Green', value: 220, translationKey: 'analyticsPage.color.forestGreen' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.forestGreen' as TranslationKey, imagePlaceholderText: 'Forest+Green+sweater', aiHint: 'green sweater' },
+  { name: 'Warm Terracotta', value: 180, translationKey: 'analyticsPage.color.warmTerracotta' as TranslationKey, descriptionKey: 'analyticsPage.colorDescriptions.warmTerracotta' as TranslationKey, imagePlaceholderText: 'Warm+Terracotta+outfit', aiHint: 'terracotta outfit' },
 ];
 
 
@@ -208,6 +216,7 @@ const carouselImages = [
 
 export default function AnalyticsPage() {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [isMounted, setIsMounted] = React.useState(false);
   const autoplayPlugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
@@ -217,6 +226,8 @@ export default function AnalyticsPage() {
   
   const [isColorDetailDialogOpen, setIsColorDetailDialogOpen] = React.useState(false);
   const [selectedColorData, setSelectedColorData] = React.useState<MockColorEntry | null>(null);
+  const [generatedImageUrl, setGeneratedImageUrl] = React.useState<string | null>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = React.useState(false);
 
 
   React.useEffect(() => {
@@ -257,13 +268,33 @@ export default function AnalyticsPage() {
     return timeGranularity === 'weekly' ? mockWeeklyPatternLineData : mockPatternLineData;
   }, [timeGranularity]);
 
-  const handleColorPieClick = (eventData: any) => {
+  const handleColorPieClick = async (eventData: any) => {
     const originalEntry = mockColorData.find(
       (color) => t(color.translationKey as any) === eventData.name
     );
     if (originalEntry) {
       setSelectedColorData(originalEntry);
+      setGeneratedImageUrl(null); // Reset previous image
+      setIsGeneratingImage(true);
       setIsColorDetailDialogOpen(true);
+
+      try {
+        const result: GenerateColorTrendImageOutput = await generateColorTrendImage({
+          colorName: originalEntry.name, // Use original English name for prompt
+          colorDescription: t(originalEntry.descriptionKey as any), // Translated description for context
+        });
+        setGeneratedImageUrl(result.imageDataUri);
+      } catch (error) {
+        console.error("Error generating image:", error);
+        toast({
+          title: t('analyticsPage.colorDetailDialog.imageGenErrorTitle'),
+          description: (error as Error).message || t('analyticsPage.colorDetailDialog.imageGenErrorDescription'),
+          variant: "destructive",
+        });
+        // Keep generatedImageUrl as null, ImageWithFallback will use its placeholder
+      } finally {
+        setIsGeneratingImage(false);
+      }
     }
   };
 
@@ -576,22 +607,37 @@ export default function AnalyticsPage() {
             <DialogTitle>
               {t('analyticsPage.colorDetailDialog.title')} - {selectedColorData ? t(selectedColorData.translationKey as any) : ''}
             </DialogTitle>
+            {selectedColorData && (
+                <DialogDescription>
+                    {t(selectedColorData.descriptionKey as any)}
+                </DialogDescription>
+            )}
           </DialogHeader>
           {selectedColorData && (
             <div className="space-y-4 py-4">
-              <div className="relative w-full aspect-[3/2] rounded-md overflow-hidden bg-muted">
-                <ImageWithFallback
-                  src={`https://placehold.co/600x400.png?text=${selectedColorData.imagePlaceholderText.replace(/\s+/g, '+')}`}
-                  alt={t(selectedColorData.translationKey as any)}
-                  aiHint={selectedColorData.aiHint}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+              <div className="relative w-full aspect-[3/2] rounded-md overflow-hidden bg-muted flex items-center justify-center">
+                {isGeneratingImage ? (
+                  <div className="flex flex-col items-center justify-center text-muted-foreground">
+                    <Loader2 className="h-12 w-12 animate-spin text-primary mb-2" />
+                    <p>{t('analyticsPage.colorDetailDialog.imageGeneratingText')}</p>
+                  </div>
+                ) : (
+                  <ImageWithFallback
+                    src={generatedImageUrl || `https://placehold.co/600x400.png?text=${selectedColorData.imagePlaceholderText.replace(/\s+/g, '+')}`}
+                    alt={t(selectedColorData.translationKey as any)}
+                    aiHint={selectedColorData.aiHint}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    onImageError={() => {
+                        // This callback is triggered if ImageWithFallback's own src (either AI or placeholder) fails
+                        // We might want to show a generic error image or message here if the placeholder itself fails
+                        // For now, ImageWithFallback tries its own internal placeholder on error.
+                    }}
+                  />
+                )}
               </div>
-              <p className="text-sm text-muted-foreground">
-                {t(selectedColorData.descriptionKey as any)}
-              </p>
+              
             </div>
           )}
         </DialogContent>

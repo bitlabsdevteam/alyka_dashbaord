@@ -60,6 +60,9 @@ interface AnalyticsPageTranslations {
   };
   colorDetailDialog: {
     title: string;
+    imageGeneratingText: string;
+    imageGenErrorTitle: string;
+    imageGenErrorDescription: string;
   };
   colorDescriptions: {
     deepSapphire: string;
@@ -479,6 +482,9 @@ export const translations: Record<Locale, Translations> = {
       },
       colorDetailDialog: {
         title: 'Color Trend Details',
+        imageGeneratingText: 'Generating image...',
+        imageGenErrorTitle: 'Image Generation Failed',
+        imageGenErrorDescription: 'Could not generate an image for this trend. Please try again later.',
       },
       colorDescriptions: {
         deepSapphire: 'Deep Sapphire is a timeless and luxurious color, often associated with elegance and sophistication. It is expected to be prominent in evening wear and statement pieces.',
@@ -497,9 +503,9 @@ export const translations: Record<Locale, Translations> = {
       periodLabel: 'Period',
       forecastHorizonValueDisplay: 'Next {{count}} months', 
       chatInputPlaceholder: 'Message Alyka agent...',
-      sendButton: 'Send',
+      sendButton: 'Send', 
       processingButton: 'Processing...', 
-      forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
+      forecastTitle: 'Sales & Stock Forecast for {{skuName}}', 
       currentStockValueLabel: 'Current Stock Level',
       chart: {
         demandTitle: 'Forecasted Sales Demand Over Time',
@@ -561,7 +567,7 @@ export const translations: Record<Locale, Translations> = {
         increasePrefix: '+',
       },
       monthlySalesPerformance: 'Monthly Sales Performance',
-      salesByCategory: 'Sales by Category',
+      salesByCategory: 'Sales by Category', 
       detailedSalesData: 'Detailed Sales Data',
       chart: {
         salesLabel: 'Sales ($)',
@@ -838,6 +844,9 @@ export const translations: Record<Locale, Translations> = {
       },
       colorDetailDialog: {
         title: 'カラートレンド詳細',
+        imageGeneratingText: '画像を生成中...',
+        imageGenErrorTitle: '画像生成失敗',
+        imageGenErrorDescription: 'このトレンドの画像を生成できませんでした。後でもう一度お試しください。',
       },
       colorDescriptions: {
         deepSapphire: 'ディープサファイアは時代を超えた豪華な色で、優雅さと洗練さを象徴します。イブニングウェアやステートメントピースで際立つと予想されます。',
@@ -1121,4 +1130,5 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
+
 
