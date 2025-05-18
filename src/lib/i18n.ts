@@ -133,8 +133,6 @@ interface ForecastPageTranslations {
     reportErrorNoData: string;
     skuMissingTitle: string;
     skuMissingDescription: string;
-    actionNotRecognizedTitle: string;
-    actionNotRecognizedDescription: string;
   };
   skus: {
     classicWhiteTShirt: string;
@@ -533,8 +531,6 @@ export const translations: Record<Locale, Translations> = {
         reportErrorNoData: 'No data available for the report.',
         skuMissingTitle: 'SKU Not Selected',
         skuMissingDescription: 'Please select an SKU before generating a forecast.',
-        actionNotRecognizedTitle: 'Action Not Recognized',
-        actionNotRecognizedDescription: "I can help with 'forecast' or 'generate reports'. Please clarify.",
       },
       skus: {
         classicWhiteTShirt: "Men's Classic White T-Shirt",
@@ -895,8 +891,6 @@ export const translations: Record<Locale, Translations> = {
         reportErrorNoData: 'レポート用のデータがありません。',
         skuMissingTitle: 'SKU未選択',
         skuMissingDescription: '予測を生成する前にSKUを選択してください。',
-        actionNotRecognizedTitle: 'アクション未認識',
-        actionNotRecognizedDescription: "「予測」または「レポート生成」のお手伝いができます。明確にしてください。",
       },
       skus: {
         classicWhiteTShirt: "メンズ クラシックホワイトTシャツ",
@@ -1130,5 +1124,3 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
-
-

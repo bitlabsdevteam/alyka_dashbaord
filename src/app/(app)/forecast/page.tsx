@@ -54,6 +54,7 @@ export default function ForecastPage() {
   const [aiProcessingTitle, setAiProcessingTitle] = useState<string | null>(null);
   const [aiProcessingDescription, setAiProcessingDescription] = useState<string | null>(null);
   const [chatPlaceholderText, setChatPlaceholderText] = useState<string | null>(null);
+  
 
   useEffect(() => {
     setSkuLabelText(t('forecastPage.skuLabel'));
@@ -99,8 +100,8 @@ export default function ForecastPage() {
         try {
           const existingReportsRaw = localStorage.getItem(REPORTS_STORAGE_KEY);
           const existingReports: StoredReport[] = existingReportsRaw ? JSON.parse(existingReportsRaw) : [];
-          existingReports.unshift(newReport); // Add to the beginning
-          localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(existingReports.slice(0, 20))); // Keep last 20 reports
+          existingReports.unshift(newReport); 
+          localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(existingReports.slice(0, 20))); 
           
           toast({
             title: t('forecastPage.toast.reportGeneratedSuccessTitle'),
@@ -134,7 +135,10 @@ export default function ForecastPage() {
   const handleSendMessage = () => {
     const lowerCaseInput = chatInputValue.toLowerCase();
 
-    if (lowerCaseInput.includes('help me to forecast')) {
+    if (lowerCaseInput.includes('help me to generate reports') || lowerCaseInput.includes('help me to generate report')) {
+      reportMutation.mutate({});
+    } else {
+      // Default to forecast if "generate reports" is not found
       if (!selectedSkuValue) {
         toast({
           title: t('forecastPage.toast.skuMissingTitle'),
@@ -145,23 +149,14 @@ export default function ForecastPage() {
       }
       const skuDetails = mockSkus.find(s => s.value === selectedSkuValue);
       if (skuDetails) {
-        const userPromptForForecast = chatInputValue.replace(/help me to forecast/gi, '').trim();
         forecastMutation.mutate({
           skuName: t(skuDetails.labelKey),
           currentStock: skuDetails.currentStock,
           forecastHorizon: `next ${forecastPeriodMonths} months`,
           targetLanguage: language,
-          userPrompt: userPromptForForecast,
+          userPrompt: chatInputValue.trim(), // Use the full input as userPrompt
         });
       }
-    } else if (lowerCaseInput.includes('help me to generate reports') || lowerCaseInput.includes('help me to generate report')) {
-      reportMutation.mutate({});
-    } else {
-      toast({
-        title: t('forecastPage.toast.actionNotRecognizedTitle'),
-        description: t('forecastPage.toast.actionNotRecognizedDescription'),
-        variant: 'default',
-      });
     }
   };
   
