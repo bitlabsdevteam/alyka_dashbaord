@@ -1,3 +1,4 @@
+
 // src/components/chatbot/chatbot-dialog.tsx
 'use client';
 
@@ -15,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/context/language-context';
 import { SendHorizonal } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'; // Removed AvatarImage
 
 interface ChatMessage {
   id: string;
@@ -109,7 +110,7 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
               >
                 {msg.sender === 'bot' && (
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="https://picsum.photos/seed/alyka-bot/100/100" alt="Bot Avatar" data-ai-hint="robot face"/>
+                    {/* <AvatarImage src="https://picsum.photos/seed/alyka-bot/100/100" alt="Bot Avatar" data-ai-hint="robot face"/> */}
                     <AvatarFallback>B</AvatarFallback>
                   </Avatar>
                 )}
@@ -127,7 +128,7 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
                 </div>
                  {msg.sender === 'user' && (
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="https://picsum.photos/seed/alyka-user/100/100" alt="User Avatar" data-ai-hint="person silhouette"/>
+                    {/* <AvatarImage src="https://picsum.photos/seed/alyka-user/100/100" alt="User Avatar" data-ai-hint="person silhouette"/> */}
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
                 )}
@@ -136,7 +137,7 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
             {isBotTyping && (
               <div className="flex items-end gap-2 justify-start">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="https://picsum.photos/seed/alyka-bot/100/100" alt="Bot Avatar" data-ai-hint="robot face"/>
+                  {/* <AvatarImage src="https://picsum.photos/seed/alyka-bot/100/100" alt="Bot Avatar" data-ai-hint="robot face"/> */}
                   <AvatarFallback>B</AvatarFallback>
                 </Avatar>
                 <div className="max-w-[70%] rounded-lg px-3 py-2 text-sm bg-muted text-muted-foreground">
