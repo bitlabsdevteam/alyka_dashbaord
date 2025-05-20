@@ -1,3 +1,4 @@
+
 // src/app/(app)/pos-sales/page.tsx
 'use client';
 
@@ -13,10 +14,12 @@ import type { Translations, TranslationKey } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 
 
 const storeLocations = ['Tokyo', 'Osaka', 'Hiroshima'] as const;
 type StoreLocation = typeof storeLocations[number];
+type HealthStatus = 'Stockout soon' | 'Potential Overstock' | 'Healthy';
 
 interface DetailedPosEntry {
   id: string;
@@ -28,6 +31,7 @@ interface DetailedPosEntry {
   revenue: number;
   storeLocation: StoreLocation;
   posName: 'Smartregi';
+  healthStatus: HealthStatus;
 }
 
 const generateMockPosData = (): DetailedPosEntry[] => {
@@ -63,6 +67,15 @@ const generateMockPosData = (): DetailedPosEntry[] => {
       const revenue = unitsSold * pricePerUnit;
       const randomStoreLocation = storeLocations[Math.floor(Math.random() * storeLocations.length)];
       
+      let healthStatus: HealthStatus;
+      if (unitsSold > 40) {
+        healthStatus = 'Stockout soon';
+      } else if (unitsSold < 20) {
+        healthStatus = 'Potential Overstock';
+      } else {
+        healthStatus = 'Healthy';
+      }
+      
       data.push({
         id: `pos-${idCounter++}`,
         monthYear: format(currentDate, 'MMM yyyy'),
@@ -73,6 +86,7 @@ const generateMockPosData = (): DetailedPosEntry[] => {
         revenue: revenue,
         storeLocation: randomStoreLocation,
         posName: 'Smartregi',
+        healthStatus,
       });
     }
     currentDate = startOfMonth(subMonths(currentDate, -1)); // Move to next month
@@ -86,6 +100,27 @@ const storeOptions: Array<{ value: string; labelKey: TranslationKey }> = [
   { value: 'Osaka', labelKey: 'posSalesPage.stores.osaka' },
   { value: 'Hiroshima', labelKey: 'posSalesPage.stores.hiroshima' },
 ];
+
+const HealthStatusBadge: React.FC<{ status: HealthStatus; t: (key: TranslationKey) => string }> = ({ status, t }) => {
+  let variant: 'default' | 'secondary' | 'destructive' = 'default';
+  let textKey: TranslationKey = 'posSalesPage.healthStatus.healthy';
+
+  switch (status) {
+    case 'Stockout soon':
+      variant = 'destructive';
+      textKey = 'posSalesPage.healthStatus.stockoutSoon';
+      break;
+    case 'Potential Overstock':
+      variant = 'secondary'; // Using secondary for a less alarming warning
+      textKey = 'posSalesPage.healthStatus.potentialOverstock';
+      break;
+    case 'Healthy':
+      variant = 'default'; // Default is usually primary color
+      textKey = 'posSalesPage.healthStatus.healthy';
+      break;
+  }
+  return <Badge variant={variant}>{t(textKey)}</Badge>;
+};
 
 
 export default function PosSalesPage() {
@@ -120,9 +155,6 @@ export default function PosSalesPage() {
     const totalRevenue = dataToSummarize.reduce((sum, item) => sum + item.revenue, 0);
     const totalUnitsSold = dataToSummarize.reduce((sum, item) => sum + item.unitsSold, 0);
     
-    // For change calculation, we use all data to determine current and previous month regardless of store selection
-    // to reflect overall company performance, not just selected store.
-    // If store-specific change is needed, this logic should use 'dataToSummarize' for these filters too.
     const currentMonthStr = format(new Date(2025, 4, 1), 'MMM yyyy'); 
     const prevMonthStr = format(subMonths(new Date(2025, 4, 1), 1), 'MMM yyyy');
 
@@ -182,7 +214,6 @@ export default function PosSalesPage() {
 
   const recentDetailedData = useMemo(() => {
     if (filteredData.length === 0) return [];
-    // Show more items if filtered
     const itemsToShow = selectedStore === 'all' ? 60 : filteredData.length;
     return filteredData.slice(-itemsToShow).reverse();
   }, [filteredData, selectedStore]);
@@ -293,7 +324,7 @@ export default function PosSalesPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{summaryStats.totalUnitsSold.toLocaleString()}</div>
-             <p className="text-xs text-muted-foreground">{t('posSalesPage.comparison.increasePrefix')}15.5% {t('posSalesPage.comparison.fromLastMonth')}</p> {/* This percentage is static, consider making it dynamic */}
+             <p className="text-xs text-muted-foreground">{t('posSalesPage.comparison.increasePrefix')}15.5% {t('posSalesPage.comparison.fromLastMonth')}</p> 
           </CardContent>
         </Card>
         <Card className="shadow-md">
@@ -347,6 +378,7 @@ export default function PosSalesPage() {
                   <TableHead>{t('posSalesPage.tableHeaders.storeLocation')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.unitsSold')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.revenue')}</TableHead>
+                  <TableHead>{t('posSalesPage.tableHeaders.health')}</TableHead>
                   <TableHead className="hidden lg:table-cell">{t('posSalesPage.tableHeaders.posName')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -360,6 +392,9 @@ export default function PosSalesPage() {
                     <TableCell>{item.storeLocation}</TableCell>
                     <TableCell className="text-right">{item.unitsSold.toLocaleString()}</TableCell>
                     <TableCell className="text-right">${item.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</TableCell>
+                    <TableCell>
+                      <HealthStatusBadge status={item.healthStatus} t={t} />
+                    </TableCell>
                     <TableCell className="hidden lg:table-cell">{item.posName}</TableCell>
                   </TableRow>
                 ))}

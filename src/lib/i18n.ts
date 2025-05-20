@@ -44,7 +44,7 @@ interface AnalyticsPageTranslations {
     floral: string;
     geometric: string;
     stripes: string;
-    polkaDots: string; 
+    polkaDots: string;
     abstract: string;
     animalPrints: string;
   };
@@ -59,6 +59,8 @@ interface AnalyticsPageTranslations {
   };
   colorDetailDialog: {
     title: string;
+    // loadingImage: string; // Removed as AI image gen is removed
+    // imageError: string; // Removed
   };
   colorDescriptions: {
     deepSapphire: string;
@@ -88,6 +90,7 @@ interface NavTranslations {
   stores: string;
   tasksManager: string;
   reports: string;
+  // dataInput: string; // Removed
 }
 
 interface ForecastPageTranslations {
@@ -97,11 +100,14 @@ interface ForecastPageTranslations {
   selectSkuPlaceholder: string;
   currentStockLabel: string;
   periodLabel: string;
-  forecastHorizonValueDisplay: string; 
+  forecastHorizonValueDisplay: string;
+  // groundVoiceLabel: string; // Removed
+  // yourVoiceCountPlaceholder: string; // Removed
+  // yourVoiceCountDescription: string; // Removed
   chatInputPlaceholder: string;
-  sendButton: string; 
-  processingButton: string; 
-  forecastTitle: string; 
+  sendButton: string;
+  processingButton: string;
+  forecastTitle: string;
   currentStockValueLabel: string;
   chart: {
     demandTitle: string;
@@ -117,11 +123,11 @@ interface ForecastPageTranslations {
   errorAlertTitle: string;
   toast: {
     forecastSuccessTitle: string;
-    forecastSuccessDescription: string; 
+    forecastSuccessDescription: string;
     forecastErrorTitle: string;
     forecastErrorDescription: string;
     reportGeneratedSuccessTitle: string;
-    reportGeneratedSuccessDescription: string; 
+    reportGeneratedSuccessDescription: string;
     reportStorageErrorTitle: string;
     reportStorageErrorDescription: string;
     reportErrorTitle: string;
@@ -129,6 +135,8 @@ interface ForecastPageTranslations {
     reportErrorNoData: string;
     skuMissingTitle: string;
     skuMissingDescription: string;
+    // actionNotRecognizedTitle: string; // Removed
+    // actionNotRecognizedDescription: string; // Removed
   };
   skus: {
     classicWhiteTShirt: string;
@@ -137,7 +145,7 @@ interface ForecastPageTranslations {
     stripedCottonPJs: string;
     luxurySilkScarfFloral: string;
   };
-  aiProcessing: { 
+  aiProcessing: {
     title: string;
     description: string;
   };
@@ -162,8 +170,7 @@ interface PosSalesPageTranslations {
     increasePrefix: string;
   };
   monthlySalesPerformance: string;
-  salesByCategory: string; 
-  salesData: string;
+  salesData: string; // Changed from Detailed Sales Data
   chart: {
     salesLabel: string;
     unitsLabel: string;
@@ -174,11 +181,21 @@ interface PosSalesPageTranslations {
     productName: string;
     category: string;
     sku: string;
-    storeLocation: string;
+    storeLocation: string; // New
     unitsSold: string;
     revenue: string;
     posName: string;
+    // po: string; // Removed PO column
+    health: string; // New
   };
+  healthStatus: { // New
+    stockoutSoon: string;
+    potentialOverstock: string;
+    healthy: string;
+  };
+  // buttons: { // Removed PO button
+  //   createPo: string;
+  // };
   categories: {
     outerwear: string;
     tops: string;
@@ -214,7 +231,7 @@ interface TasksPageTranslations {
     completed: string;
     failed: string;
   };
-  tasks: { 
+  tasks: {
     q3TrendReport: {
       name: string;
       description: string;
@@ -249,8 +266,8 @@ interface ChatbotTranslations {
 interface LoginPageTranslations {
   title: string;
   description: string;
-  usernameLabel: string; 
-  usernamePlaceholder: string; 
+  usernameLabel: string;
+  usernamePlaceholder: string;
   emailLabel: string;
   emailPlaceholder: string;
   emailInvalid: string;
@@ -315,7 +332,7 @@ interface SettingsPageTranslations {
       saveErrorDescription: string;
     }
   };
-   posIntegration: { 
+   posIntegration: {
     title: string;
     description: string;
     enableIntegrationLabel: string;
@@ -358,7 +375,7 @@ interface ReportsPageTranslations {
   };
   reportTypes: {
     sales: string;
-    trend: string; 
+    trend: string;
   };
   buttons: {
     downloadCsv: string;
@@ -424,7 +441,8 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       stores: 'Stores',
       tasksManager: 'Tasks Manager',
-      reports: 'Reports', 
+      reports: 'Reports',
+      // dataInput: 'Data Input', // Removed
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Trend Updates',
@@ -473,6 +491,8 @@ export const translations: Record<Locale, Translations> = {
       },
       colorDetailDialog: {
         title: 'Color Trend Details',
+        // loadingImage: 'Generating AI image...', // Removed
+        // imageError: 'Could not load image.', // Removed
       },
       colorDescriptions: {
         deepSapphire: 'Deep Sapphire is a timeless and luxurious color, often associated with elegance and sophistication. It is expected to be prominent in evening wear and statement pieces.',
@@ -489,11 +509,14 @@ export const translations: Record<Locale, Translations> = {
       selectSkuPlaceholder: 'Select an SKU',
       currentStockLabel: 'Current Stock',
       periodLabel: 'Period',
-      forecastHorizonValueDisplay: 'Next {{count}} months', 
+      forecastHorizonValueDisplay: 'Next {{count}} months',
+      // groundVoiceLabel: 'Ground Voice', // Removed
+      // yourVoiceCountPlaceholder: 'Your feedback will help us to learn better', // Removed
+      // yourVoiceCountDescription: 'Share any specific insights or factors you believe might influence this SKU\'s demand (e.g., upcoming promotions, competitor actions, specific market observations).', // Removed
       chatInputPlaceholder: 'Message Alyka agent...',
-      sendButton: 'Send', 
-      processingButton: 'Processing...', 
-      forecastTitle: 'Sales & Stock Forecast for {{skuName}}', 
+      sendButton: 'Send',
+      processingButton: 'Processing...',
+      forecastTitle: 'Sales & Stock Forecast for {{skuName}}',
       currentStockValueLabel: 'Current Stock Level',
       chart: {
         demandTitle: 'Forecasted Sales Demand Over Time',
@@ -521,6 +544,8 @@ export const translations: Record<Locale, Translations> = {
         reportErrorNoData: 'No data available for the report.',
         skuMissingTitle: 'SKU Not Selected',
         skuMissingDescription: 'Please select an SKU before generating a forecast.',
+        // actionNotRecognizedTitle: 'Action Not Recognized', // Removed
+        // actionNotRecognizedDescription: 'Please specify if you want to "forecast" or "generate reports".', // Removed
       },
       skus: {
         classicWhiteTShirt: "Men's Classic White T-Shirt",
@@ -529,13 +554,13 @@ export const translations: Record<Locale, Translations> = {
         stripedCottonPJs: "Children's Striped Cotton PJs",
         luxurySilkScarfFloral: "Luxury Silk Scarf - Floral Print",
       },
-      aiProcessing: { 
+      aiProcessing: {
         title: "AI is Processing Your Request",
         description: "Our AI is analyzing trends and generating your forecast. This might take a few moments..."
       },
     },
     posSalesPage: {
-      title: 'POS Sales Data Overview',
+      title: 'Stores Overview',
       description: 'Visualize your Point of Sale data to understand performance and identify trends.',
       storeSelectLabel: 'Select Store',
       storeSelectPlaceholder: 'All Stores',
@@ -553,8 +578,7 @@ export const translations: Record<Locale, Translations> = {
         increasePrefix: '+',
       },
       monthlySalesPerformance: 'Monthly Sales Performance',
-      salesByCategory: 'Sales by Category', 
-      salesData: 'Sales Data',
+      salesData: 'Sales Data', // Changed from Detailed Sales Data
       chart: {
         salesLabel: 'Sales ($)',
         unitsLabel: 'Units Sold',
@@ -569,7 +593,17 @@ export const translations: Record<Locale, Translations> = {
         unitsSold: 'Units Sold',
         revenue: 'Revenue ($)',
         posName: 'POS Name',
+        // po: 'PO', // Removed
+        health: 'Health',
       },
+      healthStatus: {
+        stockoutSoon: 'Stockout Soon',
+        potentialOverstock: 'Potential Overstock',
+        healthy: 'Healthy',
+      },
+      // buttons: { // Removed
+      //   createPo: 'Create PO',
+      // },
       categories: {
         outerwear: 'Outerwear',
         tops: 'Tops',
@@ -604,7 +638,7 @@ export const translations: Record<Locale, Translations> = {
         completed: 'Completed',
         failed: 'Failed',
       },
-      tasks: { 
+      tasks: {
         q3TrendReport: {
           name: 'Generate Q3 Trend Report',
           description: 'Analyze menswear trends for Fall/Winter 2024 focusing on European market.',
@@ -637,8 +671,8 @@ export const translations: Record<Locale, Translations> = {
     loginPage: {
       title: 'Login',
       description: 'Access your AI-powered fashion analytics dashboard.',
-      usernameLabel: 'Username (Legacy)', 
-      usernamePlaceholder: 'Enter your username (Legacy)', 
+      usernameLabel: 'Username (Legacy)',
+      usernamePlaceholder: 'Enter your username (Legacy)',
       emailLabel: 'Email',
       emailPlaceholder: 'Enter your email',
       emailInvalid: 'Please enter a valid email address.',
@@ -701,7 +735,7 @@ export const translations: Record<Locale, Translations> = {
           saveErrorDescription: 'Could not save MCP server settings.',
         }
       },
-      posIntegration: { 
+      posIntegration: {
         title: 'POS Integration',
         description: 'Connect your Point of Sale system to automatically import sales data.',
         enableIntegrationLabel: 'Enable POS Integration',
@@ -743,7 +777,7 @@ export const translations: Record<Locale, Translations> = {
       },
       reportTypes: {
         sales: 'Sales Report',
-        trend: 'Trend Analysis', 
+        trend: 'Trend Analysis',
       },
       buttons: {
         downloadCsv: 'Download CSV',
@@ -779,6 +813,7 @@ export const translations: Record<Locale, Translations> = {
       stores: '店舗',
       tasksManager: 'タスク管理',
       reports: 'レポート',
+      // dataInput: 'データ入力', // Removed
     },
     analyticsPage: {
       latestTrendTitle: '最新トレンドアップデート',
@@ -827,6 +862,8 @@ export const translations: Record<Locale, Translations> = {
       },
       colorDetailDialog: {
         title: 'カラートレンド詳細',
+        // loadingImage: 'AI画像を生成中...', // Removed
+        // imageError: '画像を読み込めませんでした。', // Removed
       },
       colorDescriptions: {
         deepSapphire: 'ディープサファイアは時代を超えた豪華な色で、優雅さと洗練さを象徴します。イブニングウェアやステートメントピースで際立つと予想されます。',
@@ -843,7 +880,10 @@ export const translations: Record<Locale, Translations> = {
       selectSkuPlaceholder: 'SKUを選択してください',
       currentStockLabel: '現在の在庫',
       periodLabel: '期間',
-      forecastHorizonValueDisplay: '今後 {{count}} か月', 
+      forecastHorizonValueDisplay: '今後 {{count}} か月',
+      // groundVoiceLabel: '現場の声', // Removed
+      // yourVoiceCountPlaceholder: 'ご意見は学習改善に役立てられます', // Removed
+      // yourVoiceCountDescription: 'このSKUの需要に影響を与えると思われる具体的な洞察や要因（例：今後のプロモーション、競合他社の動向、特定の市場観察）を共有してください。', // Removed
       chatInputPlaceholder: 'Alykaエージェントにメッセージを送信...',
       sendButton: '送信',
       processingButton: '処理中...',
@@ -875,6 +915,8 @@ export const translations: Record<Locale, Translations> = {
         reportErrorNoData: 'レポート用のデータがありません。',
         skuMissingTitle: 'SKU未選択',
         skuMissingDescription: '予測を生成する前にSKUを選択してください。',
+        // actionNotRecognizedTitle: 'アクションを認識できませんでした', // Removed
+        // actionNotRecognizedDescription: '「予測」または「レポート生成」のどちらを実行したいか指定してください。', // Removed
       },
       skus: {
         classicWhiteTShirt: "メンズ クラシックホワイトTシャツ",
@@ -889,7 +931,7 @@ export const translations: Record<Locale, Translations> = {
       },
     },
     posSalesPage: {
-      title: 'POS販売データ概要',
+      title: '店舗概要',
       description: 'POSデータを視覚化し、パフォーマンスを理解し、トレンドを特定します。',
       storeSelectLabel: '店舗を選択',
       storeSelectPlaceholder: 'すべての店舗',
@@ -907,8 +949,7 @@ export const translations: Record<Locale, Translations> = {
         increasePrefix: '+',
       },
       monthlySalesPerformance: '月次販売実績',
-      salesByCategory: 'カテゴリ別売上',
-      salesData: '販売データ',
+      salesData: '販売データ', // 詳細販売データから変更
       chart: {
         salesLabel: '売上 (¥)',
         unitsLabel: '販売ユニット数',
@@ -919,11 +960,21 @@ export const translations: Record<Locale, Translations> = {
         productName: '製品名',
         category: 'カテゴリ',
         sku: 'SKU',
-        storeLocation: '店舗の場所',
+        storeLocation: '店舗の場所', // 新規
         unitsSold: '販売ユニット数',
         revenue: '収益 (¥)',
         posName: 'POS名',
+        // po: '発注書', // 削除
+        health: '健全性', // 新規
       },
+      healthStatus: { // 新規
+        stockoutSoon: '在庫切れ間近',
+        potentialOverstock: '過剰在庫の可能性',
+        healthy: '健全',
+      },
+      // buttons: { // 削除
+      //   createPo: '発注書作成',
+      // },
       categories: {
         outerwear: 'アウターウェア',
         tops: 'トップス',
