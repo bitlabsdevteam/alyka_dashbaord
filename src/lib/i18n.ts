@@ -646,7 +646,7 @@ export const translations: Record<Locale, Translations> = {
       inputPlaceholder: "I'm your AI agent Alyka. Let me help you.",
       sendButton: 'Send',
       simulatedResponse: "Thanks for your message! I'm processing your request. For now, here's a general tip: Keep an eye on sustainable fabrics, as they are a growing trend!",
-      smartregiConnectResponse: "To connect with Smartregi POS:\n1. Go to the 'Settings' page from the main menu.\n2. Find the 'MCP Server Configuration' section.\n3. Enter your Smartregi API endpoint in 'Server Address', the correct 'Port', and your 'API Key'.\n4. Enable the integration and save. You can also test the connection there!",
+      smartregiConnectResponse: "To connect with Smartregi POS: \n1. First, you will have to go to Smartregi's generate API key page to get a new API key. \n2. Then, come back to Alyka and go to the 'Settings' page from the main menu. \n3. Find the 'MCP Server Configuration' section. \n4. Enter your Smartregi API endpoint in 'Server Address', the correct 'Port', and your 'API Key'. \n5. Enable the integration and save. You can also test the connection there!",
     },
     loginPage: {
       title: 'Login',
@@ -1007,7 +1007,7 @@ export const translations: Record<Locale, Translations> = {
       inputPlaceholder: "私はあなたのAIエージェント、Alykaです。お手伝いさせてください。",
       sendButton: '送信',
       simulatedResponse: 'メッセージありがとうございます！リクエストを処理中です。今のところ、一般的なヒントです：サステナブルな生地に注目してください、成長しているトレンドです！',
-      smartregiConnectResponse: "Smartregi POSとの接続方法：\n1. メインメニューから「設定」ページに移動します。\n2. 「MCPサーバー構成」セクションを見つけます。\n3. 「サーバーアドレス」にSmartregiのAPIエンドポイント、「ポート」に正しいポート番号、「APIキー」にAPIキーを入力します。\n4. 統合を有効にして保存します。接続テストもそこで行えます！",
+      smartregiConnectResponse: "Smartregi POSとの接続方法：\n1. まず、SmartregiのAPIキー生成ページにアクセスして、新しいAPIキーを取得する必要があります。\n2. その後、Alykaに戻り、メインメニューから「設定」ページに移動します。\n3. 「MCPサーバー構成」セクションを見つけます。\n4. 「サーバーアドレス」にSmartregiのAPIエンドポイント、「ポート」に正しいポート番号、「APIキー」に取得したAPIキーを入力します。\n5. 統合を有効にして保存します。接続テストもそこで行えます！",
     },
     loginPage: {
       title: 'ログイン',
@@ -1126,3 +1126,6 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
+
+
+    
