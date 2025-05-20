@@ -261,8 +261,13 @@ export default function AnalyticsPage() {
   }, [t]);
 
   const silhouetteChartDataToDisplay = React.useMemo(() => {
-    return timeGranularity === 'weekly' ? mockWeeklySilhouetteData : mockSilhouetteData;
+    if (timeGranularity === 'weekly') {
+        return mockWeeklySilhouetteData;
+    }
+    // Filter for 2025 data for monthly view
+    return mockSilhouetteData.filter(data => data.monthYear.endsWith('-2025'));
   }, [timeGranularity]);
+
 
   const patternChartDataToDisplay = React.useMemo(() => {
     return timeGranularity === 'weekly' ? mockWeeklyPatternLineData : mockPatternLineData;
@@ -421,7 +426,7 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <TrendingUp className="mr-2 h-5 w-5 text-primary" />
-              {t('analyticsPage.silhouettePopularityTitle')} - 2025
+              {t('analyticsPage.silhouettePopularityTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -497,7 +502,7 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Palette className="mr-2 h-5 w-5 text-primary" />
-              {t('analyticsPage.colorTrendsTitle')} - 2025
+              {t('analyticsPage.colorTrendsTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -528,7 +533,7 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Layers className="mr-2 h-5 w-5 text-primary" />
-              {t('analyticsPage.patternTrendsTitle')} - 2025
+              {t('analyticsPage.patternTrendsTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
