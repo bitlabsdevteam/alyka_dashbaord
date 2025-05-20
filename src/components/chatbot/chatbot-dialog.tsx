@@ -33,6 +33,7 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
   const { t } = useLanguage();
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = React.useState('');
+  const [isBotTyping, setIsBotTyping] = React.useState(false);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -52,7 +53,7 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
     }
-  }, [messages]);
+  }, [messages, isBotTyping]);
 
 
   const handleSendMessage = () => {
@@ -66,6 +67,7 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
     };
 
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+    setIsBotTyping(true);
     
     const lowerCaseInput = inputValue.toLowerCase();
     let botResponseText = t('chatbot.simulatedResponse'); // Default response
@@ -84,8 +86,9 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
         sender: 'bot',
         timestamp: new Date(),
       };
+      setIsBotTyping(false);
       setMessages((prevMessages) => [...prevMessages, botResponse]);
-    }, 1000);
+    }, 1500); // Increased delay to make typing indicator more visible
   };
 
   return (
@@ -130,6 +133,21 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
                 )}
               </div>
             ))}
+            {isBotTyping && (
+              <div className="flex items-end gap-2 justify-start">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src="https://picsum.photos/seed/alyka-bot/100/100" alt="Bot Avatar" data-ai-hint="robot face"/>
+                  <AvatarFallback>B</AvatarFallback>
+                </Avatar>
+                <div className="max-w-[70%] rounded-lg px-3 py-2 text-sm bg-muted text-muted-foreground">
+                  <div className="flex space-x-1 items-center h-5">
+                    <span className="animate-bounce [animation-delay:-0.3s] inline-block h-2 w-2 rounded-full bg-current opacity-75"></span>
+                    <span className="animate-bounce [animation-delay:-0.15s] inline-block h-2 w-2 rounded-full bg-current opacity-75"></span>
+                    <span className="animate-bounce inline-block h-2 w-2 rounded-full bg-current opacity-75"></span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </ScrollArea>
         <DialogFooter className="p-6 pt-2 border-t">
@@ -139,10 +157,15 @@ export function ChatbotDialog({ isOpen, onOpenChange }: ChatbotDialogProps) {
               placeholder={t('chatbot.inputPlaceholder')}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && !isBotTyping) { // Prevent sending while bot is typing
+                  handleSendMessage();
+                }
+              }}
               className="flex-grow"
+              disabled={isBotTyping}
             />
-            <Button type="submit" size="icon" onClick={handleSendMessage} aria-label={t('chatbot.sendButton')}>
+            <Button type="submit" size="icon" onClick={handleSendMessage} aria-label={t('chatbot.sendButton')} disabled={isBotTyping}>
               <SendHorizonal className="h-4 w-4" />
             </Button>
           </div>
