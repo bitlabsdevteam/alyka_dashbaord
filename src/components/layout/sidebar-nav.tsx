@@ -1,3 +1,4 @@
+
 // src/components/layout/sidebar-nav.tsx
 'use client';
 
@@ -28,8 +29,8 @@ export function SidebarNav() {
       case 'forecast':
         translationKey = 'nav.forecast';
         break;
-      case 'stores': // Changed from 'pos sales'
-        translationKey = 'nav.stores'; // Changed from 'nav.posSales'
+      case 'stores': 
+        translationKey = 'nav.stores'; 
         break;
       case 'tasks manager':
         translationKey = 'nav.tasksManager';
@@ -80,3 +81,4 @@ export function SidebarNav() {
     </div>
   );
 }
+
