@@ -1,4 +1,3 @@
-
 // src/lib/i18n.ts
 
 export type Locale = 'en' | 'ja';
@@ -88,7 +87,7 @@ interface NavTranslations {
   forecast: string;
   stores: string;
   tasksManager: string;
-  reports: string; // Added reports
+  reports: string;
 }
 
 interface ForecastPageTranslations {
@@ -164,7 +163,7 @@ interface PosSalesPageTranslations {
   };
   monthlySalesPerformance: string;
   salesByCategory: string; 
-  detailedSalesData: string;
+  salesData: string;
   chart: {
     salesLabel: string;
     unitsLabel: string;
@@ -178,11 +177,7 @@ interface PosSalesPageTranslations {
     storeLocation: string;
     unitsSold: string;
     revenue: string;
-    po: string;
     posName: string;
-  };
-  buttons: {
-    createPo: string;
   };
   categories: {
     outerwear: string;
@@ -559,7 +554,7 @@ export const translations: Record<Locale, Translations> = {
       },
       monthlySalesPerformance: 'Monthly Sales Performance',
       salesByCategory: 'Sales by Category', 
-      detailedSalesData: 'Detailed Sales Data',
+      salesData: 'Sales Data',
       chart: {
         salesLabel: 'Sales ($)',
         unitsLabel: 'Units Sold',
@@ -573,11 +568,7 @@ export const translations: Record<Locale, Translations> = {
         storeLocation: 'Store Location',
         unitsSold: 'Units Sold',
         revenue: 'Revenue ($)',
-        po: 'PO',
         posName: 'POS Name',
-      },
-      buttons: {
-        createPo: 'Create PO',
       },
       categories: {
         outerwear: 'Outerwear',
@@ -917,7 +908,7 @@ export const translations: Record<Locale, Translations> = {
       },
       monthlySalesPerformance: '月次販売実績',
       salesByCategory: 'カテゴリ別売上',
-      detailedSalesData: '詳細販売データ',
+      salesData: '販売データ',
       chart: {
         salesLabel: '売上 (¥)',
         unitsLabel: '販売ユニット数',
@@ -931,11 +922,7 @@ export const translations: Record<Locale, Translations> = {
         storeLocation: '店舗の場所',
         unitsSold: '販売ユニット数',
         revenue: '収益 (¥)',
-        po: '発注書',
         posName: 'POS名',
-      },
-      buttons: {
-        createPo: '発注書作成',
       },
       categories: {
         outerwear: 'アウターウェア',
@@ -1101,7 +1088,7 @@ export const translations: Record<Locale, Translations> = {
       title: '生成されたレポート',
       description: '生成された販売およびトレンド分析レポートにここでアクセスします。レポートは予測ページのチャットコマンド経由で作成されると、ここに一覧表示されます。',
       noReports: 'まだレポートは生成されていません。',
-      generateInstruction: '販売レポートは、予測ページのチャットコマンド「レポート生成を手伝って」を使用して生成できます。',
+      generateInstruction: "販売レポートは、予測ページのチャットコマンド「レポート生成を手伝って」を使用して生成できます。",
       tableHeaders: {
         name: 'レポート名',
         type: '種類',
@@ -1118,6 +1105,3 @@ export const translations: Record<Locale, Translations> = {
     },
   },
 };
-
-
-    

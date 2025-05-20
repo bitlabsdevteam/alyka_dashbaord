@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, Line, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
-import { DollarSign, Package, Store as StoreIcon } from 'lucide-react'; // Removed ShoppingCart as it's not used
+import { DollarSign, Package, Store as StoreIcon } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { format, subMonths, startOfMonth } from 'date-fns';
 import type { Translations, TranslationKey } from '@/lib/i18n';
@@ -333,7 +333,7 @@ export default function PosSalesPage() {
 
       <Card className="shadow-lg">
         <CardHeader>
-          <CardTitle>{t('posSalesPage.detailedSalesData')}</CardTitle>
+          <CardTitle>{t('posSalesPage.salesData')}</CardTitle>
         </CardHeader>
         <CardContent className="max-h-[600px] overflow-y-auto">
           {recentDetailedData.length > 0 ? (
@@ -347,7 +347,6 @@ export default function PosSalesPage() {
                   <TableHead>{t('posSalesPage.tableHeaders.storeLocation')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.unitsSold')}</TableHead>
                   <TableHead className="text-right">{t('posSalesPage.tableHeaders.revenue')}</TableHead>
-                  <TableHead>{t('posSalesPage.tableHeaders.po')}</TableHead>
                   <TableHead className="hidden lg:table-cell">{t('posSalesPage.tableHeaders.posName')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -361,9 +360,6 @@ export default function PosSalesPage() {
                     <TableCell>{item.storeLocation}</TableCell>
                     <TableCell className="text-right">{item.unitsSold.toLocaleString()}</TableCell>
                     <TableCell className="text-right">${item.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="sm">{t('posSalesPage.buttons.createPo')}</Button>
-                    </TableCell>
                     <TableCell className="hidden lg:table-cell">{item.posName}</TableCell>
                   </TableRow>
                 ))}
@@ -377,4 +373,3 @@ export default function PosSalesPage() {
     </div>
   );
 }
-
