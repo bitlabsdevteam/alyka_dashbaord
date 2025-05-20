@@ -5,7 +5,7 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Palette, Newspaper, TrendingUp, Layers, Settings, Image as ImageIcon, Loader2 } from 'lucide-react'; 
+import { Palette, Newspaper, TrendingUp, Layers, Settings, Image as ImageIcon } from 'lucide-react'; 
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, CartesianGrid, Line } from 'recharts';
 import { ChartContainer, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { useLanguage } from '@/context/language-context';
@@ -15,7 +15,8 @@ import type { TranslationKey } from '@/lib/i18n';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { generateColorTrendImage, type GenerateColorTrendImageOutput } from '@/ai/flows/generate-color-trend-image-flow';
+// Removed: import { generateColorTrendImage, type GenerateColorTrendImageOutput } from '@/ai/flows/generate-color-trend-image-flow';
+// Removed: import { Loader2 } from 'lucide-react'; 
 import { useToast } from '@/hooks/use-toast';
 
 // Component for rendering images with a fallback to placehold.co
@@ -226,8 +227,8 @@ export default function AnalyticsPage() {
   
   const [isColorDetailDialogOpen, setIsColorDetailDialogOpen] = React.useState(false);
   const [selectedColorData, setSelectedColorData] = React.useState<MockColorEntry | null>(null);
-  const [generatedImageUrl, setGeneratedImageUrl] = React.useState<string | null>(null);
-  const [isGeneratingImage, setIsGeneratingImage] = React.useState(false);
+  // Removed: const [generatedImageUrl, setGeneratedImageUrl] = React.useState<string | null>(null);
+  // Removed: const [isGeneratingImage, setIsGeneratingImage] = React.useState(false);
 
 
   React.useEffect(() => {
@@ -246,11 +247,11 @@ export default function AnalyticsPage() {
   const currentChartConfigColor = React.useMemo(() => chartConfigColorFn(t), [t]);
 
   const patternChartConfig = React.useMemo(() => ({
-    floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-6))" }, // Purple
-    geometric: { label: t('analyticsPage.pattern.geometric'), color: "hsl(var(--chart-7))" }, // Orange
-    stripes: { label: t('analyticsPage.pattern.stripes'), color: "hsl(var(--chart-8))" }, // Seafoam Green
-    animalPrints: { label: t('analyticsPage.pattern.animalPrints'), color: "hsl(var(--chart-9))" }, // Coral Red
-    abstract: { label: t('analyticsPage.pattern.abstract'), color: "hsl(var(--chart-10))" }, // Gold/Yellow
+    floral: { label: t('analyticsPage.pattern.floral'), color: "hsl(var(--chart-6))" }, 
+    geometric: { label: t('analyticsPage.pattern.geometric'), color: "hsl(var(--chart-7))" }, 
+    stripes: { label: t('analyticsPage.pattern.stripes'), color: "hsl(var(--chart-8))" }, 
+    animalPrints: { label: t('analyticsPage.pattern.animalPrints'), color: "hsl(var(--chart-9))" }, 
+    abstract: { label: t('analyticsPage.pattern.abstract'), color: "hsl(var(--chart-10))" }, 
   }), [t]);
   
   const translatedMockColorData = React.useMemo(() => {
@@ -264,7 +265,6 @@ export default function AnalyticsPage() {
     if (timeGranularity === 'weekly') {
         return mockWeeklySilhouetteData;
     }
-    // Filter for 2025 data for monthly view
     return mockSilhouetteData.filter(data => data.monthYear.endsWith('-2025'));
   }, [timeGranularity]);
 
@@ -273,33 +273,13 @@ export default function AnalyticsPage() {
     return timeGranularity === 'weekly' ? mockWeeklyPatternLineData : mockPatternLineData;
   }, [timeGranularity]);
 
-  const handleColorPieClick = async (eventData: any) => {
+  const handleColorPieClick = (eventData: any) => {
     const originalEntry = mockColorData.find(
       (color) => t(color.translationKey as any) === eventData.name
     );
     if (originalEntry) {
       setSelectedColorData(originalEntry);
-      setGeneratedImageUrl(null); // Reset previous image
-      setIsGeneratingImage(true);
       setIsColorDetailDialogOpen(true);
-
-      try {
-        const result: GenerateColorTrendImageOutput = await generateColorTrendImage({
-          colorName: originalEntry.name, // Use original English name for prompt
-          colorDescription: t(originalEntry.descriptionKey as any), // Translated description for context
-        });
-        setGeneratedImageUrl(result.imageDataUri);
-      } catch (error) {
-        console.error("Error generating image:", error);
-        toast({
-          title: t('analyticsPage.colorDetailDialog.imageGenErrorTitle'),
-          description: (error as Error).message || t('analyticsPage.colorDetailDialog.imageGenErrorDescription'),
-          variant: "destructive",
-        });
-        // Keep generatedImageUrl as null, ImageWithFallback will use its placeholder
-      } finally {
-        setIsGeneratingImage(false);
-      }
     }
   };
 
@@ -442,7 +422,7 @@ export default function AnalyticsPage() {
                   minTickGap={timeGranularity === 'weekly' ? 10 : 20}
                   tickFormatter={(value) => {
                     if (timeGranularity === 'weekly') return value.replace('-2024', '');
-                    return value.replace('-2023', '').replace('-2024', '').replace('-2025', '');
+                    return value.replace('-2025', '');
                   }}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
@@ -549,7 +529,7 @@ export default function AnalyticsPage() {
                   minTickGap={timeGranularity === 'weekly' ? 10 : 20}
                   tickFormatter={(value) => {
                      if (timeGranularity === 'weekly') return value.replace('-2024', '');
-                    return value.replace('-2023', '').replace('-2024', '').replace('-2025', '');
+                    return value.replace('-2025', '');
                   }}
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
@@ -621,14 +601,8 @@ export default function AnalyticsPage() {
           {selectedColorData && (
             <div className="space-y-4 py-4">
               <div className="relative w-full aspect-[3/2] rounded-md overflow-hidden bg-muted flex items-center justify-center">
-                {isGeneratingImage ? (
-                  <div className="flex flex-col items-center justify-center text-muted-foreground">
-                    <Loader2 className="h-12 w-12 animate-spin text-primary mb-2" />
-                    <p>{t('analyticsPage.colorDetailDialog.imageGeneratingText')}</p>
-                  </div>
-                ) : (
-                  <ImageWithFallback
-                    src={generatedImageUrl || `https://placehold.co/600x400.png?text=${selectedColorData.imagePlaceholderText.replace(/\s+/g, '+')}`}
+                <ImageWithFallback
+                    src={`https://placehold.co/600x400.png?text=${selectedColorData.imagePlaceholderText.replace(/\s+/g, '+')}`}
                     alt={t(selectedColorData.translationKey as any)}
                     aiHint={selectedColorData.aiHint}
                     fill
@@ -636,13 +610,9 @@ export default function AnalyticsPage() {
                     sizes="(max-width: 768px) 100vw, 50vw"
                     onImageError={() => {
                         // This callback is triggered if ImageWithFallback's own src (either AI or placeholder) fails
-                        // We might want to show a generic error image or message here if the placeholder itself fails
-                        // For now, ImageWithFallback tries its own internal placeholder on error.
                     }}
                   />
-                )}
               </div>
-              
             </div>
           )}
         </DialogContent>
@@ -650,4 +620,3 @@ export default function AnalyticsPage() {
     </div>
   );
 }
-

@@ -1,3 +1,4 @@
+
 // src/lib/i18n.ts
 
 export type Locale = 'en' | 'ja';
@@ -59,9 +60,9 @@ interface AnalyticsPageTranslations {
   };
   colorDetailDialog: {
     title: string;
-    imageGeneratingText: string;
-    imageGenErrorTitle: string;
-    imageGenErrorDescription: string;
+    // Removed: imageGeneratingText: string;
+    // Removed: imageGenErrorTitle: string;
+    // Removed: imageGenErrorDescription: string;
   };
   colorDescriptions: {
     deepSapphire: string;
@@ -90,7 +91,7 @@ interface NavTranslations {
   forecast: string;
   stores: string;
   tasksManager: string;
-  reports: string;
+  // Removed: reports: string;
 }
 
 interface ForecastPageTranslations {
@@ -431,7 +432,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: 'Forecast',
       stores: 'Stores',
       tasksManager: 'Tasks Manager',
-      reports: 'Reports',
+      // Removed: reports: 'Reports',
     },
     analyticsPage: {
       latestTrendTitle: 'Latest Trend Updates',
@@ -480,9 +481,9 @@ export const translations: Record<Locale, Translations> = {
       },
       colorDetailDialog: {
         title: 'Color Trend Details',
-        imageGeneratingText: 'Generating image...',
-        imageGenErrorTitle: 'Image Generation Failed',
-        imageGenErrorDescription: 'Could not generate an image for this trend. Please try again later.',
+        // Removed: imageGeneratingText: 'Generating image...',
+        // Removed: imageGenErrorTitle: 'Image Generation Failed',
+        // Removed: imageGenErrorDescription: 'Could not generate an image for this trend. Please try again later.',
       },
       colorDescriptions: {
         deepSapphire: 'Deep Sapphire is a timeless and luxurious color, often associated with elegance and sophistication. It is expected to be prominent in evening wear and statement pieces.',
@@ -792,7 +793,7 @@ export const translations: Record<Locale, Translations> = {
       forecast: '予測',
       stores: '店舗',
       tasksManager: 'タスク管理',
-      reports: 'レポート',
+      // Removed: reports: 'レポート',
     },
     analyticsPage: {
       latestTrendTitle: '最新トレンドアップデート',
@@ -841,9 +842,9 @@ export const translations: Record<Locale, Translations> = {
       },
       colorDetailDialog: {
         title: 'カラートレンド詳細',
-        imageGeneratingText: '画像を生成中...',
-        imageGenErrorTitle: '画像生成失敗',
-        imageGenErrorDescription: 'このトレンドの画像を生成できませんでした。後でもう一度お試しください。',
+        // Removed: imageGeneratingText: '画像を生成中...',
+        // Removed: imageGenErrorTitle: '画像生成失敗',
+        // Removed: imageGenErrorDescription: 'このトレンドの画像を生成できませんでした。後でもう一度お試しください。',
       },
       colorDescriptions: {
         deepSapphire: 'ディープサファイアは時代を超えた豪華な色で、優雅さと洗練さを象徴します。イブニングウェアやステートメントピースで際立つと予想されます。',
