@@ -102,7 +102,7 @@ const storeOptions: Array<{ value: string; labelKey: TranslationKey }> = [
 ];
 
 const HealthStatusBadge: React.FC<{ status: HealthStatus; t: (key: TranslationKey) => string }> = ({ status, t }) => {
-  let variant: 'default' | 'secondary' | 'destructive' = 'default';
+  let variant: 'default' | 'secondary' | 'destructive' | 'success' = 'default';
   let textKey: TranslationKey = 'posSalesPage.healthStatus.healthy';
 
   switch (status) {
@@ -111,11 +111,11 @@ const HealthStatusBadge: React.FC<{ status: HealthStatus; t: (key: TranslationKe
       textKey = 'posSalesPage.healthStatus.stockoutSoon';
       break;
     case 'Potential Overstock':
-      variant = 'secondary'; // Using secondary for a less alarming warning
+      variant = 'secondary'; 
       textKey = 'posSalesPage.healthStatus.potentialOverstock';
       break;
     case 'Healthy':
-      variant = 'default'; // Default is usually primary color
+      variant = 'success'; 
       textKey = 'posSalesPage.healthStatus.healthy';
       break;
   }
